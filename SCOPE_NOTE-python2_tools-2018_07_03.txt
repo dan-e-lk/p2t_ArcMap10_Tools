@@ -1,0 +1,38 @@
+SCOPE_NOTE
+
+Date: 2018-07-03 13:01
+
+Folder: ..\python2_tools
+
+Description:
+This is the working version of the remote repository for collaboration between Todd Little and Daniel Kim for pythons tools, such as ArcGIS scripts to do work more efficiently, effectively, and consistently. The repository folder is on the following UNC:
+
+	\\lrcpsoprfp00001\MNR_NER\GI_MGMT\Tools\Scripts\Python2_Tools_Repo.
+
+The network version of the working 'python2_tools', for general network use, is the UNC for this SCOPE_NOTE:
+
+	\\lrcpsoprfp00001\MNR_NER\GI_MGMT\Tools\Scripts\Python2_Tools
+
+
+How to set up local workstation:
+0. Install git scm (google it)
+1. Somewhere on your C drive, create a new folder.
+2. Right click that folder and open Git Bash
+3. type in git init
+4. type in git remote add python2_tools //lrcpsoprfp00001/MNR_NER/GI_MGMT/Tools/Scripts/Python2_Tools_Repo
+5. type in git pull python2_tools master - at this point you should have all the files copied over to your new folder.
+
+when done editing,
+6. git push python2_tools master  to push the changes.
+
+
+
+*** The key to the longevity of the use of the tools is versatility.***
+
+Excludes: This folder only contains the python 2 tools, including python 2 ArcGIS scripts and the ArcToolbox for the tools. When in doubt please consult Daniel Kim or Todd Little
+
+Contact(s): Todd Little, Daniel Kim
+
+Record Schedule: NA
+
+Series Number: NA

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    font-family: "Helvetica", "Tahoma";
+}
+h1 {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+    background-color: #B7E2F0;
+}
+
+table {
+    width:100%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+td {
+    padding: 1px;
+    text-align: right;
+}
+th {
+    padding: 5px;
+    text-align: center;
+}
+td.leftb {
+	border-left: 2px solid black;
+}
+td.bottomb {
+	border-bottom: 2px solid black;
+}
+td.rightb {
+	border-right: 2px solid black;
+}
+td.topb {
+	border-top: 2px solid black;
+}
+td.txtleft {
+    text-align: left;
+}
+td.txtcenter {
+	text-align: center;
+}
+td.nobottomborder {
+	border-bottom: solid transparent;
+}
+td.noleftborder {
+	border-left: solid transparent;
+}
+td.norightborder {
+	border-right: solid transparent;
+}
+td.rightalign {
+	text-align: right;
+}
+td.shaded {
+    background-color: #B7E2F0; /* light blue */
+}
+
+
+table#t01 th {
+    background-color: #719CAA; /* dark blue */
+	color: white;
+    border: 2px solid black;
+}
+
+<!--  Hover for tooltip  -->
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+	width: auto;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 2px;
+	font-size: 70%;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+
+
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+</style>
+</head>
+<body>
+
+<h1>FMP 1 Table for *PCIFileName</h1>
+
+<table id="t01">
+  <tr><!--  row 1  -->
+    <th rowspan = "3">Land Ownership and Type</th>
+    <th colspan = "5">Land Ownership (Ha)</th> 
+  </tr>
+  <tr><!--  row 2  -->
+    <th colspan = "2">Crown</th>
+    <th colspan = "2">Patent  &  Other</th> 
+	<th rowspan = "2">Total</th> 
+  </tr>
+  <tr><!--  row 3  -->
+    <th>Managed <br><small>Owner 1</small></th>
+	<th>Other <br><small>Owner 5, 7</small></th>
+	<th>Crown Timber <br><small>Owner 2</small></th>
+	<th>Non Crown <br><small>Owner 3, 4, 6, 8, 9, 0</small></th>
+  </tr>
+  
+  <tr>
+    <td class="leftb bottomb rightb txtleft">Unsurveyed</td>
+    <td class="bottomb">0</td>
+    <td class="bottomb rightb">0</td>
+    <td class="bottomb rightb">0</td>
+    <td class="bottomb rightb">0</td>
+    <td class="bottomb rightb">0</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">Non-forested</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;Water<span class="tooltiptext">WatTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">WatCroManV<span class="tooltiptext">WatCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">WatCroOthV<span class="tooltiptext">WatCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">WatPatCroV<span class="tooltiptext">WatPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">WatOthNonV<span class="tooltiptext">WatOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">WatTotV<span class="tooltiptext">WatTotQ</span></div>			</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">&emsp;Other Land</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Agricultural Land<span class="tooltiptext">AgrTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">AgrCroManV<span class="tooltiptext">AgrCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">AgrCroOthV<span class="tooltiptext">AgrCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">AgrPatCroV<span class="tooltiptext">AgrPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">AgrOthNonV<span class="tooltiptext">AgrOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">AgrTotV   <span class="tooltiptext">AgrTotQ</span></div>			</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Grass & Meadow<span class="tooltiptext">GraTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">GraCroManV<span class="tooltiptext">GraCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">GraCroOthV<span class="tooltiptext">GraCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">GraPatCroV<span class="tooltiptext">GraPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">GraOthNonV<span class="tooltiptext">GraOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">GraTotV   <span class="tooltiptext">GraTotQ</span></div>			</td>
+  </tr>
+  
+   <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Unclassified<span class="tooltiptext">UncTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">UncCroManV<span class="tooltiptext">UncCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">UncCroOthV<span class="tooltiptext">UncCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">UncPatCroV<span class="tooltiptext">UncPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">UncOthNonV<span class="tooltiptext">UncOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">UncTotV<span class="tooltiptext">UncTotQ</span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Other (ISL)<span class="tooltiptext">OthTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">OthCroManV<span class="tooltiptext">OthCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">OthCroOthV<span class="tooltiptext">OthCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">OthPatCroV<span class="tooltiptext">OthPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">OthOthNonV<span class="tooltiptext">OthOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">OthTotV<span class="tooltiptext">   OthTotQ</span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb bottomb rightb rightalign">Subtotal Non-Forested</td>
+    <td class="bottomb">		<div class="tooltip">SNFCroManV<span class="tooltiptext">SNFCroManQ</span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">SNFCroOthV<span class="tooltiptext">SNFCroOthQ</span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">SNFPatCroV<span class="tooltiptext">SNFPatCroQ</span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">SNFOthNonV<span class="tooltiptext">SNFOthNonQ</span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">SNFTotV<span class="tooltiptext">   SNFTotQ</span></div>			</td>
+  </tr>
+
+  
+<!--                   Forested                    -->
+<!--      Non-Productive Forest        -->
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">Forested</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">&emsp;Non-Productive Forest</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">								</td>
+    <td class= "rightb">				</td>
+  </tr>  
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Treed Muskeg<span class="tooltiptext">TreTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">TreCroManV<span class="tooltiptext">TreCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">TreCroOthV<span class="tooltiptext">TreCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">TrePatCroV<span class="tooltiptext">TrePatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">TreOthNonV<span class="tooltiptext">TreOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">TreTotV<span class="tooltiptext">   TreTotQ</span></div>			</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Open Muskeg<span class="tooltiptext">OpeTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">OpeCroManV<span class="tooltiptext">OpeCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">OpeCroOthV<span class="tooltiptext">OpeCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">OpePatCroV<span class="tooltiptext">OpePatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">OpeOthNonV<span class="tooltiptext">OpeOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">OpeTotV<span class="tooltiptext">   OpeTotQ</span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Brush & Alder<span class="tooltiptext">BruTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">BruCroManV<span class="tooltiptext">BruCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">BruCroOthV<span class="tooltiptext">BruCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">BruPatCroV<span class="tooltiptext">BruPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">BruOthNonV<span class="tooltiptext">BruOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">BruTotV<span class="tooltiptext">   BruTotQ</span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Rock<span class="tooltiptext">RocTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">RocCroManV<span class="tooltiptext">RocCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">RocCroOthV<span class="tooltiptext">RocCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">RocPatCroV<span class="tooltiptext">RocPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">RocOthNonV<span class="tooltiptext">RocOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">RocTotV<span class="tooltiptext">   RocTotQ</span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb bottomb rightb rightalign">Subtotal Non-Productive Forest</td>
+    <td class="bottomb">		<div class="tooltip">SNPCroManV<span class="tooltiptext">SNPCroManQ</span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">SNPCroOthV<span class="tooltiptext">SNPCroOthQ</span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">SNPPatCroV<span class="tooltiptext">SNPPatCroQ</span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">SNPOthNonV<span class="tooltiptext">SNPOthNonQ</span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">SNPTotV<span class="tooltiptext">   SNPTotQ</span></div>			</td>
+  </tr>
+  
+  
+<!--      Productive Forest        -->
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">&emsp;Productive Forest</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>  
+  
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Islands<span class="tooltiptext">IslTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">IslCroManV<span class="tooltiptext">IslCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">IslCroOthV<span class="tooltiptext">IslCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">IslPatCroV<span class="tooltiptext">IslPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">IslOthNonV<span class="tooltiptext">IslOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">IslTotV   <span class="tooltiptext">   IslTotQ</span></div>			</td>
+  </tr>
+  
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Protection Forest<span class="tooltiptext">SPTTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">SPTCroManV<span class="tooltiptext">SPTCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">SPTCroOthV<span class="tooltiptext">SPTCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">SPTPatCroV<span class="tooltiptext">SPTPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">SPTOthNonV<span class="tooltiptext">SPTOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">SPTTotV   <span class="tooltiptext">   SPTTotQ</span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">&emsp;&emsp;Production Forest</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>  
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;&emsp;Recent Disturbance<span class="tooltiptext">RecTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">RecCroManV<span class="tooltiptext">RecCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">RecCroOthV<span class="tooltiptext">RecCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">RecPatCroV<span class="tooltiptext">RecPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">RecOthNonV<span class="tooltiptext">RecOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">RecTotV   <span class="tooltiptext">   RecTotQ</span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;&emsp;Below Regeneration<span class="tooltiptext">BelTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">BelCroManV<span class="tooltiptext">BelCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">BelCroOthV<span class="tooltiptext">BelCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">BelPatCroV<span class="tooltiptext">BelPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">BelOthNonV<span class="tooltiptext">BelOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">BelTotV   <span class="tooltiptext">   BelTotQ</span></div>			</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;&emsp;Forest Stands<span class="tooltiptext">ForTotQ</span></div>
+	</td>
+    <td>					<div class="tooltip">ForCroManV<span class="tooltiptext">ForCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">ForCroOthV<span class="tooltiptext">ForCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">ForPatCroV<span class="tooltiptext">ForPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">ForOthNonV<span class="tooltiptext">ForOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">ForTotV   <span class="tooltiptext">   ForTotQ</span></div>			</td>
+  </tr>  
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder rightalign">Subtotal Production Forest</td>
+    <td>					<div class="tooltip">SPDCroManV<span class="tooltiptext">SPDCroManQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">SPDCroOthV<span class="tooltiptext">SPDCroOthQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">SPDPatCroV<span class="tooltiptext">SPDPatCroQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">SPDOthNonV<span class="tooltiptext">SPDOthNonQ</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">SPDTotV   <span class="tooltiptext">   SPDTotQ</span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb bottomb rightb rightalign"><b>Subtotal Productive Forest</b></td>
+    <td class="bottomb">		<div class="tooltip"><b>SPFCroManV</b><span class="tooltiptext"><b>SPFCroManQ</b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>SPFCroOthV</b><span class="tooltiptext"><b>SPFCroOthQ</b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>SPFPatCroV</b><span class="tooltiptext"><b>SPFPatCroQ</b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>SPFOthNonV</b><span class="tooltiptext"><b>SPFOthNonQ</b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>SPFTotV   </b><span class="tooltiptext"><b>SPFTotQ   </b></span></div>			</td>
+  </tr>  
+  
+  <tr>
+    <td class="leftb bottomb rightb rightalign"><b>Subtotal Forested</b></td>
+    <td class="bottomb">		<div class="tooltip"><b>SFOCroManV</b><span class="tooltiptext"><b>SFOCroManQ</b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>SFOCroOthV</b><span class="tooltiptext"><b>SFOCroOthQ</b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>SFOPatCroV</b><span class="tooltiptext"><b>SFOPatCroQ</b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>SFOOthNonV</b><span class="tooltiptext"><b>SFOOthNonQ</b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>SFOTotV   </b><span class="tooltiptext"><b>SFOTotQ   </b></span></div>			</td>
+  </tr>  
+
+  <tr>
+    <td class="leftb bottomb rightb rightalign shaded"><b>Total</b></td>
+    <td class="bottomb shaded">			<div class="tooltip"><b>TOTCroManV</b><span class="tooltiptext"><b>TOTCroManQ</b></span></div>			</td>
+    <td class="bottomb shaded rightb">	<div class="tooltip"><b>TOTCroOthV</b><span class="tooltiptext"><b>TOTCroOthQ</b></span></div>			</td>
+    <td class="bottomb shaded rightb">	<div class="tooltip"><b>TOTPatCroV</b><span class="tooltiptext"><b>TOTPatCroQ</b></span></div>			</td>
+    <td class="bottomb shaded rightb">	<div class="tooltip"><b>TOTOthNonV</b><span class="tooltiptext"><b>TOTOthNonQ</b></span></div>			</td>
+    <td class="bottomb shaded rightb">	<div class="tooltip"><b>TOTTotV   </b><span class="tooltiptext"><b>TOTTotQ   </b></span></div>			</td>
+  </tr>  
+  
+  <tr>
+    <td class="nobottomborder noleftborder"></td>
+    <td colspan = "2" class = "bottomb rightb leftb txtcenter">		<div class="tooltip">Total Crown: TOTCroAllV<span class="tooltiptext">TOTCroAllQ</span></div>			</td>
+    <td colspan = "2" class = "bottomb rightb txtcenter">		<div class="tooltip">Total Non-Crown: TOTNonAllV<span class="tooltiptext">TOTNonAllQ</span></div> 		</td>
+  </tr>    
+  
+</table>
+<br>
+
+
+<hr>
+<p><small>
+	PCI/BMI used: *PCIused<br>
+	Python Script used: *pythonscript<br>
+	Report saved in: *reportlocation<br>
+	Date and Time run: *dateandtime<br>
+	<br>This tool was created by the NER Resources Information and Analysis Unit in 2017.
+
+</p></small>
+</body>
+</html>

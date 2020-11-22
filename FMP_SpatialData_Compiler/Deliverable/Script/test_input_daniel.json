@@ -1,0 +1,23 @@
+{
+	"inv_class": "bmi",
+	"proj_descr": "project description",
+	"unique_id": {
+		"1": {
+			"inv_name": "Gordon Cosens",
+			"inv_descr": "Gordon Cosens PCI lite version",
+			"path": "//lrcpsoprfp00001/MNR_NER/GI_MGMT/Tools/Scripts/FMPTools_2017/FMP_SpatialData_Compiler/TestData/Gordon_Cosens/FMP/2020/_data/FMP_Schema.gdb/MU438_20PCI99",
+			"inv_type": "PCI",
+			"inv_year": 2020,
+			"sub_id": "99999"
+			},
+		"2": {
+			"inv_name": "Hearst",
+			"inv_descr": "Hearst 2017 PCM lite version",
+			"path": "//lrcpsoprfp00001/MNR_NER/GI_MGMT/Tools/Scripts/FMPTools_2017/FMP_SpatialData_Compiler/TestData/Hearst/FMP/2017/_data/FMP_Schema.gdb/mu601_17pcm99",
+			"inv_type": "PCM",
+			"inv_year": 2017,
+			"sub_id": "00000"
+			}
+		},
+	"output_folder": "C:/TEMP/temp2"
+}

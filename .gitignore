@@ -1,0 +1,5 @@
+# GIT-SCM ignore file (2018-07-03)
+*.pyc
+*.lnk
+*.onetoc2
+SPCOMP_and_SFU/_Archive_SPCOMP_and_SFU/desktop.ini

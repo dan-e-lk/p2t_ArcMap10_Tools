@@ -1,0 +1,136 @@
+{
+    "inv_class": "bmi",
+    "output_folder": "C:\\DanielK_Workspace\\_FMP_LOCAL\\_NER_inventory2",
+    "proj_descr": "NER most recent inventory (PCI or BMI). Note that pFor2008 was used for Abitibi River. Prepared on Jan 23 2019.",
+    "unique_id": {
+        "1": {
+            "inv_descr": "PCI",
+            "inv_name": "Nagagami",
+            "inv_type": "PCI",
+            "inv_year": "2021",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\Nagagami\\2021\\Checkpoints\\1_PCI\\ProductSubmission24519\\MU390_2021_FMPDP\\MU390_21PCI.gdb\\MU390_21PCI00",
+            "sub_id": "24519"
+        },
+        "2": {
+            "inv_descr": "PCI",
+            "inv_name": "Pineland",
+            "inv_type": "PCI",
+            "inv_year": "2021",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\Pineland\\FMP-2021\\Checkpoints\\PCI\\PCI_24752\\MU421_2021_PCI_CkPt1\\MU421_21INV.gdb\\MU421_21PCI00",
+            "sub_id": "24752"
+        },
+        "3": {
+            "inv_descr": "PCI",
+            "inv_name": "Timiskaming",
+            "inv_type": "PCI",
+            "inv_year": "2021",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\Timiskaming\\2021\\Checkpoints\\1_PCM\\Product_Submission_24878\\MU280_2021_INV\\mu280_21PCI00.shp",
+            "sub_id": "24878"
+        },
+        "4": {
+            "inv_descr": "PCI",
+            "inv_name": "Martel_Magpie",
+            "inv_type": "PCI",
+            "inv_year": "2021",
+            "path": "C:\\DanielK_Workspace\\_FMP_LOCAL\\Martel-Magpie\\FMP\\Submission_24926\\MU574_2021_INV\\MU574_2021_FMPDP_LAYER\\MU574_2021_FMPDP.gdb\\MU574_21PCI00",
+            "sub_id": "24926"
+        },
+        "5": {
+            "inv_descr": "BMI",
+            "inv_name": "Sudbury",
+            "inv_type": "BMI",
+            "inv_year": "2020",
+            "path": "C:\\DanielK_Workspace\\_FMP_LOCAL\\Sudbury\\FMP\\2020\\mu889_20bmi00\\sud_bmi.gdb\\mu889_20bmi00poly",
+            "sub_id": "24864"
+        },
+        "6": {
+            "inv_descr": "BMI",
+            "inv_name": "Northshore",
+            "inv_type": "BMI",
+            "inv_year": "2020",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\Northshore\\FMP-2020\\Checkpoints\\03_BMI\\Submission_24910\\MU680_2020_FMP_Checkpoint3\\MU680_2020_FMP_LAYERS\\MU680_2020_FMP\\MU680_2020_FMP.gdb\\MU680_20BMI00",
+            "sub_id": "24910"
+        },
+        "7": {
+            "inv_descr": "BMI",
+            "inv_name": "Algoma",
+            "inv_type": "BMI",
+            "inv_year": "2020",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\Algoma\\2020\\Inventories\\BMI\\BMI_FIPortal_24957\\MU615_2020_BMI\\MU615_BMI_2020_LAYERS\\MU615_2020_BMI\\MU615_20BMI00.gdb\\mu615_20bmi00",
+            "sub_id": "24957"
+        },
+        "8": {
+            "inv_descr": "BMI",
+            "inv_name": "Gordon_Cosens",
+            "inv_type": "BMI",
+            "inv_year": "2020",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\GordonCosens\\2020\\BMI\\Sub23638\\MU438_2020_FMPDP\\MU438_2020_FMPDP_LAYER\\MU438_2020_FMPDP.gdb\\MU438_20BMI00",
+            "sub_id": "23638"
+        },
+        "9": {
+            "inv_descr": "BMI",
+            "inv_name": "Spanish",
+            "inv_type": "BMI",
+            "inv_year": "2020",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\Spanish\\2020\\Inventories\\BMI_24321\\MU210_20BMI.gdb\\MU210_20BMI00",
+            "sub_id": "24321"
+        },
+
+        "10": {
+            "inv_descr": "Draft Plan BMI 20180824",
+            "inv_name": "Nipissing",
+            "inv_type": "BMI",
+            "inv_year": "2019",
+            "path": "C:\\DanielK_Workspace\\_FMP_LOCAL\\Nipissing\\DraftPlan\\Sub24353_20180824\\Sub24353_20180824.gdb\\mu754_19bmi00",
+            "sub_id": "24353"
+        },
+        "11": {
+            "inv_descr": "Final Plan BMI",
+            "inv_name": "Temagami",
+            "inv_type": "BMI",
+            "inv_year": "2019",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\Temagami\\2019\\Fina_Plan\\SubID_25023\\MU898_2019_FMP_LAYERS\\MU898_19BMI00.shp",
+            "sub_id": "25023"
+        },
+        "12": {
+            "inv_descr": "Final Plan BMI",
+            "inv_name": "Romeo Malette",
+            "inv_type": "BMI",
+            "inv_year": "2019",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\RomeoMalette\\2019\\05_Final_Plan\\Submission_24874\\MU930_2019_FMP\\MU930_2019_FMP_LAYERS\\MU930_2019_FMP\\MU930_2019_FMP.gdb\\MU930_19BMI00",
+            "sub_id": "24874"
+        },        
+        "13": {
+            "inv_descr": "Contingency Plan BMI",
+            "inv_name": "Pic Forest",
+            "inv_type": "BMI",
+            "inv_year": "2019",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\PicForest\\FMP-2019\\Checkpoints\\BMI\\Submission_23276\\MU966_2019_BMI_P1\\_data\\FMP_Schema.gdb\\mu966_19bmi00",
+            "sub_id": "23276"
+        },
+        "14": {
+            "inv_descr": "Final Plan BMI",
+            "inv_name": "White River",
+            "inv_type": "BMI",
+            "inv_year": "2018",
+            "path": "N:\\WORK-DATA\\FMPDS\\White_River\\FMP\\2018\\_data\\FMP_Schema.gdb\\mu060_18bmi00",
+            "sub_id": "23218"
+        },
+        "15": {
+            "inv_descr": "Final Plan BMI",
+            "inv_name": "Hearst",
+            "inv_type": "BMI",
+            "inv_year": "2019",
+            "path": "\\\\lrcpsoprfp00001\\MNR_NER\\FOREST_MGMT\\Planning\\Hearst\\2019\\Stage_5_Approved_Plan\\final_plan\\Product Submission - 25088\\MU601_2019_FMP\\MU601_2019_FMP_LAYERS\\MU601_2019_FMP\\MU601_19BMI00.shp",
+            "sub_id": "25088"
+        },
+        "16": {
+            "inv_descr": "pForest 08-09",
+            "inv_name": "Abitibi River",
+            "inv_type": "pForest",
+            "inv_year": "2008",
+            "path": "N:\\WORK-DATA\\FMPDS\\Abitibi_River\\Pforest\\ARF-110-2D.gdb\\eFRI\\ARF_Combined_Pforest",
+            "sub_id": "0"
+        }
+    }
+}

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    font-family: "Helvetica", "Tahoma";
+    margin: 0 50px 10px 70px;
+}
+h1 {
+    margin: 0 -50px 30px -70px;
+    padding: 30px 10px 10px 50px;
+    font-size: 1.5em;
+    background-color: #618c02;
+    color: white;
+}
+
+table {
+    width: 90%;
+    min-width: 800px;
+    max-width: 1600px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+td {
+    padding: 1px;
+    text-align: right;
+}
+th {
+    padding: 5px;
+    text-align: center;
+}
+td.leftb {
+	border-left: 2px solid black;
+}
+td.bottomb {
+	border-bottom: 2px solid black;
+}
+td.rightb {
+	border-right: 2px solid black;
+}
+td.topb {
+	border-top: 2px solid black;
+}
+td.txtleft {
+  text-align: left;
+}
+td.txtcenter {
+	text-align: center;
+}
+td.nobottomborder {
+	border-bottom: solid transparent;
+}
+td.noleftborder {
+	border-left: solid transparent;
+}
+td.norightborder {
+	border-right: solid transparent;
+}
+td.rightalign {
+	text-align: right;
+}
+td.shaded {
+  background-color: #e3f7b9; /* light green */
+}
+
+
+table#t01 th {
+  background-color: #77ad01; /* leafy green */
+  color: white;
+  border: 2px solid black;
+}
+
+<!--  Hover for tooltip  -->
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: auto;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 2px;
+  font-size: 70%;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+
+
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+</style>
+</head>
+<body>
+
+<h1>FMP 3 Table for <small>*PCIFileName</small></h1>
+
+<table id="t01">
+  <tr><!--  row 1  -->
+    <th rowspan = "2">Forest Unit</th>
+    <th rowspan = "2">Age Class</th>
+    <th rowspan = "2">  <div class="tooltip">Protection Forest (ha)<span class="tooltiptext">*ProtForQ</span></div> </th>
+    <th colspan = "3">Production Forest</th>
+  </tr>
+  <tr><!--  row 2  -->
+    <th>  <div class="tooltip">Unavailable (ha)<span class="tooltiptext">*ProdForUnavailQ</span></div>  </th>
+    <th>  <div class="tooltip">Stage of Management<span class="tooltiptext">*SoMQ</span></div>      </th>
+    <th>  <div class="tooltip">Available (ha)<span class="tooltiptext">*ProdForAvailQ</span></div>    </th> 
+  </tr>
+
+  
+  <tr>
+    <td rowspan = "11" class="rightb leftb txtcenter"><strong>*ForUnit<strong></td>
+    <td class = "nobottomborder txtcenter">1-20</td>
+    <td class = "nobottomborder">*Prot20</td>
+    <td class = "nobottomborder">*Unavail20</td>
+    <td class = "nobottomborder txtcenter">*SoM20</td>
+    <td class = "nobottomborder rightb">
+                                      <details>
+                                        <summary><strong>*SoM20</strong></summary>
+                                        <small>*SoM20_01</small><br>
+                                        <small>*SoM20_02</small><br>
+                                      </details></td>
+  </tr>
+  <tr>
+    <td class = "nobottomborder txtcenter">21-40</td>
+    <td class = "nobottomborder">*Prot40</td>
+    <td class = "nobottomborder">*Unavail40</td>
+    <td class = "nobottomborder txtcenter">*SoM40</td>    
+    <td class = "nobottomborder rightb">*Avail40</td>
+  </tr>
+  <tr>
+    <td class = "nobottomborder txtcenter">41-60</td>
+    <td class = "nobottomborder">*Prot60</td>
+    <td class = "nobottomborder">*Unavail60</td>
+    <td class = "nobottomborder txtcenter">*SoM60</td>    
+    <td class = "nobottomborder rightb">*Avail60</td>
+  </tr>
+  <tr>
+    <td class = "nobottomborder txtcenter">61-80</td>
+    <td class = "nobottomborder">*Prot80</td>
+    <td class = "nobottomborder">*Unavail80</td>
+    <td class = "nobottomborder txtcenter">*SoM80</td>    
+    <td class = "nobottomborder rightb">*Avail80</td>
+  </tr>
+  <tr>
+    <td class = "nobottomborder txtcenter">81-100</td>
+    <td class = "nobottomborder">*Prot100</td>
+    <td class = "nobottomborder">*Unavail100</td>
+    <td class = "nobottomborder txtcenter">*SoM100</td>    
+    <td class = "nobottomborder rightb">*Avail100</td>
+  </tr>
+  <tr>
+    <td class = "nobottomborder txtcenter">101-120</td>
+    <td class = "nobottomborder">*Prot120</td>
+    <td class = "nobottomborder">*Unavail120</td>
+    <td class = "nobottomborder txtcenter">*SoM120</td>    
+    <td class = "nobottomborder rightb">*Avail120</td>
+  </tr>
+  <tr>
+    <td class = "nobottomborder txtcenter">121-140</td>
+    <td class = "nobottomborder">*Prot140</td>
+    <td class = "nobottomborder">*Unavail140</td>
+    <td class = "nobottomborder txtcenter">*SoM140</td>    
+    <td class = "nobottomborder rightb">*Avail140</td>
+  </tr>
+  <tr>
+    <td class = "nobottomborder txtcenter">141-160</td>
+    <td class = "nobottomborder">*Prot160</td>
+    <td class = "nobottomborder">*Unavail160</td>
+    <td class = "nobottomborder txtcenter">*SoM160</td>    
+    <td class = "nobottomborder rightb">*Avail160</td>
+  </tr>
+  <tr>
+    <td class = "nobottomborder txtcenter">161-180</td>
+    <td class = "nobottomborder">*Prot180</td>
+    <td class = "nobottomborder">*Unavail180</td>
+    <td class = "nobottomborder txtcenter">*SoM180</td>    
+    <td class = "nobottomborder rightb">*Avail180</td>
+  </tr>
+  <tr>
+    <td class = "nobottomborder txtcenter">181-200</td>
+    <td class = "nobottomborder">*Prot200</td>
+    <td class = "nobottomborder">*Unavail200</td>
+    <td class = "nobottomborder txtcenter">*SoM200</td>    
+    <td class = "nobottomborder rightb">*Avail200</td>
+  </tr>
+  <tr>
+    <td class = "txtcenter">201+</td>
+    <td>*Prot201+</td>
+    <td>*Unavail201+</td>
+    <td class = "txtcenter">*SoM201+</td>    
+    <td class = "rightb">*Avail201+</td>
+  </tr>
+
+  <tr>
+    <td colspan = "2" class="topb bottomb leftb"><strong>*ForUnitSubtotal</strong></td>
+    <td class="topb bottomb"><strong>*ProtTotal</strong></td>
+    <td class="topb bottomb"><strong>*UnavailTotal</strong></td>
+    <td class="topb bottomb txtcenter">--</td>    
+    <td class="topb bottomb rightb"><strong>*AvailTotal</strong></td>
+  </tr>
+ 
+</table>
+<br>
+
+
+<hr>
+<p>
+  Total FMU Area:    *TotalArea ha<br>
+  Total area where POLYTYPE = FOR:    *TotalPolytypeFor ha<br>
+  Total Protection Forest:    *TotalProtection ha<br>
+  Total Production Forest - Unavailable:    *TotProdUnavail ha<br>
+  Total Production Forest - Available:    *TotProdAvail ha
+</p>
+<p><small>
+	PCI/BMI used: *PCIused<br>
+	Python Script used: *pythonscript<br>
+	Report saved in: *reportlocation<br>
+	Date and Time run: *dateandtime<br>
+	<br>This tool was created by the NER Resources Information and Analysis Unit in 2018.
+
+</p></small>
+</body>
+</html>
