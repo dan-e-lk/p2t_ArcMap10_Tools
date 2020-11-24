@@ -135,7 +135,7 @@ def createNewLayerFiles(type_dict, lyrTemplate_list, lyrInfo_dict, subType):
 						# This shouldn't happen because if the acronym is unknown, you won't have a template.
 						lyrname = merged_fc[0]
 
-					print2('\t%s'%lyrname)
+					print2('\t%s'%lyrname[2:])
 					arcpy.MakeFeatureLayer_management(in_features = merged_fc[0], out_layer = lyrname)
 					arcpy.ApplySymbologyFromLayer_management(in_layer = lyrname, in_symbology_layer = template_lyr)
 					lyr_list.append(lyrname)
