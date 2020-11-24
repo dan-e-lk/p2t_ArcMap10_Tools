@@ -21,9 +21,16 @@ def rand_alphanum_gen(length):
 	return ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(length))
 
 
+def get_rid_of_spc_char(input_str):
+	import re
+	new_str = re.sub('[^A-Za-z0-9-_]+', '', input_str) # all characters not alphanumeric or dash or underscore will be removed
+	return new_str
 
 
 if __name__ == '__main__':
-	import os
-	tempFolder = os.path.join('C:\\','temp_' + rand_alphanum_gen(8))
-	print(tempFolder)
+	# import os
+	# tempFolder = os.path.join('C:\\','temp_' + rand_alphanum_gen(8))
+	# print(tempFolder)
+
+	input_str = 'AR-34-K!23'
+	print(get_rid_of_spc_char(input_str))
