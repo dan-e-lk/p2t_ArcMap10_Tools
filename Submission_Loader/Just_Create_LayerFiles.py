@@ -29,7 +29,11 @@ def main(inputFolder,outputFolder,submissionType, filetype, subID, submYear):
 	if filetype == 'shapefile': filetype = 'shp'
 
 	filelist = getFileList(inputFolder, filetype)
-	print2(filelist)
+
+	if filetype != 'gdb':
+		print2('Files found:')
+		for f in filelist:
+			print2('\t%s'%os.path.split(f)[1])
 
 	# Prep'ing the new location where the files will be moved to
 	outputFolder = os.path.join(outputFolder,output_subfoldername) # for example, ...\SomeFolder\AR-244
