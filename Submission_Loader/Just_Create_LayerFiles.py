@@ -5,6 +5,7 @@ debug = True
 
 from Loader.functions import print2, rand_alphanum_gen, get_rid_of_spc_char
 import Loader.Apply_layerfile as Apply_layerfile
+import Loader.merge_if_same_type as merge_if_same_type
 
 
 def main(inputFolder,outputFolder,submissionType, filetype, subID, submYear):
@@ -66,14 +67,14 @@ def main(inputFolder,outputFolder,submissionType, filetype, subID, submYear):
 			if len(filelist) > 0:
 				# converting to gdb
 				print2("\nCreating '_data' folder and 'FMP_Schema.gdb' ...")
-				newgdbpath = convert2GDB(tempFolder,filetype,filelist)
-				print2("\nAll data now in a temporary location: %s"%newgdbpath)
+				newgdb_path = convert2GDB(tempFolder,filetype,filelist)
+				print2("\nAll data now in a temporary location: %s"%newgdb_path)
 
 
 				# merge same type of layers. (eg. AOC01, AOC02...)
 				print2("\nChecking if any of the fcs needs merging...")
 				try:
-					merge_if_same_type.main(newgdbpath)
+					merge_if_same_type.main(newgdb_path)
 				except:
 					print2('WARNING: Merging same type of fcs (such as AOCs or SACs) was unsuccessful.\nThis can happen when trying to merge two or more layers with same field name but different field length or type.', 'warning')
 
@@ -273,10 +274,10 @@ def convert2GDB(outputFolder,filetype,filelist):
     # The filetype is unknown, return an error (None)
 	else:
 		print2 ('Unknown filetype format', 'warning')
-        return None
+        # return None
 
     #Return the gdb object
-	return str(newgdbpath)
+	return newgdbpath
 
 
 

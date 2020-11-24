@@ -140,7 +140,7 @@ def main(outputFolder,filetype,filelist):
     # The filetype is unknown, return an error (None)
 	else:
 		print2 ('Unknown filetype format', 'warning')
-        return None
+        # return None
 
     #Return the gdb object
 	return str(newgdbpath)
