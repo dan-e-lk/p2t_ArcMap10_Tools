@@ -1,4 +1,4 @@
-debug = False
+debug = True
 from functions import print2
 import arcpy
 import os
@@ -8,12 +8,12 @@ def main(gdb):
 	If there are more than one same type of layer in gdb (for example, AOC01, AOC02),
 	this tool will merge the layers into one (for example, AOC_merge)
 	This tool doesn't delete any of the original feature classes in the gdb.
-	This tool assumes all layers have these two formats: mu415_16aoc00 or mu41516aoc000
+	This tool assumes all layers have these two formats: mu415_16aoc00 or mu41516aoc000 *Jan2021: added a new acceptable format: mu415_16aoc000
 	"""
 	arcpy.env.workspace = gdb
 	
 	# creating a list of fcs
-	fc_list = [str(i) for i in arcpy.ListFeatureClasses() if len(str(i)) == 13]
+	fc_list = [str(i) for i in arcpy.ListFeatureClasses() if len(str(i)) == 13 or len(str(i)) == 14] #all variations have character len of 13 or 14
 	if debug: print2('fc_list = %s'%fc_list)
 
 	# no point running the function if it's an empty gdb
@@ -21,8 +21,9 @@ def main(gdb):
 		raise Exception("Unable to run merge_if_same_type, because either the input gdb is empty or the fcs don't follow the correct naming convention.")
 
 	# checking if there are more than one layer of the same type.
+	# 3 potential types: mu415_16aoc00, mu41516aoc000 and mu415_16aoc000
 	need_merge = False
-	type_list = [i[8:11].upper() if '_' in i else i[7:10].upper() for i in fc_list] # this will pick up 'AOC' from both mu415_16aoc01 and mu41516aoc001
+	type_list = [i[8:11].upper() if i[5] =='_' else i[7:10].upper() for i in fc_list] # this will pick up 'AOC' from both mu415_16aoc01 and mu41516aoc001
 	type_set = set(type_list)
 	if len(type_list) == len(type_set):
 		print2('No layer needs to be merged.')

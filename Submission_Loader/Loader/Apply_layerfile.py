@@ -53,8 +53,8 @@ def configureWorkspace(gdb, outputFolder):
 def obtainLayerTypes(gdb, fc_list):
 	if (debug): print2('identifying the layer types in %s' %(gdb))
 
-	# this will pick up 'AOC' from both mu415_16aoc01 and mu41516aoc001
-	type_list = [i[8:11].upper() if '_' in i else i[7:10].upper() for i in fc_list]
+	# this will pick up 'AOC' from both mu415_16aoc01 and mu41516aoc001 * and mu415_16aoc0001
+	type_list = [i[8:11].upper() if i[5] =='_' else i[7:10].upper() for i in fc_list]
 	type_set = set(type_list)
 
 	# this will create, for example, {'WTX': [], 'HRV': [], 'FTG': [], 'RDS': [], ...}
