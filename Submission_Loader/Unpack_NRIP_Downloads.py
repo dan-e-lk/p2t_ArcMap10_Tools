@@ -9,6 +9,10 @@ version = 'beta1'
 # Requirement:
 # Must have ArcPy modules (ArcMap version 10.0+ installed)
 #
+# Maintenance Requirement:
+# Make sure submissionLookUp and fmuLookUp dictionaries in IdentifySubmission.py are up-to-date.
+#
+#
 # Notes:
 # This script works only if the submission has one type of spatial layer. if the submission has multiple type, it will pick one (priority list = gdb, shp, e00)
 #
@@ -71,14 +75,18 @@ def main(NRIPDownloadzipfile,outputFMPfolder,openfolder):
 	l.logger('openfolder = %s'%openfolder)
 
 
-	# # Unzip the downloaded file. There usually are more zipfiles within a zipfile.
-	# print2('Unzipping...')
-	# submFolderDirList = UnzipAll.unzipAllSubmission(NRIPDownloadzipfile)
-	# # For example, submFolderDirList = ['C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23026', 'C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23028']
-	# print2('\nSubmissions Found:')
-	# subFList = [os.path.split(i)[1] for i in submFolderDirList]
-	# for subF in subFList:
-	# 	print2('\t%s'%subF)
+	# check if the output folder is accessible
+	# ******
+
+
+	# Unzip the downloaded file. There usually are more zipfiles within a zipfile.
+	l.logger('Unzipping (UnzipAll.unzipAllSubmission)...')
+	submFolderDirList = UnzipAll.unzipAllSubmission(NRIPDownloadzipfile)
+	# For example, submFolderDirList = ['C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23026', 'C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23028']
+	print2('\nSubmissions Found:')
+	subFList = [os.path.split(i)[1] for i in submFolderDirList]
+	for subF in subFList:
+		print2('\t%s'%subF)
 
 	# # If no submission found, the script will end here:
 	# if len(submFolderDirList) == 0:
