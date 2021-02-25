@@ -1,4 +1,5 @@
 from functions import print2
+import UnzipAll
 import os, re
 from datetime import datetime
 
@@ -84,7 +85,8 @@ def decode_filename(NRIPDownloadzipfile):
 				'subtype_code':'',
 				'subtype': '',
 				'subid':'',
-				'error_msg': []} # if everything checks out, there should be nothing in error_msg
+				'error_msg': [],
+				'critical_error': False} # if everything checks out, there should be nothing in error_msg
 
 	filename = os.path.split(NRIPDownloadzipfile)[1]
 	if '.ZIP' in filename.upper():
@@ -98,6 +100,7 @@ def decode_filename(NRIPDownloadzipfile):
 	else:
 		filename_checks_out = False
 		info_dict['error_msg'].append("The input file is not a NRIP download file. It shoud have a format such as this: NRIP_Fri Feb 19 2021_SUB-FM-390-2011-RA-255")
+		info_dict['critical_error'] = True
 		return info_dict
 
 	# if the filename has no error, move on.
@@ -115,12 +118,12 @@ def decode_filename(NRIPDownloadzipfile):
 
 			# work on the second half: 'FM-421-2021-FMP-187'
 			parsed = second_half.split('-')
-			fmu_code = parsed[1]
+			fmu_code = str(parsed[1])
 			info_dict['fmu_code'] = fmu_code
-			info_dict['plan_start_year'] = parsed[2]
-			subtype_code = parsed[3]
+			info_dict['plan_start_year'] = str(parsed[2])
+			subtype_code = str(parsed[3])
 			info_dict['subtype_code'] = subtype_code
-			info_dict['subid'] = parsed[4]
+			info_dict['subid'] = str(parsed[4])
 
 			# get fmu name from the dictionary at the top of this file
 			fmu_name = [k for k,v in fmuLookUp.items() if v[0]==fmu_code]
@@ -140,23 +143,218 @@ def decode_filename(NRIPDownloadzipfile):
 		except Exception as e:
 			# if there was any error, write it down on the info_dict and pass it on
 			info_dict['error_msg'].append(e)
+			info_dict['critical_error'] = True
 
 		finally:
 			return info_dict
+	# an example of info_dict
+	# {'subid': '383', 'subtype': 'Annual Report', 'critical_error': False, 'fmu_code': '754', 'download_date': datetime.datetime(2021, 2, 19, 0, 0), 'fmu_name': 'Nipissing', 'plan_start_year': '2019', 'error_msg': [], 'subtype_code': 'RA'}
+
+
+
+def analyze_folder(NRIPDownloadFolder):
+	"""NRIP download zipfile, once unzipped, carries a number of folders.
+	One of those folders should be named 'layers' and it should carry spatial information.
+	This function uses python's 'walk' module to find 'layers' folder and all other folders and files.
+	"""
+
+	folders_n_files = {}
+	warning_msg = []
+	layers_folder_exists = False
+	layers_folder_path = ''
+
+	walker = os.walk(NRIPDownloadFolder)
+	for foldername, subfolders, filenames in walker:
+		# print('foldername: %s\nsubfolders: %s\nfilenames: %s\n\n'%(foldername, subfolders, filenames))
+
+		# the first iteration of the walk is where the foldername = NRIPDownloadFolder
+		if foldername == NRIPDownloadFolder:
+			# check if 'layers' folder exists
+			for i in subfolders:
+				if i.upper() == "LAYERS":
+					layers_folder_exists = True
+					layers_folder_path = os.path.join(foldername,i)
+			# sometimes 'layers' folder is named 'Draft FMP Layers'
+			if not layers_folder_exists:
+				for i in subfolders:
+					if i.upper().endswith('LAYERS'):
+						layers_folder_exists = True
+						layers_folder_path = os.path.join(foldername,i)
+
+		# we are going just one level deep
+		elif os.path.split(foldername)[0] == NRIPDownloadFolder:
+			folders_n_files[foldername] = subfolders + filenames
+			if len(subfolders) > 0:
+				warning_msg.append('There is a subfolder within %s'%foldername)
+
+	# for example, folder_n_files = {'D:\\ACTIVE\\HomeOffice\\_NRIP_Downloads\\AWS\\AWS_2021\\NRIP_Thu Feb 18 2021_SUB-FM-110-2012-AWS-464\\Annual Work Schedule Maps': ['MU110_2021_AWS_MAP_Ops60542_00.pdf', 'MU110_2021_AWS_MAP_Sum_00.pdf'], 'D:\\ACTIVE\\HomeOffice\\_NRIP_Downloads\\AWS\\AWS_2021\\NRIP_Thu Feb 18 2021_SUB-FM-110-2012-AWS-464\\Annual Work Schedule Tables': ['MU110_2021_AWS_TBL_Tables.pdf'], 'D:\\ACTIVE\\HomeOffice\\_NRIP_Downloads\\AWS\\AWS_2021\\NRIP_Thu Feb 18 2021_SUB-FM-110-2012-AWS-464\\Annual Work Schedule Text': ['MU110_2021_AWS_TXT_Text.pdf'], 'D:\\ACTIVE\\HomeOffice\\_NRIP_Downloads\\AWS\\AWS_2021\\NRIP_Thu Feb 18 2021_SUB-FM-110-2012-AWS-464\\Layers': ['mu110_2021_AWS_LAYERS.zip']}
+
+
+	if not layers_folder_exists:
+		warning_msg.append("'Layers' folder does not exist!!!")
+
+	# print(folders_n_files)
+	# print(warning_msg)
+	return [folders_n_files, warning_msg, layers_folder_path]
+
+
+
+
+
+
+def inspect_layers_folder(layersfolder, info_dict):
+	"""layers folder should contain either shapefiles, gdb or e00 files.
+	These files could be in a zipped folder within Layer folder.
+	The info_dict should be the same as the output of the decode_filename function above
+	"""
+
+	# unzip if any zipfiles are found
+	UnzipAll.unzipAll(layersfolder)
+
+	# figuring out the geospatial file type and file names
+	shpfileList = [] # will carry full path
+	e00fileList = []
+	gdbList = []
+	warning_msg = []
+
+	walker = os.walk(layersfolder)
+	for foldername, subfolders, filenames in walker:
+		for filename in filenames:
+			if filename.upper().endswith('.SHP'):
+				shpfileList.append(os.path.join(foldername,filename))
+			elif filename.upper().endswith('.E00'):
+				e00fileList.append(os.path.join(foldername,filename))
+		for subfolder in subfolders:
+			if subfolder.upper().endswith('.GDB'):
+				gdbList.append(os.path.join(foldername,subfolder))
+
+	# in case there are folders such as LAYERS\MU390_AWS.gdb\MU390_AWS.gdb, delete the fake geodatabases.
+	if len(gdbList)>0:
+		import arcpy
+		for gdb in gdbList:
+			if arcpy.Describe(gdb).dataType != 'Workspace':
+				gdbList.remove(gdb)
+	# There shouldn't be more than one gdb
+	if len(gdbList) > 1:
+		warning_msg.append("There are more than one gdbs in %s"%layersfolder)
+
+	# Determining Submission Type, fmu name, and submission year
+	submType = 'unknown'
+	fmuCode = 'unknown'
+	fmuName = 'unknown'
+	submYear = 'unknown'
+
+	# return [shpfileList, e00fileList, gdbList]
+
+	regEx = re.compile(r"""MU(\d\d\d)_(\d\d\d\d)_(\D\D\D)""")
+
+	# perhaps I should use regEx up there when we add the filenames to the shpfilelist, gdblist and e00list.
+
+
+	
+
+	# regEx = re.compile(r"""MU(\d\d\d)_(\d\d\d\d)_(AR|AWS|FMP|PCI|BMI|OPI|INV|FMPDP|FMPC|FMPDPC)""") # this will catch string such as 'MU966_2019_BMI'
+	# walker = os.walk(layersfolder)	
+	# for foldername, subfolders, filenames in walker:
+	# 	for subfolder in subfolders:
+	# 		mo = regEx.search(subfolder.upper())
+	# 		if mo != None:
+	# 			fmuCode = mo.group(1) # '966'
+	# 			submYear = mo.group(2) # '2019'
+	# 			submType = mo.group(3) # 'BMI'
+	# 			break
+	# 	if submType != 'unknown':
+	# 		break
+
+	# # raise error if the script was unable to find the submType and etc.
+	# if submType == 'unknown' or fmuCode == 'unknown' or submYear == 'unknown':
+	# 	raise Exception("The script could not find Submission Type, FMU Code and/or Submission Year.\
+	# 					\nAt least one folder must have the structure 'MU000_0000_XYZ_LAYERS'")
+
+	# # PCI, BMI, OPI is really FMP submission
+	# if submType in ['PCI','BMI','OPI','INV','FMPDP','FMPC','FMPDPC']:
+	# 	submType = 'FMP'
+
+	# # determining spatial data file type (format)
+	# filetype = 'unknown'
+	# filelist = []	
+	# if len(gdbList) > 0:
+	# 	for gdb in gdbList:
+	# 		if gdb[-7:-4].upper() in submissionLookUp[submType] + ['AWS','FMP'] or gdb[-6:-4].upper() == 'AR' or gdb[-9:-4].upper() == 'FMPDP': # to catch MU123_28PCI.gdb, MU123_28AWS.gdb, MU123_28AR.gdb or MU123_2028_FMPDP.gdb
+	# 			filetype = 'gdb'
+	# 			filelist = gdbList
+	# 			break
+	# 		elif gdb[-10:-4].upper() == 'FMPDPC' or gdb[-8:-4].upper() == 'FMPC': # to catch contingency plans such as MU966_2019_FMPDPC.gdb
+	# 			filetype = 'gdb'
+	# 			filelist = gdbList				
+	# 			break
+	# if len(shpfileList) > 0:
+	# 	for shp in shpfileList:
+	# 		if shp[-9:-6].upper() in submissionLookUp[submType] or shp[-10:-7].upper() in submissionLookUp[submType]: # to catch MU123_28SHR00.shp or MU12328SHR001.shp
+	# 			filetype = 'shp'
+	# 			filelist = shpfileList
+	# 			break
+	# if len(e00fileList) > 0:
+	# 	for e00 in e00fileList:
+	# 		if e00[-9:-6].upper() in submissionLookUp[submType] or e00[-10:-7].upper() in submissionLookUp[submType]: # to catch MU123_28SHR00.E00 or MU12328AOC000.E00
+	# 			filetype = 'e00'
+	# 			filelist = e00fileList
+	# 			break
+
+
+	# # finding fmuName from fmuCode
+	# for k,v in fmuLookUp.items():
+	# 	if v[0] == fmuCode:
+	# 		fmuName = k
+	# 		break
+	# if fmuName == 'unknown':
+	# 	raise Exception("FMU Code (%s) is invalid"%fmuCode)
+
+	# # print2("FMU Name: %s\nFMU Code: %s\nSubmission Type: %s\nSubmission Year: %s\nFile Type: %s"%(fmuName,fmuCode,submType,submYear,filetype))
+
+	# return [fmuName,fmuCode,submType,submYear,filetype,filelist,pdfList]
+
+
+
+
 
 
 if __name__ == '__main__':
-	# identifySubmission(r'C:\\FIPDownload\\download_cart_2018-01-08\\Product Submission - 23035')
+	test_decode_filename = False
+	test_analyze_folder = True
 
-	filenames = [r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Fri Feb 19 2021_SUB-FM-390-2011-RA-255.zip',
-				r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Fri Feb 19 2021_SUB-FM-438-2010-RT-300',
-				r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Thu Feb 18 2021_SUB-FM-110-2012-AWS-464',
-				r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Thu Feb 18 2021_SUB-FM-966-2021-AWS-454.zip',
-				r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\FMP\NRIP_Fri Feb 19 2021_SUB-FM-421-2021-FMP-187.zip'
-					]
 
-	for file in filenames:
-		print(decode_filename(file))
+	if test_decode_filename:
+		filenames = [r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Fri Feb 19 2021_SUB-FM-390-2011-RA-255.zip',
+					r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Fri Feb 19 2021_SUB-FM-438-2010-RT-300',
+					r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Thu Feb 18 2021_SUB-FM-110-2012-AWS-464',
+					r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Thu Feb 18 2021_SUB-FM-966-2021-AWS-454.zip',
+					r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\FMP\NRIP_Fri Feb 19 2021_SUB-FM-421-2021-FMP-187.zip'
+						]
+		for file in filenames:
+			print(decode_filename(file))
+
+
+	if test_analyze_folder:
+		NRIPDownloadFolders = [
+		r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AWS\AWS_2021\NRIP_Thu Feb 18 2021_SUB-FM-110-2012-AWS-464',
+		r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AWS\AWS_2021\NRIP_Thu Feb 18 2021_SUB-FM-601-2019-AWS-456',
+		r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Fri Feb 19 2021_SUB-FM-390-2011-RA-255',
+		r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\AR\NRIP_Fri Feb 19 2021_SUB-FM-601-2019-RA-275',
+		r'D:\ACTIVE\HomeOffice\_NRIP_Downloads\FMP\NRIP_Fri Feb 19 2021_SUB-FM-421-2021-FMP-187'
+		]
+		for folder in NRIPDownloadFolders:
+			analyze_folder(folder)
+
+
+
+
+
+
+
+
+
+
 
 # Other possible filenames (skipping the first portion):
 # SUB-FM-035-2011-AWSRV-100     	for aws changes

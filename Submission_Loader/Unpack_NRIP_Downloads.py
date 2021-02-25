@@ -44,9 +44,8 @@ version = 'beta1'
 ###########################################################################
 debug = True
 
-import os, datetime, shutil, traceback, time
+import os, datetime, shutil, traceback, time, zipfile
 import Loader.arclog as arclog
-import Loader.UnzipAll as UnzipAll
 import Loader.IdentifySubmission as idSub
 import Loader.WriteMetadata as meta
 import Loader.copy_if_not_there as copy_if_not_there
@@ -73,20 +72,74 @@ def main(NRIPDownloadzipfile,outputFMPfolder,openfolder):
 	l.logger('NRIPDownloadzipfile = %s'%NRIPDownloadzipfile)
 	l.logger('outputFMPfolder = %s'%outputFMPfolder)
 	l.logger('openfolder = %s'%openfolder)
+	l.logger('\n')
 
 
 	# check if the output folder is accessible
 	# ******
 
 
-	# Unzip the downloaded file. There usually are more zipfiles within a zipfile.
-	l.logger('Unzipping (UnzipAll.unzipAllSubmission)...')
-	submFolderDirList = UnzipAll.unzipAllSubmission(NRIPDownloadzipfile)
-	# For example, submFolderDirList = ['C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23026', 'C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23028']
-	print2('\nSubmissions Found:')
-	subFList = [os.path.split(i)[1] for i in submFolderDirList]
-	for subF in subFList:
-		print2('\t%s'%subF)
+
+	# identify the submission
+	info_dict = idSub.decode_filename(NRIPDownloadzipfile)
+
+	if info_dict['critical_error']:
+		for error_msg in info_dict['error_msg']:
+			l.logger(error_msg, 'WARNING')
+		l.logger('Tool failed to run', 'CRITICAL')
+	else:
+		msg = "FMU Name: %s (%s)\nPlan Start Year: %s\nSubmission Type: %s (%s)\nSubmission ID: %s"%(
+			info_dict['fmu_name'], info_dict['fmu_code'], info_dict['plan_start_year'], info_dict['subtype'], info_dict['subtype_code'], info_dict['subid'])
+		l.logger(msg)
+
+		# add warning messages if any
+		if len(info_dict['error_msg']) > 0:
+			for i in info_dict['error_msg']:
+				l.logger(i, "WARNING")
+
+
+	# unzip the input 'NRIPDownloadzipfile' if necessary
+	if NRIPDownloadzipfile.upper().endswith('.ZIP'):
+		l.logger('\nunzipping...')
+		zip_ref = zipfile.ZipFile(NRIPDownloadzipfile,'r')
+		NRIPDownloadFolder = NRIPDownloadzipfile[:-4]
+		zip_ref.extractall(NRIPDownloadFolder)
+	else:
+		NRIPDownloadFolder = NRIPDownloadzipfile
+
+
+	# identifying what's inside the unzipped folder
+	l.logger('\nWalking through files and folders...')
+	folders_n_files, warning_msg, layers_folder_path = idSub.analyze_folder(NRIPDownloadFolder)
+	l.logger(NRIPDownloadFolder)
+	for foldername, files in folders_n_files.items():
+		l.logger('\t%s'%os.path.split(foldername)[1])
+		for file in files:
+			l.logger('\t\t%s'%file)
+	# print out the warnings if any
+	for msg in warning_msg:
+		l.logger(msg,"WARNING")
+
+
+	# identify and inspect what spatial layer it has
+	l.logger("\ninspecting 'Layers' folder...")
+	
+	temp = idSub.inspect_layers_folder(layers_folder_path, info_dict)
+	l.logger(temp)
+
+
+
+
+
+
+	# # Unzip the downloaded file. There usually are more zipfiles within a zipfile.
+	# l.logger('Unzipping (UnzipAll.unzipAllSubmission)...')
+	# submFolderDirList = UnzipAll.unzipAllSubmission(NRIPDownloadzipfile)
+	# # For example, submFolderDirList = ['C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23026', 'C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23028']
+	# print2('\nSubmissions Found:')
+	# subFList = [os.path.split(i)[1] for i in submFolderDirList]
+	# for subF in subFList:
+	# 	print2('\t%s'%subF)
 
 	# # If no submission found, the script will end here:
 	# if len(submFolderDirList) == 0:

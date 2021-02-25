@@ -29,51 +29,54 @@ def unzipAll(parentfolder):
 					os.remove(zipfilename)
 
 
-def unzipAllSubmission(NRIPDownloadzipfile):
-	""" This function will take NRIPDownloadzipfile such as 'C:\FIPDownload\download_cart_2018-01-04aws.zip'
-		and will unzip it all. It will also return the new parent folder and a list of submission folders inside it"""
-
-	# Unzip the file if the file is a zip file
-	if NRIPDownloadzipfile[-3:].upper() == 'ZIP':
-
-		zip_ref = zipfile.ZipFile(NRIPDownloadzipfile,'r') # path to the zip file
-		downloadFolder = NRIPDownloadzipfile[:-4]
-		zip_ref.extractall(downloadFolder) # directory to extract
-		zip_ref.close()
-	else:
-		downloadFolder = NRIPDownloadzipfile
-
-	# walk through the unzipped folder and search for submission product folders - and save it as a list of paths.
-	walker = os.walk(downloadFolder)
-	submissionFolderList = []
-	for foldername, subfolders, filenames in walker:
-		for subfolder in subfolders:
-	 		if 'Product Submission - ' in subfolder:
-	 			submissionFolderList.append(os.path.join(foldername,subfolder))
-
-	# print('Submissions found: ' + str(submissionFolderList))
-
-	for submission in submissionFolderList:
-
-		# print('Working on %s...'%submission)
-
-		# identify the submission ID.
-		submissionID = int(submission[-5:] or None)
-
-		# unzipAll function will continue to find and unzip .zip files until there's no more zip file left in that folder
-		unzipAll(submission)
-
-	# print('This NRIPDownloadzipfile function returns: \n%s\n%s'%(downloadFolder,submissionFolderList))
-	return submissionFolderList
-
-	# For example, This function returns the following:
-	# ['C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23026', 'C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23028']
-
 
 
 if __name__ == '__main__':
-    zipFileLocation = 'C:\FIPDownload\download_cart_2019-02-20.zip'
-    print unzipAllSubmission(zipFileLocation)
+    # zipFileLocation = 'C:\FIPDownload\download_cart_2019-02-20.zip'
+    # print unzipAllSubmission(zipFileLocation)
+    pass
 
 
 
+
+# Old codes
+
+# def unzipAllSubmission(NRIPDownloadzipfile):
+# 	""" This function will take NRIPDownloadzipfile such as 'C:\FIPDownload\download_cart_2018-01-04aws.zip'
+# 		and will unzip it all. It will also return the new parent folder and a list of submission folders inside it"""
+
+# 	# Unzip the file if the file is a zip file
+# 	if NRIPDownloadzipfile[-3:].upper() == 'ZIP':
+
+# 		zip_ref = zipfile.ZipFile(NRIPDownloadzipfile,'r') # path to the zip file
+# 		downloadFolder = NRIPDownloadzipfile[:-4]
+# 		zip_ref.extractall(downloadFolder) # directory to extract
+# 		zip_ref.close()
+# 	else:
+# 		downloadFolder = NRIPDownloadzipfile
+
+# 	# walk through the unzipped folder and search for submission product folders - and save it as a list of paths.
+# 	walker = os.walk(downloadFolder)
+# 	submissionFolderList = []
+# 	for foldername, subfolders, filenames in walker:
+# 		for subfolder in subfolders:
+# 	 		if 'Product Submission - ' in subfolder:
+# 	 			submissionFolderList.append(os.path.join(foldername,subfolder))
+
+# 	# print('Submissions found: ' + str(submissionFolderList))
+
+# 	for submission in submissionFolderList:
+
+# 		# print('Working on %s...'%submission)
+
+# 		# identify the submission ID.
+# 		submissionID = int(submission[-5:] or None)
+
+# 		# unzipAll function will continue to find and unzip .zip files until there's no more zip file left in that folder
+# 		unzipAll(submission)
+
+# 	# print('This NRIPDownloadzipfile function returns: \n%s\n%s'%(downloadFolder,submissionFolderList))
+# 	return submissionFolderList
+
+# 	# For example, This function returns the following:
+# 	# ['C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23026', 'C:\\FIPDownload\\download_cart_2018-01-02aws\\Product Submission - 23028']
