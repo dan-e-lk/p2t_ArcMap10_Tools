@@ -17,7 +17,7 @@ fields = {
 
 
 				-6:		['USER_INPUT_INV_YEAR',	10,	'TEXT'],
-				-5:		['USER_INPUT_SUB_ID',	10,	'TEXT'],				
+				-5:		['USER_INPUT_SUB_ID',	50,	'TEXT'],				
 				-4:		['USER_INPUT_FOREST',	50,	'TEXT'], # the additional fields must be either less than 0 or greater than 100
 				-3:		['USER_INPUT_INVTYPE',	20,	'TEXT'], # DO NOT CHANGE the names of these additional fields.
 				-2:		['AUTOGEN_INVID',		3,	'SHORT'],
