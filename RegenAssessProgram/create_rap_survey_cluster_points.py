@@ -1,0 +1,314 @@
+import os, shutil, traceback, math, random
+debug = False
+version = 2021.09
+
+def main(input_proj_fc, output_fc, max_tolerance):
+	# create temporary workspace
+	import arcpy
+
+
+	arcpy.AddMessage("version = %s"%version)
+	arcpy.AddMessage("Creating temporary workspace...")
+	temp_foldername = r"C:/Temp/temp" + rand_alphanum_gen(4)
+	temp_gdb = 'create_rap_pt.gdb'
+	temp_gdb_fullpath = os.path.join(temp_foldername, temp_gdb)
+	os.mkdir(temp_foldername)
+	temp_layer = "input_proj_fc_lyr"
+
+	try:
+		arcpy.CreateFileGDB_management(temp_foldername, temp_gdb)
+
+		# set the temp workspace as the environment
+		arcpy.env.workspace = os.path.join(temp_foldername, temp_gdb)
+
+		# make feature layer called input_proj_fc_lyr(temporary layerfile to work with)
+		arcpy.MakeFeatureLayer_management(input_proj_fc, temp_layer)
+
+		# Work on the input project boudary feature class
+		# get all the fieldnames
+		arcpy.AddMessage("Verifying the input project boundary feature class...")
+		fields = [str(f.name).upper() for f in arcpy.ListFields(input_proj_fc)]
+		arcpy.AddMessage("Fields found: %s\n"%fields)
+
+		# check if mandatory fields exists
+		mand_fields = ['PROJECTID','NUMCLUSTER','AREA_HA'] # note that both NumCluster and NumClusters will be acceptable
+		for f in mand_fields:
+			if f not in fields:
+				raise Exception("%s field is missing! You must have %s field in your input feature class"%(f,f))
+
+
+		# get tabular data
+		tabular_data = []
+		for row in arcpy.da.SearchCursor(input_proj_fc, mand_fields):
+			record = {field:str(row[mand_fields.index(field)]) for field in mand_fields}
+			tabular_data.append(record)
+		if debug: arcpy.AddMessage(tabular_data)
+
+
+		# ProjectIDs must be unique values
+		proj_ids = [record['PROJECTID'] for record in tabular_data]
+		duplicate_ids = findDuplicateID(proj_ids)
+		if len(duplicate_ids) > 0:
+			raise Exception('The values of ProjectID field in your input has duplicates. All ProjectID values must be unique.\
+				\nDuplicates found: %s'%duplicate_ids)
+
+		# NumCluster and Area_Ha should have a value greater than 0.
+		for record in tabular_data:
+			try:
+				if int(record['NUMCLUSTER']) < 30:
+					arcpy.AddError("ProjectID %s: Number of clusters must be at least 30. You have %s"%(record['PROJECTID'], record['NUMCLUSTER']))
+					raise
+				if float(record['AREA_HA']) < 8.00:
+					arcpy.AddWarning("ProjectID %s: Area_ha should be greater than 8ha. You have %s"%(record['PROJECTID'], record['AREA_HA']))
+			except ValueError:
+				raise Exception("ProjectID %s: NumCluster and Area_Ha field must have a numeric value greater than 0."%record['PROJECTID'])
+
+
+
+
+		# work with one record (ProjectID) at a time.
+		final_point_fc_list = []
+		for proj_id in proj_ids:
+			arcpy.AddMessage('\n#############\nWorking on %s...'%proj_id)
+			record = [rec for rec in tabular_data if rec['PROJECTID'] == proj_id][0] # this will return the record with current projectid in dict format
+			
+			# checking NumCluster value
+			calculated_NumCluster = get_NumCluster(float(record['AREA_HA']))
+			input_NumCluster = int(record['NUMCLUSTER'])
+			arcpy.AddMessage("calculated NumCluster = %s"%calculated_NumCluster)
+			arcpy.AddMessage("Input NumCluster = %s"%input_NumCluster)
+
+			if abs(calculated_NumCluster - input_NumCluster) > calculated_NumCluster * 0.05: # let's give it 5% give and take
+				raise Exception("ProjectID %s: Number of clusters should be %s"%(proj_id, calculated_NumCluster))
+			
+			# base on the tolerance level, max number of cluster is set
+			max_NumCluster = int(round(input_NumCluster*(100+max_tolerance)/100, 0))
+			if max_NumCluster == input_NumCluster:
+				max_NumCluster += 1
+			arcpy.AddMessage("With tolerance of %s percent, the target number of clusters is between %s and %s"%(max_tolerance, input_NumCluster, max_NumCluster))
+
+
+			# calculate cluster spacing (based on CreateSEMSurveyPlots pdf guide 2014)
+			# by default: cluster spacing (m) = 0.95 * (Sqr ([Area_ha]*10000/ [Num_Clusters]))
+			# with minimum cluster spacing of 40m
+			input_area = float(record['AREA_HA'])
+			c_spacing = round(0.95*(math.sqrt(input_area*10000/input_NumCluster)),4)
+			if c_spacing < 40.0:
+				raise Exception("ProjectID %s: Project area is too small for the desired number of clusters. Minimum spacing of 40m cannot be achieved."%proj_id)
+
+			# if this spacing doesn't give us desired number of clusters, we will make adjustments to the spacing until we get it right.
+			found_solution = False
+			output_NumCluster = 0
+			max_try = 10 # will loop 10 times at most
+			num_of_trials = 0
+			# select by attribute (select on record at a time)
+			where_clause = "PROJECTID = '%s'"%proj_id
+			arcpy.SelectLayerByAttribute_management(in_layer_or_view=temp_layer, selection_type="NEW_SELECTION", where_clause= where_clause)			
+
+			# loop until find solution or until max number of tries. Also keep looping if our solution is less than the required number of clusters.
+			while (not found_solution and num_of_trials < max_try) or output_NumCluster < input_NumCluster:
+				num_of_trials += 1
+				arcpy.AddMessage("Testing with cluster spacing of %sm..."%c_spacing)
+
+				# clean up first (only if this is 2nd or more trial)
+				if num_of_trials > 1: 
+					arcpy.Delete_management(out_point)
+					arcpy.Delete_management(out_grid)
+					arcpy.Delete_management(out_point_lyr)
+
+				# run grid index feature with calculated cluster spacing
+				out_grid = '%s_%smGrid'%(get_rid_of_spc_char(proj_id),get_rid_of_spc_char(c_spacing))
+				arcpy.GridIndexFeatures_cartography(out_feature_class= out_grid, in_features=temp_layer, polygon_width="%s Meters"%c_spacing, polygon_height="%s Meters"%c_spacing)
+
+				# run Feature to Point on the output of the grid index feature
+				out_point = '%s_%smGrid_Pt'%(get_rid_of_spc_char(proj_id),get_rid_of_spc_char(c_spacing))
+				arcpy.FeatureToPoint_management(in_features=out_grid, out_feature_class=out_point, point_location="INSIDE")
+
+				# select by location to select the cluster points within the project boundary only
+				out_point_lyr = out_point+"_lyr"
+				arcpy.MakeFeatureLayer_management(out_point, out_point_lyr)
+				arcpy.SelectLayerByLocation_management(in_layer= out_point_lyr, overlap_type="INTERSECT", select_features= temp_layer, search_distance="", selection_type="NEW_SELECTION", invert_spatial_relationship="NOT_INVERT")
+				output_NumCluster = int(arcpy.GetCount_management(out_point_lyr)[0])
+				arcpy.AddMessage("\tWith spacing of %sm, you get %s clusters."%(c_spacing, output_NumCluster))
+
+				# adjust the cluster spacing
+				if output_NumCluster < input_NumCluster:
+					if c_spacing <= 40:
+						# spacing cannot be further decreased
+						arcpy.AddWarning("\tProjectID %s: Cluster spacing cannot be below 40m. Project area is too small for the desired number of clusters."%proj_id)
+					else:
+						# decrease the spacing to increase the output clusters
+						# if the output cluster needs to be increased by 1.25 then the spacing needs to be decreased by sqrt(1.25) = 1.12
+						difference_ratio = 1 + (input_NumCluster - output_NumCluster)/float(input_NumCluster)
+						c_spacing = round(float(c_spacing)/math.sqrt(difference_ratio),4)
+						# add a random component to make sure we are not looping back and forth
+						c_spacing = round(c_spacing - random.uniform(0.001, 0.008),4)
+						if c_spacing < 40:
+							c_spacing = 40
+
+				elif output_NumCluster > max_NumCluster:
+					# increase t he spacing to decrease the output clusters
+					# if the output cluster needs to be decreased by 1.25 then the spacing needs to be increased by sqrt(1.25) = 1.12
+					difference_ratio = 1 + (output_NumCluster - max_NumCluster)/float(input_NumCluster)
+					c_spacing = round(float(c_spacing) * math.sqrt(difference_ratio),4)
+				else:
+					found_solution = True
+					arcpy.AddMessage("Target achieved!")
+
+			if not found_solution:
+				arcpy.AddWarning("Target not achieved. The best we got is %s clusters"%output_NumCluster)
+
+			# export selected points to a point feature class
+			final_point_fc = out_point + "_fin"
+			arcpy.AddMessage("exporting the selected points (%s)..."%final_point_fc)			
+			arcpy.CopyFeatures_management(out_point_lyr, final_point_fc)
+			final_point_fc_list.append(final_point_fc)
+
+			# delete the temporary feature class that's creating a schema lock
+			arcpy.SelectLayerByAttribute_management(out_point_lyr, "CLEAR_SELECTION")
+			arcpy.Delete_management(out_point)
+			arcpy.Delete_management(out_grid)
+			arcpy.Delete_management(out_point_lyr)
+
+			# add projectID field to final_point_fc and populate the values
+			arcpy.AddMessage("Adding PROJECTID field and populating it")				
+			arcpy.AddField_management (final_point_fc, "PROJECTID", "TEXT", field_length = 100)
+			arcpy.CalculateField_management(final_point_fc, "PROJECTID", "'" + proj_id + "'", "PYTHON_9.3")
+
+			# add cl_num and populate
+			arcpy.AddMessage("Adding clus_num field and populating it")		
+			arcpy.AddField_management (final_point_fc, "clus_num", "TEXT", field_length = 100)
+			arcpy.CalculateField_management(final_point_fc, "clus_num", '!OBJECTID!', "PYTHON_9.3")
+			
+			# delete unnecessary fields
+			fields_to_delete = ['PageName','PageNumber','ORIG_FID']
+			try:
+				arcpy.DeleteField_management(final_point_fc, fields_to_delete)
+				arcpy.AddMessage("Unnecessary fields deleted")
+			except:
+				arcpy.AddWarning("deleting unnecessary fields was unsuccessful")
+
+		# merge the point feature classes
+		arcpy.AddMessage("\nMerging the results...")
+		merge_inputs = ''
+		for fc in final_point_fc_list:
+			merge_inputs += fc + ";"
+		merge_inputs = merge_inputs[:-1]
+		arcpy.Merge_management(inputs=merge_inputs, output=output_fc)
+
+		# cleaning up
+		for fc in final_point_fc_list:
+			arcpy.Delete_management(fc)
+
+
+	except Exception:
+		arcpy.AddError(traceback.format_exc())
+
+	finally:
+		arcpy.AddMessage("Deleting temporary workspace...")
+		try:
+			arcpy.Delete_management(temp_gdb_fullpath)
+			shutil.rmtree(temp_foldername)
+			arcpy.AddMessage("temporary workspace deleted")
+		except:
+			arcpy.AddWarning("temporary workspace was not deleted. Location of the temp workspace:\n%s"%temp_foldername)
+
+
+
+
+
+
+
+
+def rand_alphanum_gen(length):
+	"""
+	Generates a random string (with specified length) that consists of A-Z and 0-9.
+	"""
+	import random, string
+	return ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(length))
+
+
+def findDuplicateID(idList):
+    """
+    you must first check if the idList is not a blank list before using this function.
+    This function will check the idList for any duplicates.
+    It will then output the duplicate ID in a string format.
+    """
+    unique_id_list = []
+    duplicate_id_list = []
+    duplicate_counter = 0
+    for i in idList:
+        if i in unique_id_list:
+            duplicate_id_list.append(i)
+            duplicate_counter += 1
+        else:
+            unique_id_list.append(i)
+
+    duplicate_list = []
+    if duplicate_counter == 0:
+        pass # the length of both summary_msg and error_msg_list stays zero.
+    else:
+        duplicate_list = list(set(duplicate_id_list))
+
+    return duplicate_list # returns empty list if no duplicates
+
+
+def get_rid_of_spc_char(input_str):
+	import re
+	new_str = re.sub('[^A-Za-z0-9_]+', '_', str(input_str)) # all characters not alphanumeric or underscore will be removed
+	return new_str
+
+
+
+def get_NumCluster(area_ha):
+	# calculate number of clusters for each project area
+	# For area 8 - 30ha: 30 clusters
+	# For area 30 - 60ha: 1 cluster per hectare
+	# for area > 60ha: 30 + 1 cluster per 2 hectares	
+	if area_ha > 60.0:
+		num_cluster = round(30 + area_ha/2 ,0)
+	elif area_ha > 30.0:
+		num_cluster = round(area_ha ,0)
+	elif area_ha > 8.0:
+		num_cluster = 30
+	else:
+		num_cluster = 0
+
+	return num_cluster
+
+
+
+if __name__ == '__main__':
+	input_proj_fc = str(arcpy.GetParameterAsText(0)) # input feature class of project boundaries. must contain these fields: ProjectID, NumClusters, Area_Ha
+													# ProjectID values must be unique.
+													# minimum area_ha should be 8ha
+	output_fc = str(arcpy.GetParameterAsText(1)) # where your output will be saved
+	max_tolerance = int(arcpy.GetParameterAsText(2)) # 5% by default. if the desired number of clusters is 30, 10% tolerance will give you output with upto 33 clusters.
+													# however if the tolerance level is set low, for example 1% for 30 clusters, minimum tolerance of 1 cluster will be assigned. (30 - 31)
+
+	# max_tolerance should be between 5% to 20%...
+	if max_tolerance < 1 or max_tolerance > 30:
+		raise Exception("maximum tolerance should be between 1% to 30%")
+
+	main(input_proj_fc, output_fc, max_tolerance)
+
+
+
+
+##############################     Testing only    ###############################################
+
+# Testing get_NumCluster
+	# for area in [4.534, 95.332, 34.2, 78.564, 30.112, 60.011]:
+	# 	print(get_NumCluster(area))
+# 0
+# 78.0
+# 34.0
+# 69.0
+# 30.0
+# 60.0
+
+
+
+# Testing findDuplicateID
+	# test_id_values = [1,2,3,4,5,5,6,6,7,7,8,9]
+	# print(findDuplicateID(test_id_values))
