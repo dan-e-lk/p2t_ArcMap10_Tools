@@ -1,0 +1,2 @@
+Unpack_NRIP_Downloads is unfinished.
+Use "Just Create Layer Files" to create layer files for AR/AWS submissions for now. 2021 10 19 Daniel K.
