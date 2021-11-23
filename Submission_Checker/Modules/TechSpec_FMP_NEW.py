@@ -2104,16 +2104,18 @@ def run(gdb, summarytbl, year, fmpStartYear, dataformat):  ## eg. summarytbl = {
                         criticalError += 1
                         recordValCom[lyr].append("Error on %s record(s): SGR must be null when POLYTYPE is not FOR."%len(errorList))
 
-                    errorList = ["Error on %s %s: SGR must not be null when POLYTYPE is FOR, AVAIL = A, and AGE >= 30."%(id_field, cursor[id_field_idx]) for row in cursor
-                                    if cursor[f.index('POLYTYPE')] == 'FOR'
-                                    if cursor[f.index('AVAIL')] == 'A' 
-                                    if int(cursor[f.index('AGE')] or 0) >= 30 # because a blank string is greater than any number in python world.
-                                    if cursor[f.index('SGR')] in vnull]
-                    cursor.reset()
-                    if len(errorList) > 0:
-                        errorDetail[lyr].append(errorList)
-                        criticalError += 1
-                        recordValCom[lyr].append("Error on %s record(s): SGR must not be null when POLYTYPE is FOR, AVAIL = A, and AGE >= 30."%len(errorList))
+                    # SGR can be null in 2020 and forward
+                    # errorList = ["Error on %s %s: SGR must not be null when POLYTYPE is FOR, AVAIL = A, and AGE >= 30."%(id_field, cursor[id_field_idx]) for row in cursor
+                    #                 if cursor[f.index('POLYTYPE')] == 'FOR'
+                    #                 if cursor[f.index('AVAIL')] == 'A' 
+                    #                 if int(cursor[f.index('AGE')] or 0) >= 30 # because a blank string is greater than any number in python world.
+                    #                 if cursor[f.index('SGR')] in vnull]
+                    # cursor.reset()
+                    # if len(errorList) > 0:
+                    #     errorDetail[lyr].append(errorList)
+                    #     criticalError += 1
+                    #     recordValCom[lyr].append("Error on %s record(s): SGR must not be null when POLYTYPE is FOR, AVAIL = A, and AGE >= 30."%len(errorList))
+
             except ValueError:
                 recordValCom[lyr].append("***Unable to run full validation on %s field due to value error - most likely due to missing mandatory field(s)"%current_field)
                 arcpy.AddWarning("***Unable to run full validation on %s field due to the following error:\n"%current_field + str(sys.exc_info()[1]))

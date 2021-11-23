@@ -2622,13 +2622,13 @@ def run(gdb, summarytbl, year, fmpStartYear, dataformat):  ## eg. summarytbl = {
                     criticalError += 1
                     recordValCom[lyr].append("Error on %s record(s): The population of WATXID is mandatory."%len(errorList))
 
-                # The WATXID attribute must contain a unique value
-                watxidList = [cursor[WATXID] for row in cursor]
-                cursor.reset()
-                if len(set(watxidList)) < len(watxidList):
-                    duplicateCount = len(watxidList) - len(set(watxidList))
-                    criticalError += 1
-                    recordValCom[lyr].append("Error on %s record(s): The WATXID attribute must contain a unique value."%duplicateCount)
+                # The WATXID attribute must contain a unique value # This is no longer the case in 2020 and thereafter. *2020.12.001
+                # watxidList = [cursor[WATXID] for row in cursor]
+                # cursor.reset()
+                # if len(set(watxidList)) < len(watxidList):
+                #     duplicateCount = len(watxidList) - len(set(watxidList))
+                #     criticalError += 1
+                #     recordValCom[lyr].append("Error on %s record(s): The WATXID attribute must contain a unique value."%duplicateCount)
 
             # WATXTYPE
                 # The population of this attribute is mandatory
