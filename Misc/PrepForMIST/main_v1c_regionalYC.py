@@ -1,5 +1,5 @@
 # this is the main python script for "BMI to MIST" ArcMap Tool.
-version = '1c'
+version = 'Regional-2021-12-09'
 
 # Workflow:
 # 1. copies the input bmi to an output location. it selects certain polytype, ownership and devstage.
@@ -56,10 +56,10 @@ def main(input_bmi, output_folder, submu):
 		out_gdb_path = os.path.join(output_folder,out_gdb_name + '.gdb')
 
 		# Copying the original to the new workspace
-		logmsg += print2("\n**Selecting OWNER in ('1','5','7') and POLYTYPE = FOR and DEVSTAGE NOT IN ('DEPHARV','DEPNAT','NEWNAT','NEWPLANT','NEWSEED'). \n\nCopying over the input to the output gdb...")
+		logmsg += print2("\n**Selecting POLYTYPE = FOR and DEVSTAGE NOT IN ('DEPHARV','DEPNAT','NEWNAT','NEWPLANT','NEWSEED'). \n\nCopying over the input to the output gdb...")
 
 		newfc_name = "B4M"
-		arcpy.FeatureClassToFeatureClass_conversion(in_features=input_bmi, out_path=out_gdb_path, out_name=newfc_name, where_clause="POLYTYPE = 'FOR' AND OWNER in ('1','5','7') AND DEVSTAGE NOT IN ('DEPHARV','DEPNAT','NEWNAT','NEWPLANT','NEWSEED') ")
+		arcpy.FeatureClassToFeatureClass_conversion(in_features=input_bmi, out_path=out_gdb_path, out_name=newfc_name, where_clause="POLYTYPE = 'FOR' AND DEVSTAGE NOT IN ('DEPHARV','DEPNAT','NEWNAT','NEWPLANT','NEWSEED') ")
 		newfc_path = os.path.join(out_gdb_path,newfc_name) # this is the new fc generated.
 		logmsg += print2("New feature class has been created here:\n%s"%newfc_path)
 
