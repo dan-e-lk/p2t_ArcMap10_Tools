@@ -6,13 +6,13 @@ version = '1.0'
 # Usually the target area is 10% of the total area of all records
 # 
 # Workflow
-# 1.	Input: shapefile or geodatabase that contains FTG-AR block spatial data.
+# 1.	Input: shapefile or geodatabase that contains FTG-AR block spatial data. Export this data into a feature class.
 # 2.	Calculate the total area of all blocks.
 # 3.	Calculate the Target Area (10% of the Total Area)
-# 4.	Filter out polygons that does not meet minimum area
+# 4.	Test if the selection can meet the target area after filtering out the polygons that does not meet minimum area
 # 5.	Start randomly selecting (while giving area-weighted discrimination) FTG-AR blocks until the cumulative area of selected blocks reach the target area.
 #		note that random.choices() couldn't be used because this is python v2. Instead, the cumulative weight of each polygon is assigned.
-# 6.	Export/output the selected blocks.
+# 6.	Fill out the selection result in the "RAP_rand_select" field.
 #
 # Prerequisites
 # 1. Number of records must be greater than 5 (the script will check this)
@@ -21,7 +21,7 @@ version = '1.0'
 # the initial version of this tool was developed on Jan 2022 by Daniel Kim
 
 import arcpy
-import random
+import random, os
 
 def rand_select(input_shape, output_fc, target_area_perc, minimum_area):
 	"""This is the main function of this script.
@@ -32,8 +32,13 @@ def rand_select(input_shape, output_fc, target_area_perc, minimum_area):
 	target_area_perc = float(target_area_perc)
 	minimum_area = float(minimum_area) # !!! note that this number is in hectare!!
 
-	### examine the input
-	sr = arcpy.Describe(input_shape).spatialReference
+	### export
+	arcprint("\nExporting...")
+	arcpy.FeatureClassToFeatureClass_conversion(in_features=input_shape, out_path=os.path.split(output_fc)[0], out_name=os.path.split(output_fc)[1])
+
+	### examining the data
+	arcprint("\nExamining the data...")
+	sr = arcpy.Describe(output_fc).spatialReference
 	arcprint(" Spatial Reference: %s, %s"%(sr.name, sr.type))
 	lin_unit = sr.linearUnitName
 	arcprint(" Linear Unit: %s"%lin_unit) # returns "Meter" if Shape_Area is measured in meter sq, it will return empty string if measured with angle
@@ -41,19 +46,19 @@ def rand_select(input_shape, output_fc, target_area_perc, minimum_area):
 	if lin_unit != 'Meter':
 		arcprint("Your input's linear unit is not in Meter. Save(export) your input data as feature class using a projected coordinate system and re-run the tool." ,'err')
 
-	existingFields = [str(f.name) for f in arcpy.ListFields(input_shape)]
+	existingFields = [str(f.name) for f in arcpy.ListFields(output_fc)]
 	arcprint(" List of fields: %s"%existingFields)
 	# end the script if there's no "Shape_Area" field
 	if "Shape_Area" not in existingFields:
 		arcprint("'Shape_Area' field not found. Save(export) your input data as feature class using a projected coordinate system and re-run the tool." ,'err')
 	# need Object ID field
-	OID_fieldname = arcpy.Describe(input_shape).OIDFieldName # usually 'FID' for shapefile and 'OBJECTID' for fc
+	OID_fieldname = arcpy.Describe(output_fc).OIDFieldName # usually 'FID' for shapefile and 'OBJECTID' for fc
 	arcprint(" ObjectID Fieldname: %s"%OID_fieldname)
 
 
 	### grab data - we just need the OID and Shape_Area
 	arcprint("\nGrabbing data...")
-	records = [{OID_fieldname: row[0], "Shape_Area": row[1]} for row in arcpy.da.SearchCursor(input_shape, [OID_fieldname, "Shape_Area"])]
+	records = [{OID_fieldname: row[0], "Shape_Area": row[1]} for row in arcpy.da.SearchCursor(output_fc, [OID_fieldname, "Shape_Area"])]
 	num_records = len(records)
 	if num_records < 5:
 		arcprint("Only %s records found. You should have at least 5 records to have this tool run properly."%num_records,'err')
@@ -136,6 +141,24 @@ def rand_select(input_shape, output_fc, target_area_perc, minimum_area):
 	arcprint(' Total trials: %s'%trial)
 
 
+	# adding a new field to show the selection results
+	newfieldname = 'RAP_rand_select' # the name of the new field filled with values 1 or 0.
+	if newfieldname in existingFields: # just in case that fieldname already exists
+		newfieldname = newfieldname + rand_alphanum_gen(4)
+	arcprint(" Adding a new field called %s"%newfieldname)
+	arcpy.AddField_management(in_table = output_fc, field_name = newfieldname, field_type = "SHORT")
+
+	# update the new field with selection results
+	arcprint("\nFilling out the %s field with the selection results..."%newfieldname)
+	with arcpy.da.UpdateCursor(output_fc, [OID_fieldname, newfieldname]) as cursor:
+	    # For each row, if the objectid matches with that of the selected records,
+	    # fill out the new field with 1. if no match, fill it out with 0
+	    for row in cursor:
+	        if row[0] in selected_recs:
+	        	row[1] = 1
+	        else:
+	        	row[1] = 0
+	        cursor.updateRow(row)
 
 
 
@@ -153,6 +176,15 @@ def arcprint(msg, msgtype = 'msg'):
         arcpy.AddWarning(msg)
     elif msgtype == 'err':
         arcpy.AddError(msg)
+
+
+
+def rand_alphanum_gen(length):
+    """
+    Generates a random string (with specified length) that consists of A-Z and 0-9.
+    """
+    import random, string
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(length))
 
 
 
