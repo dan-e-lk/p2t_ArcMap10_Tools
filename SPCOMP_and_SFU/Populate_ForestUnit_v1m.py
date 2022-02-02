@@ -1,5 +1,7 @@
 version = '1m'
 
+# 2022 - this tool populates SFU for records with POLYTYPE other than 'FOR'. Fix THIS!
+#
 #-------------------------------------------------------------------------------
 # Name:        module1
 # Purpose:
