@@ -1,4 +1,4 @@
-
+version = '2022.02'
 import os, datetime, shutil, traceback, time
 debug = True
 
@@ -12,7 +12,7 @@ def main(inputFolder,outputFolder,submissionType, filetype, subID, submYear):
 	"""
 	inputFolder must be a folder that contains e00 or shp, or a gdb folder
 	"""
-
+	print2('\n Just Create Layer Files Tool - v%s'%version)
 	print2('\n#######   USER INPUTS    ########')
 	print2('inputFolder = %s'%inputFolder)
 	print2('outputFolder = %s'%outputFolder)

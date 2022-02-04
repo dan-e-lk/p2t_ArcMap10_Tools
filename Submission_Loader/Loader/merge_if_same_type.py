@@ -1,5 +1,6 @@
+# this was last edited on Feb 2022.
 debug = True
-from functions import print2
+from functions import print2, rand_alphanum_gen
 import arcpy
 import os
 
@@ -41,9 +42,73 @@ def main(gdb):
 				output_name = v[0][:-2] + '_merged' if '_' in v[0] else v[0][:-3] + '_merged'
 				try:
 					arcpy.Merge_management(v, output_name)
-				except:
-					print2('\tFailed to merge %s!'%k, 'warning')
-					if arcpy.Exists(output_name):
-						arcpy.Delete_management(output_name)
+				except Exception as e:
+					print2(str(e), 'warning')
+					# when the first attempt of merge fails, the most likely error looks something like,
+					# ERROR 001156: Failed on input OID 1, could not write value 'WLSzzzzzzzzzz' to output field AOCID Failed to execute (Merge).
+					# A workaround for this particular issue is to increase the length of the string attributes of the first layer
+					if "ERROR 001156:" in str(e):
+						try:
+							print2("Re-attempting merge.")
+							print2("Increasing the field length of all the string fields of the first layer by +30...")
+							print2(" (Note that this doesn't alter the original data)")
+							increase_field_length(v[0], 30)
+							# try merging again
+							print2("\nMerging %s (2nd try)..."%k)
+							arcpy.Merge_management(v, output_name)
+
+						except Exception as e:
+							print2(str(e), 'warning')
+							print2('\tFailed to merge %s! (2nd try)'%k, 'warning')
+							if arcpy.Exists(output_name):
+								arcpy.Delete_management(output_name)
+
+					else:
+						print2('\tFailed to merge %s!'%k, 'warning')
+						if arcpy.Exists(output_name):
+							arcpy.Delete_management(output_name)
 
 
+
+def increase_field_length(layer, increment):
+	"""increases the field length of the layer by the specified increment.
+	Only alters string fields.
+	"""
+	f = arcpy.ListFields(layer)
+	original_fields = {}  # eg. {'AOCID': 6, ...}
+	for field in f:
+		# get fields with type - string
+		print2(field.type)
+		if field.type == "String":
+			fname = field.name
+			flength = int(field.length)
+			original_fields[fname] = flength
+
+	# unfortunately, the fieldlength cannot be directly changed.
+	# current field will be renamed, then the new field will be created with larger field length, then the values will be copied over to the new field.
+	for fname, flength in original_fields.items():
+		print2(" Increasing the field length of %s"%fname)
+		# rename the original field
+		temp_fname = fname + '_' + rand_alphanum_gen(4)
+		arcpy.management.AlterField(in_table=layer, field=fname, new_field_name=temp_fname)
+		# create a new field using the original fieldname such as 'AOCID'
+		new_flength = flength + increment
+		arcpy.AddField_management(in_table=layer, field_name=fname, field_type="TEXT", field_length=new_flength)
+		# populate the new field with the original values
+		expression = "!%s!"%temp_fname
+		arcpy.CalculateField_management(layer, fname, expression, "PYTHON_9.3")
+		# delete the temporary field
+		arcpy.DeleteField_management (layer, temp_fname)
+
+
+
+
+if __name__ == '__main__':
+	gdb = r'C:\DanielK_Workspace\_TestData\Temagami\AWS\2022\LayerMergeIssue\test\_data\FMP_Schema.gdb'
+	main(gdb)
+
+
+	# increase_field_length unit test
+	# lyr = r'C:\DanielK_Workspace\_TestData\Temagami\AWS\2022\LayerMergeIssue\test\_data\FMP_Schema.gdb\MU898_22SAC03'
+	# increment = 30
+	# increase_field_length(lyr, increment)

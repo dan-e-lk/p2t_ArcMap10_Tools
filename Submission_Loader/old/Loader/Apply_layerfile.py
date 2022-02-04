@@ -144,7 +144,7 @@ def createNewLayerFiles(type_dict, lyrTemplate_list, lyrInfo_dict, subType):
 
 #Group and save the layer files
 def consolidateLayers(lyr_list, outputFolder, subType, fmuName, fmuCode, submYear, SubID):
-	groupLyrName = '%s_%s_(%s)_%s_%s.lyr' %(subType,fmuName,fmuCode,submYear,SubID) # for example, AR_Gordoen_Cosens_(438)_2017_24649.lyr
+	groupLyrName = '%s_%s_%s.lyr' %(subType,submYear,SubID) # for example, AR_Gordoen_Cosens_(438)_2017_24649.lyr
 	print2('\nCreating a group layer:  %s'%groupLyrName)
 
 	# This mxd file has one dataframe with one empty group layer (the name of the group layer doesn't matter, but it has to be empty)

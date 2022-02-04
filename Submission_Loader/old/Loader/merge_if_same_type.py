@@ -1,5 +1,15 @@
+# this was last edited on Feb 2022.
+# The reason why this was edited is because some layers - the AOC kinds - errored out while merging
+# The problem usually is that these AOC layers have inconsistent field lengths
+# For example, AOCID field might start with just having 4 character length, then as you merge multiple layers
+#   you'd encounter a layer with AOCID value greater than 4, in which case the ArcMap's merge function errors out
+# The most reliable solution is to create a template for the AOC layers - AOC of FMP and SAC of AWS - and append the values.
+# Another solution, easier but less reliable solution, is to take the first of these layers and arbitrarily increase the field length of all its fields.
+# So that's sort of my soluther here. If the layers that didn't correctly merge are either AOC or SAC, then we will apply the template solution
+# If the layers that didn't correctly merge are not AOC or SAC, then we will apply the increase field length solution.
+
 debug = True
-from functions import print2
+from functions import print2, rand_alphanum_gen
 import arcpy
 import os
 
@@ -41,9 +51,76 @@ def main(gdb):
 				output_name = v[0][:-2] + '_merged' if '_' in v[0] else v[0][:-3] + '_merged'
 				try:
 					arcpy.Merge_management(v, output_name)
-				except:
-					print2('\tFailed to merge %s!'%k, 'warning')
-					if arcpy.Exists(output_name):
-						arcpy.Delete_management(output_name)
+				except Exception as e:
+					print2("\tInitial merge failed with the following error:")
+					print2("\t %s"%str(e))
+					# when the first attempt of merge fails, the most likely error looks something like,
+					# ERROR 001156: Failed on input OID 1, could not write value 'WLSzzzzzzzzzz' to output field AOCID\n Failed to execute (Merge).
+					# ERROR 001156: Failed on input OID 1, could not write value 'Modified Riparian' to output field SYMBOL\n Failed to execute (Merge).
+					# A workaround for this particular issue is to increase the length of the string attributes of the first layer
+					if "ERROR 001156:" in str(e):
+						try:
+							print2("\t\tRe-attempting merge.")
+							print2("\t\tIncreasing the field length of all the string fields of the first layer by +30...")
+							print2("\t\t (Note that this doesn't alter the original data)")
+							increase_field_length(v[0], 30)
+							# try merging again
+							print2("\n\t\tMerging %s (2nd try)..."%k)
+							arcpy.Merge_management(v, output_name)
+							print2("\t\t\tMerging successful!")
+
+						except Exception as e:
+							# this will still fail if there are field length mis-match between layers other than the first layer.
+							print2(str(e), 'warning')
+							print2('\t\tFailed to merge %s! (2nd try)'%k, 'warning')
+							if arcpy.Exists(output_name):
+								arcpy.Delete_management(output_name)
+
+					else:
+						print2('\t\tFailed to merge %s!'%k, 'warning')
+						if arcpy.Exists(output_name):
+							arcpy.Delete_management(output_name)
 
 
+
+def increase_field_length(layer, increment):
+	"""increases the field length of the layer by the specified increment.
+	Only alters string fields.
+	"""
+	f = arcpy.ListFields(layer)
+	original_fields = {}  # eg. {'AOCID': 6, ...}
+	for field in f:
+		# get fields with type - string
+		if field.type == "String":
+			fname = field.name
+			flength = int(field.length)
+			original_fields[fname] = flength
+
+	# unfortunately, the fieldlength cannot be directly changed.
+	# current field will be renamed, then the new field will be created with larger field length, then the values will be copied over to the new field.
+	for fname, flength in original_fields.items():
+		print2("\t\t Increasing the field length of %s - %s"%(layer,fname))
+		# rename the original field
+		temp_fname = fname + '_' + rand_alphanum_gen(4)
+		arcpy.management.AlterField(in_table=layer, field=fname, new_field_name=temp_fname)
+		# create a new field using the original fieldname such as 'AOCID'
+		new_flength = flength + increment
+		arcpy.AddField_management(in_table=layer, field_name=fname, field_type="TEXT", field_length=new_flength)
+		# populate the new field with the original values
+		expression = "!%s!"%temp_fname
+		arcpy.CalculateField_management(layer, fname, expression, "PYTHON_9.3")
+		# delete the temporary field
+		arcpy.DeleteField_management (layer, temp_fname)
+
+
+
+
+if __name__ == '__main__':
+	gdb = r'C:\DanielK_Workspace\_TestData\Temagami\AWS\2022\LayerMergeIssue\test\_data\FMP_Schema.gdb'
+	main(gdb)
+
+
+	# increase_field_length unit test
+	# lyr = r'C:\DanielK_Workspace\_TestData\Temagami\AWS\2022\LayerMergeIssue\test\_data\FMP_Schema.gdb\MU898_22SAC03'
+	# increment = 30
+	# increase_field_length(lyr, increment)
