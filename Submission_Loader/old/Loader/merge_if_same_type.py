@@ -55,7 +55,7 @@ def main(gdb):
 					print2("\tInitial merge failed with the following error:")
 					print2("\t %s"%str(e))
 					# when the first attempt of merge fails, the most likely error looks something like,
-					# ERROR 001156: Failed on input OID 1, could not write value 'WLSzzzzzzzzzz' to output field AOCID\n Failed to execute (Merge).
+					# ERROR 001156: Failed on input OID 1, could not write value 'WLSzzz' to output field AOCID\n Failed to execute (Merge).
 					# ERROR 001156: Failed on input OID 1, could not write value 'Modified Riparian' to output field SYMBOL\n Failed to execute (Merge).
 					# A workaround for this particular issue is to increase the length of the string attributes of the first layer
 					if "ERROR 001156:" in str(e):

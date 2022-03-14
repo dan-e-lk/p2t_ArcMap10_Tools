@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    font-family: "Helvetica", "Tahoma";
+}
+h1 {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+    background-color: #B7E2F0;
+}
+
+table {
+    width:100%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+td {
+    padding: 1px;
+    text-align: right;
+}
+th {
+    padding: 5px;
+    text-align: center;
+}
+td.leftb {
+	border-left: 2px solid black;
+}
+td.bottomb {
+	border-bottom: 2px solid black;
+}
+td.rightb {
+	border-right: 2px solid black;
+}
+td.topb {
+	border-top: 2px solid black;
+}
+td.txtleft {
+    text-align: left;
+}
+td.txtcenter {
+	text-align: center;
+}
+td.nobottomborder {
+	border-bottom: solid transparent;
+}
+td.noleftborder {
+	border-left: solid transparent;
+}
+td.norightborder {
+	border-right: solid transparent;
+}
+td.rightalign {
+	text-align: right;
+}
+td.shaded {
+    background-color: #B7E2F0; /* light blue */
+}
+
+
+table#t01 th {
+    background-color: #719CAA; /* dark blue */
+	color: white;
+    border: 2px solid black;
+}
+
+<!--  Hover for tooltip  -->
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+	width: auto;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 2px;
+	font-size: 70%;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+
+
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+</style>
+</head>
+<body>
+
+<h1>FMP 1 Table for MU438_20BMI00</h1>
+
+<table id="t01">
+  <tr><!--  row 1  -->
+    <th rowspan = "3">Land Ownership and Type</th>
+    <th colspan = "5">Land Ownership (Ha)</th> 
+  </tr>
+  <tr><!--  row 2  -->
+    <th colspan = "2">Crown</th>
+    <th colspan = "2">Patent  &  Other</th> 
+	<th rowspan = "2">Total</th> 
+  </tr>
+  <tr><!--  row 3  -->
+    <th>Managed <br><small>Owner 1</small></th>
+	<th>Other <br><small>Owner 5, 7</small></th>
+	<th>Crown Timber <br><small>Owner 2</small></th>
+	<th>Non Crown <br><small>Owner 3, 4, 6, 8, 9, 0</small></th>
+  </tr>
+  
+  <tr>
+    <td class="leftb bottomb rightb txtleft">Unsurveyed</td>
+    <td class="bottomb">0</td>
+    <td class="bottomb rightb">0</td>
+    <td class="bottomb rightb">0</td>
+    <td class="bottomb rightb">0</td>
+    <td class="bottomb rightb">0</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">Non-forested</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;Water<span class="tooltiptext"> "POLYTYPE" = 'WAT' </span></div>
+	</td>
+    <td>					<div class="tooltip">45,366.4<span class="tooltiptext"> "POLYTYPE" = 'WAT' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">15,722.7<span class="tooltiptext"> "POLYTYPE" = 'WAT' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">2,783.8<span class="tooltiptext"> "POLYTYPE" = 'WAT' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">1,354.2<span class="tooltiptext"> "POLYTYPE" = 'WAT' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">65,227.1<span class="tooltiptext"> "POLYTYPE" = 'WAT' </span></div>			</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">&emsp;Other Land</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Agricultural Land<span class="tooltiptext"> "POLYTYPE" = 'DAL' </span></div>
+	</td>
+    <td>					<div class="tooltip">75.0<span class="tooltiptext"> "POLYTYPE" = 'DAL' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">0.0<span class="tooltiptext"> "POLYTYPE" = 'DAL' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">36.9<span class="tooltiptext"> "POLYTYPE" = 'DAL' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">2,407.9<span class="tooltiptext"> "POLYTYPE" = 'DAL' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">2,519.9   <span class="tooltiptext"> "POLYTYPE" = 'DAL' </span></div>			</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Grass & Meadow<span class="tooltiptext"> "POLYTYPE" = 'GRS' </span></div>
+	</td>
+    <td>					<div class="tooltip">457.1<span class="tooltiptext"> "POLYTYPE" = 'GRS' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">2.7<span class="tooltiptext"> "POLYTYPE" = 'GRS' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">17.6<span class="tooltiptext"> "POLYTYPE" = 'GRS' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">4,623.5<span class="tooltiptext"> "POLYTYPE" = 'GRS' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">5,101.0   <span class="tooltiptext"> "POLYTYPE" = 'GRS' </span></div>			</td>
+  </tr>
+  
+   <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Unclassified<span class="tooltiptext"> "POLYTYPE" = 'UCL' </span></div>
+	</td>
+    <td>					<div class="tooltip">7,881.4<span class="tooltiptext"> "POLYTYPE" = 'UCL' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">147.8<span class="tooltiptext"> "POLYTYPE" = 'UCL' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">1,576.4<span class="tooltiptext"> "POLYTYPE" = 'UCL' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">5,724.6<span class="tooltiptext"> "POLYTYPE" = 'UCL' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">15,330.1<span class="tooltiptext"> "POLYTYPE" = 'UCL' </span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Other (ISL)<span class="tooltiptext"> "POLYTYPE" = 'ISL' </span></div>
+	</td>
+    <td>					<div class="tooltip">226.8<span class="tooltiptext"> "POLYTYPE" = 'ISL' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">133.5<span class="tooltiptext"> "POLYTYPE" = 'ISL' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">18.1<span class="tooltiptext"> "POLYTYPE" = 'ISL' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">17.7<span class="tooltiptext"> "POLYTYPE" = 'ISL' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">396.1<span class="tooltiptext">    "POLYTYPE" = 'ISL' </span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb bottomb rightb rightalign">Subtotal Non-Forested</td>
+    <td class="bottomb">		<div class="tooltip">54,006.7<span class="tooltiptext"> "POLYTYPE" in('WAT','DAL','GRS','UCL','ISL') AND "OWNER" = '1' </span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">16,006.9<span class="tooltiptext"> "POLYTYPE" in('WAT','DAL','GRS','UCL','ISL') AND "OWNER" in('5','7') </span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">4,432.9<span class="tooltiptext"> "POLYTYPE" in('WAT','DAL','GRS','UCL','ISL') AND "OWNER" = '2' </span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">14,127.8<span class="tooltiptext"> "POLYTYPE" in('WAT','DAL','GRS','UCL','ISL') AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">88,574.2<span class="tooltiptext">    "POLYTYPE" in('WAT','DAL','GRS','UCL','ISL') </span></div>			</td>
+  </tr>
+
+  
+<!--                   Forested                    -->
+<!--      Non-Productive Forest        -->
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">Forested</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">&emsp;Non-Productive Forest</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">								</td>
+    <td class= "rightb">				</td>
+  </tr>  
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Treed Muskeg<span class="tooltiptext"> "POLYTYPE" = 'TMS' </span></div>
+	</td>
+    <td>					<div class="tooltip">25,783.7<span class="tooltiptext"> "POLYTYPE" = 'TMS' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">4,970.5<span class="tooltiptext"> "POLYTYPE" = 'TMS' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">32.1<span class="tooltiptext"> "POLYTYPE" = 'TMS' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">572.9<span class="tooltiptext"> "POLYTYPE" = 'TMS' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">31,359.3<span class="tooltiptext">    "POLYTYPE" = 'TMS' </span></div>			</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Open Muskeg<span class="tooltiptext"> "POLYTYPE" = 'OMS' </span></div>
+	</td>
+    <td>					<div class="tooltip">36,770.3<span class="tooltiptext"> "POLYTYPE" = 'OMS' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">2,514.0<span class="tooltiptext"> "POLYTYPE" = 'OMS' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">98.7<span class="tooltiptext"> "POLYTYPE" = 'OMS' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">1,602.0<span class="tooltiptext"> "POLYTYPE" = 'OMS' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">40,985.0<span class="tooltiptext">    "POLYTYPE" = 'OMS' </span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Brush & Alder<span class="tooltiptext"> "POLYTYPE" = 'BSH' </span></div>
+	</td>
+    <td>					<div class="tooltip">30,147.9<span class="tooltiptext"> "POLYTYPE" = 'BSH' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">2,440.8<span class="tooltiptext"> "POLYTYPE" = 'BSH' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">248.4<span class="tooltiptext"> "POLYTYPE" = 'BSH' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">2,517.0<span class="tooltiptext"> "POLYTYPE" = 'BSH' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">35,354.1<span class="tooltiptext">    "POLYTYPE" = 'BSH' </span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;Rock<span class="tooltiptext"> "POLYTYPE" = 'RCK' </span></div>
+	</td>
+    <td>					<div class="tooltip">63.6<span class="tooltiptext"> "POLYTYPE" = 'RCK' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">1.9<span class="tooltiptext"> "POLYTYPE" = 'RCK' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">62.7<span class="tooltiptext"> "POLYTYPE" = 'RCK' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">0.2<span class="tooltiptext"> "POLYTYPE" = 'RCK' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">128.4<span class="tooltiptext">    "POLYTYPE" = 'RCK' </span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb bottomb rightb rightalign">Subtotal Non-Productive Forest</td>
+    <td class="bottomb">		<div class="tooltip">92,765.6<span class="tooltiptext"> "POLYTYPE" in('TMS','OMS','BSH','RCK') AND "OWNER" = '1' </span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">9,927.1<span class="tooltiptext"> "POLYTYPE" in('TMS','OMS','BSH','RCK') AND "OWNER" in('5','7') </span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">441.9<span class="tooltiptext"> "POLYTYPE" in('TMS','OMS','BSH','RCK') AND "OWNER" = '2' </span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">4,692.2<span class="tooltiptext"> "POLYTYPE" in('TMS','OMS','BSH','RCK') AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip">107,826.8<span class="tooltiptext">    "POLYTYPE" in('TMS','OMS','BSH','RCK') </span></div>			</td>
+  </tr>
+  
+  
+<!--      Productive Forest        -->
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">&emsp;Productive Forest</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>  
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">&emsp;&emsp;Protection Forest</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>  
+ 
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;&emsp;Site<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "MGMTCON1" <> 'ISLD'  AND "MGMTCON2" <> 'ISLD' AND "MGMTCON3" <> 'ISLD' </span></div>
+	</td>
+    <td>					<div class="tooltip">83,571.4<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" = '1' AND "MGMTCON1" <> 'ISLD'  AND "MGMTCON2" <> 'ISLD' AND "MGMTCON3" <> 'ISLD' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">10,171.9<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" in('5','7') AND "MGMTCON1" <> 'ISLD'  AND "MGMTCON2" <> 'ISLD' AND "MGMTCON3" <> 'ISLD' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">138.5<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" = '2' AND "MGMTCON1" <> 'ISLD'  AND "MGMTCON2" <> 'ISLD' AND "MGMTCON3" <> 'ISLD' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">4,515.0<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" in('3','4','6','8','9','0') AND "MGMTCON1" <> 'ISLD'  AND "MGMTCON2" <> 'ISLD' AND "MGMTCON3" <> 'ISLD' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">98,396.9<span class="tooltiptext">    "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "MGMTCON1" <> 'ISLD'  AND "MGMTCON2" <> 'ISLD' AND "MGMTCON3" <> 'ISLD' </span></div>			</td>
+  </tr>
+    
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;&emsp;Islands<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND ("MGMTCON1" = 'ISLD'  OR "MGMTCON2" = 'ISLD' OR "MGMTCON3" = 'ISLD' )</span></div>
+	</td>
+    <td>					<div class="tooltip">10.7<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" = '1' AND ("MGMTCON1" = 'ISLD'  OR "MGMTCON2" = 'ISLD' OR "MGMTCON3" = 'ISLD' )</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">20.4<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" in('5','7') AND ("MGMTCON1" = 'ISLD'  OR "MGMTCON2" = 'ISLD' OR "MGMTCON3" = 'ISLD' )</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">0.0<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" = '2' AND ("MGMTCON1" = 'ISLD'  OR "MGMTCON2" = 'ISLD' OR "MGMTCON3" = 'ISLD' )</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">0.0<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" in('3','4','6','8','9','0') AND ("MGMTCON1" = 'ISLD'  OR "MGMTCON2" = 'ISLD' OR "MGMTCON3" = 'ISLD' )</span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">31.1   <span class="tooltiptext">    "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND ("MGMTCON1" = 'ISLD'  OR "MGMTCON2" = 'ISLD' OR "MGMTCON3" = 'ISLD' )</span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder rightalign">Subtotal Protection</td>
+    <td>					<div class="tooltip">83,582.2<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">10,192.3<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">138.5<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">4,515.0<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">98,428.0   <span class="tooltiptext">    "POLYTYPE" = 'FOR' AND "FORMOD" = 'PF' </span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">&emsp;&emsp;Production Forest</td>
+    <td>								</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+    <td class= "rightb">				</td>
+  </tr>  
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;&emsp;Recent Disturbance<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('DEPHARV','DEPNAT','LASTCUT','SEEDTREE') </span></div>
+	</td>
+    <td>					<div class="tooltip">69,990.4<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('DEPHARV','DEPNAT','LASTCUT','SEEDTREE') AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">430.2<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('DEPHARV','DEPNAT','LASTCUT','SEEDTREE') AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">87.8<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('DEPHARV','DEPNAT','LASTCUT','SEEDTREE') AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">577.2<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('DEPHARV','DEPNAT','LASTCUT','SEEDTREE') AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">71,085.6   <span class="tooltiptext">    "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('DEPHARV','DEPNAT','LASTCUT','SEEDTREE') </span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;&emsp;Below Regeneration<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT') </span></div>
+	</td>
+    <td>					<div class="tooltip">119,386.6<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT') AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">2,171.0<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT') AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">820.0<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT') AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">21,026.7<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT') AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">143,404.3   <span class="tooltiptext">    "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" in('LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT') </span></div>			</td>
+  </tr>
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder">
+		<div class="tooltip">&emsp;&emsp;&emsp;Forest Stands<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" not in('DEPHARV','DEPNAT','LASTCUT','LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT','SEEDTREE') </span></div>
+	</td>
+    <td>					<div class="tooltip">1,292,458.7<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" not in('DEPHARV','DEPNAT','LASTCUT','LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT','SEEDTREE') AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">116,599.0<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" not in('DEPHARV','DEPNAT','LASTCUT','LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT','SEEDTREE') AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">6,932.5<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" not in('DEPHARV','DEPNAT','LASTCUT','LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT','SEEDTREE') AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">79,959.2<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" not in('DEPHARV','DEPNAT','LASTCUT','LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT','SEEDTREE') AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">1,495,949.4   <span class="tooltiptext">    "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "DEVSTAGE" not in('DEPHARV','DEPNAT','LASTCUT','LOWMGMT', 'LOWNAT','NEWPLANT','NEWSEED','NEWNAT','SEEDTREE') </span></div>			</td>
+  </tr>  
+  
+  <tr>
+    <td class="leftb rightb txtleft nobottomborder rightalign">Subtotal Production Forest</td>
+    <td>					<div class="tooltip">1,481,835.7<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "OWNER" = '1' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">119,200.2<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "OWNER" in('5','7') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">7,840.3<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "OWNER" = '2' </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">101,563.1<span class="tooltiptext"> "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') AND "OWNER" in('3','4','6','8','9','0') </span></div>			</td>
+    <td class= "rightb">	<div class="tooltip">1,710,439.3   <span class="tooltiptext">    "POLYTYPE" = 'FOR' AND "FORMOD" in('RP','MR') </span></div>			</td>
+  </tr>
+
+  <tr>
+    <td class="leftb bottomb rightb rightalign"><b>Subtotal Productive Forest</b></td>
+    <td class="bottomb">		<div class="tooltip"><b>1,565,417.8</b><span class="tooltiptext"><b> "POLYTYPE" = 'FOR' AND "OWNER" = '1' </b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>129,392.5</b><span class="tooltiptext"><b> "POLYTYPE" = 'FOR' AND "OWNER" in('5','7') </b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>7,978.8</b><span class="tooltiptext"><b> "POLYTYPE" = 'FOR' AND "OWNER" = '2' </b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>106,078.2</b><span class="tooltiptext"><b> "POLYTYPE" = 'FOR' AND "OWNER" in('3','4','6','8','9','0') </b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>1,808,867.3   </b><span class="tooltiptext"><b> "POLYTYPE" = 'FOR'    </b></span></div>			</td>
+  </tr>  
+  
+  <tr>
+    <td class="leftb bottomb rightb rightalign"><b>Subtotal Forested</b></td>
+    <td class="bottomb">		<div class="tooltip"><b>1,658,183.4</b><span class="tooltiptext"><b> "POLYTYPE" in('FOR','TMS','OMS','BSH','RCK') AND "OWNER" = '1' </b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>139,319.6</b><span class="tooltiptext"><b> "POLYTYPE" in('FOR','TMS','OMS','BSH','RCK') AND "OWNER" in('5','7') </b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>8,420.7</b><span class="tooltiptext"><b> "POLYTYPE" in('FOR','TMS','OMS','BSH','RCK') AND "OWNER" = '2' </b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>110,770.3</b><span class="tooltiptext"><b> "POLYTYPE" in('FOR','TMS','OMS','BSH','RCK') AND "OWNER" in('3','4','6','8','9','0') </b></span></div>			</td>
+    <td class="bottomb rightb">	<div class="tooltip"><b>1,916,694.0   </b><span class="tooltiptext"><b> "POLYTYPE" in('FOR','TMS','OMS','BSH','RCK')    </b></span></div>			</td>
+  </tr>  
+
+  <tr>
+    <td class="leftb bottomb rightb rightalign shaded"><b>Total</b></td>
+    <td class="bottomb shaded">			<div class="tooltip"><b>1,712,190.0</b><span class="tooltiptext"><b> "OWNER" = '1' </b></span></div>			</td>
+    <td class="bottomb shaded rightb">	<div class="tooltip"><b>155,326.5</b><span class="tooltiptext"><b> "OWNER" in('5','7') </b></span></div>			</td>
+    <td class="bottomb shaded rightb">	<div class="tooltip"><b>12,853.6</b><span class="tooltiptext"><b> "OWNER" = '2' </b></span></div>			</td>
+    <td class="bottomb shaded rightb">	<div class="tooltip"><b>124,898.1</b><span class="tooltiptext"><b> "OWNER" in('3','4','6','8','9','0') </b></span></div>			</td>
+    <td class="bottomb shaded rightb">	<div class="tooltip"><b>2,005,268.2   </b><span class="tooltiptext"><b> "POLYTYPE" is not null and "POLYTYPE" not in ('',' ')    </b></span></div>			</td>
+  </tr>  
+  
+  <tr>
+    <td class="nobottomborder noleftborder"></td>
+    <td colspan = "2" class = "bottomb rightb leftb txtcenter">		<div class="tooltip">Total Crown: 1,867,516.5<span class="tooltiptext"> "OWNER" in('1','5','7') </span></div>			</td>
+    <td colspan = "2" class = "bottomb rightb txtcenter">		<div class="tooltip">Total Non-Crown: 137,751.7<span class="tooltiptext"> "OWNER" in('2','3','4','6','8','9','0') </span></div> 		</td>
+  </tr>    
+  
+</table>
+<br>
+
+
+<hr>
+<p><small>
+	PCI/BMI used: MU438_20BMI00<br>
+	Python Script used: C:\Users\kimdan\OneDrive - Government of Ontario\2021\Python2_Tools_live\python2_tools\FMP_Table_Generator\Scripts\GenerateFMP1Table_v1c.py<br>
+	Report saved in: C:\DanielK_Workspace\temp\GCF_temp\FMP1Table_MU438_20BMI00_2022_02_10_190227.html<br>
+	Date and Time run: 2022-02-10 19:08:12.778000<br>
+	<br>This tool was created by the NER Resources Information and Analysis Unit in 2017.
+
+</p></small>
+</body>
+</html>
