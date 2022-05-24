@@ -1,6 +1,6 @@
 import os, shutil, traceback, math, random
 debug = False
-version = 2021.09
+version = 2022.05
 
 def main(input_proj_fc, output_fc, max_tolerance):
 	# create temporary workspace
@@ -78,8 +78,8 @@ def main(input_proj_fc, output_fc, max_tolerance):
 			arcpy.AddMessage("calculated NumCluster = %s"%calculated_NumCluster)
 			arcpy.AddMessage("Input NumCluster = %s"%input_NumCluster)
 
-			if abs(calculated_NumCluster - input_NumCluster) > calculated_NumCluster * 0.05: # let's give it 5% give and take
-				raise Exception("ProjectID %s: Number of clusters should be %s"%(proj_id, calculated_NumCluster))
+			if abs(calculated_NumCluster - input_NumCluster) > calculated_NumCluster * 0.30: # let's give it 30% give and take
+				arcpy.AddWarning("ProjectID %s: Number of clusters should be close to %s"%(proj_id, calculated_NumCluster))
 			
 			# base on the tolerance level, max number of cluster is set
 			max_NumCluster = int(round(input_NumCluster*(100+max_tolerance)/100, 0))
@@ -94,7 +94,10 @@ def main(input_proj_fc, output_fc, max_tolerance):
 			input_area = float(record['AREA_HA'])
 			c_spacing = round(0.95*(math.sqrt(input_area*10000/input_NumCluster)),4)
 			if c_spacing < 40.0:
-				raise Exception("ProjectID %s: Project area is too small for the desired number of clusters. Minimum spacing of 40m cannot be achieved."%proj_id)
+				arcpy.AddWarning("ProjectID %s: Project area is too small for the desired number of clusters. Minimum spacing of 40m cannot be achieved."%proj_id)
+				# skip this record and move on to the next record
+				continue
+				# raise Exception("ProjectID %s: Project area is too small for the desired number of clusters. Minimum spacing of 40m cannot be achieved."%proj_id)
 
 			# if this spacing doesn't give us desired number of clusters, we will make adjustments to the spacing until we get it right.
 			found_solution = False
@@ -269,7 +272,7 @@ def get_NumCluster(area_ha):
 		num_cluster = round(30 + area_ha/2 ,0)
 	elif area_ha > 30.0:
 		num_cluster = round(area_ha ,0)
-	elif area_ha > 8.0:
+	elif area_ha > 7.9:
 		num_cluster = 30
 	else:
 		num_cluster = 0

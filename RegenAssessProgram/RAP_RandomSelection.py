@@ -1,4 +1,4 @@
-version = '2.0'
+version = '2022.05'
 # Area-capped and area-weighted random block selection tool.
 # Area-capped means instead of selecting a target number of records, the tool selects 
 # 	a number of record until the sum of the selected area meets the target area.
