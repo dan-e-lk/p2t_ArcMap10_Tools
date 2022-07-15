@@ -97,6 +97,16 @@ def rand_sample_rec(lyr, no_of_random_selections=10):
     all_sample = [row.getValue("OBJECTID") for row in arcpy.SearchCursor(lyr, fields="OBJECTID")]
 
     sample_set = str(tuple(set(random.sample(all_sample, no_of_random_selections))))
+
+        # Check to see that the results of the where_clause YIELD assignment
+    # http://desktop.arcgis.com/en/arcmap/10.6/tools/data-management-toolbox/select-layer-by-attribute.htm
+    #      NEW_SELECTION - The resulting selection replaces any existing selection. This is the default.
+    #      ADD_TO_SELECTION - The resulting selection is added to an existing selection if one exists. If no selection exists, this is the same as the NEW_SELECTION option.
+    #      REMOVE_FROM_SELECTION - The resulting selection is removed from an existing selection. If no selection exists, this option has no effect.
+    #      SUBSET_SELECTION - The resulting selection is combined with the existing selection. Only records that are common to both remain selected.
+    #      SWITCH_SELECTION - Switches the selection. All records that were selected are removed from the selection; all records that were not selected are added to the selection. The Expression is ignored when this option is specified.
+    #      CLEAR_SELECTION - Clears or removes any selection. The Expression is ignored when this option is specified.
+
     arcpy.SelectLayerByAttribute_management(lyr, "NEW_SELECTION", "OBJECTID In " + sample_set)
 
 
