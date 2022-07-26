@@ -120,6 +120,7 @@ NER_GLSL_SFU = {
 
 # fields required: POLYTYPE, Ecosite_GeoRangeAndNumber, (STKG or OSTKG) and (OSC or SC)
 # edited from ("SB"+"SR"+"SX">=70) to ("SB"+"SR"+"SX">=80) 2018 03 23 Sam N.
+# This SQL 100% matches with Kun's OSPCOMP (eFRI) tool
 
 #   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated
 

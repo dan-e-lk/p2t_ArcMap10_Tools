@@ -16,7 +16,7 @@ arcpy.AddMessage("Done with adding all the fields!")
 FullSpecieslist.extend(("SFU",SCfield,ObjectIDField,PolyTypeField,STKG,forestCompField,"OH","PS","SN","CR","MX","OC","OX","PX"))
 for specie in NewAddedSpecies:
     arcpy.AddField_management(fc, specie, "FLOAT")
-    #arcpy.CalculateField_management(fc, specie, 0)
+    arcpy.CalculateField_management(fc, specie, 0) # uncommented this line
 expression = arcpy.AddFieldDelimiters(fc,PolyTypeField) + " = 'FOR'"
 cursor = arcpy.da.UpdateCursor(fc,FullSpecieslist,expression)
 for row in cursor:

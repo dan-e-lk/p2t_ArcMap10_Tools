@@ -72,7 +72,7 @@ def main(jsonfilename):
 	print(json_data) # {u'proj_descr': u'<description...>', u'unique_id': {u'1': {u'path': u'//lrcpsoprfp00001/mnr_ner/GI_MGMT/Tools/Scripts/FMPTools_2017/FMP_SpatialData_Compiler/TestData/Gordon_Cosens/FMP/2020/_data/FMP_Schema.gdb', u'inv_type': u'PCI', u'inv_name': u'Gordon Cosens', u'inv_descr': u"<This is used to describe the input for the inventory in 'path'>"}, ...
 
 	output_folder = json_data['output_folder']
-	inv_class = json_data['inv_class'] # the only inventory class available now is bmi.
+	inv_class = json_data['inv_class'] 
 
 	date_today = datetime.datetime.now().strftime('%Y-%m-%d') # eg. '2018-29-09'
 	unique_suffix = datetime.datetime.now().strftime('%Y%m%d%H%M') # eg. '201801181529'
