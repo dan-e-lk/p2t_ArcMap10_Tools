@@ -41,14 +41,17 @@ def main(inputfc, outputfc, forestunittype, OSCfield = "OSC", OSTKGfield = "OSTK
     arcpy.AddMessage("Script source: " + os.path.abspath(__file__))
 
     # based on forest unit type, different SQL dictionary will be used
-    typeLookup = {  "NER Boreal SFU": "libSQL.NER_Boreal_SFU", # Dec 2018 version
-                    "NER Boreal SFU old": "libSQL.NER_Boreal_SFU_old", # Jan 2018 version
-                    "NER GLSL SFU": "libSQL.NER_GLSL_SFU",      # NE_GL_SFU
-                    "NER Boreal SFU TN021":"libSQL.NER_Boreal_SFU_TN021",
-                    "NER Boreal SFU SubAU":"libSQL.NER_Boreal_SubAU",
-                    "NER Boreal SFU Abitibi": "libSQL.NER_Boreal_SFU_Abitibi", # Abitibi only
-                    "Eco3E Seven Spc Groups":"libSQL.IMF_3E_proof_of_concept_7_spp" # This is being applied for eFRI compilation for all province.
-                    }
+    typeLookup = {"NER Boreal SFU TN021"    : "libSQL.NER_Boreal_SFU_TN021",   # Original official version
+                  "NER Boreal SFU"          : "libSQL.NER_Boreal_SFU",         # Original official version
+                  "NER Boreal SFU Nsiah"    : "libSQL.NER_Boreal_SFU_Nsiah ",  # Dec 2018 version, by Sam Nsiah
+                  "NER GLSL SFU"            : "libSQL.NER_GLSL_SFU",           # Original official version
+                  "NER_GLSL_SFU_Nsiah"      : "libSQL.NER_GLSL_SFU_Nsiah",         # Mar 2018 version, by Sam Nsiah. Matches "Kun's tool".
+                  "NER Boreal SFU old"      : "libSQL.NER_Boreal_SFU_old",     # Not sure what this is (delete?), but it is a Jan 2018 version
+                  "NER Boreal SFU SubAU"    : "libSQL.NER_Boreal_SubAU",       
+                  "NER Boreal SFU Abitibi"  : "libSQL.NER_Boreal_SFU_Abitibi", # Abitibi only
+                  "Eco3E Seven Spc Groups"  : "libSQL.IMF_3E_proof_of_concept_7_spp", # This is being applied for eFRI compilation for all province.
+                  "NER Boreal Revised SFU 2019 v9" : "libSQL.NER_Boreal_Revised_SFU_2019_v9" # Growth and Yield Program, NER SFU revision project (Todd Little, John Parton)
+                  }
     fuType = eval(typeLookup[forestunittype])
 
     # examining existing fields - Need POLYTYPE field and at least one of SC or OSC field

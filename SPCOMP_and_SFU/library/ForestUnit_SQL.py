@@ -26,34 +26,40 @@
 #                               Not Null" type interpretations in SQL criteria suite
 #   2018-01-23  littleto    Elaborte on script comments throughout.
 #
+#   2022-10-19  littleto    Daniel and I have been using git for several years
+#                               now, and the above comments can be cleaned up
+#                               after the next commit.
 #-------------------------------------------------------------------------------
 
 # Ground rules when altering the SQLs below:
 # 1. Use OSC for site class, OSTKG for stocking, and AGE for age. The end user will have an option to replace the OSC with SC.
 # 2. If you add a whole new dictionary, you need to also change the Populate_ForestUnit's typeLookup dictionary (and also add the new option to the user interface)
 # 3. Use _Or and _By instead of Or and By.
+# 4. Do not change the official original version of SQL statements
 
 
-
+# Original version verified by Todd Little (2022-10-19 10:28)
 NER_Boreal_SFU_TN021 = {
 
-# This is intended to be the unchanged/uninterpreted SQL criteria of Table 1 of the NESI Technical Note TN-021.
+# This is intended to be the unchanged/uninterpreted SQL criteria of Table 1
+# of the NESI Technical Note TN-021.
 # This dictionary should be considered immutable.
-## Parton, J., S Vasiliauskas, G. Lucking, and W. R. Watt. 2006. Standard Forest Units for Northeastern
-## Ontario Boreal Forests. OMNR, Northeast Science and Information Unit, NESI Technical Note TN-021. 23 p.
+# Parton, J., S Vasiliauskas, G. Lucking, and W. R. Watt. 2006. Standard Forest
+# Units for Northeastern Ontario Boreal Forests. OMNR, Northeast Science and
+# Information Unit, NESI Technical Note TN-021. 23 p.
 
 # fields required: POLYTYPE, either OSC or SC, and Age
 
 #   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated
 
-    1:  ['PR1',     """ ("Pr">= 70) And <user_defined_sfu_field_name> Is Null """, ""],
+    1:  ['PR1',     """ ("Pr" >= 70) And <user_defined_sfu_field_name> Is Null """, ""],
     2:  ['PW1',     """ ("Pw" + "Pr" + "Sw" + "He" >= 40 And "Pw" >= 30) And <user_defined_sfu_field_name> Is Null """, ""],
     3:  ['PRW',     """ ("Pw" + "Pr" >= 40) And <user_defined_sfu_field_name> Is Null """, ""],
     4:  ['LH1',     """ (("Ab" + "Ew" + "Pb") >= 30 Or "Pb" >=30) And <user_defined_sfu_field_name> Is Null """, ""],
     5:  ['TH1',     """ (("Ab" + "Ew" + "Pb") + "Mh" + ("_By" + "Mr") + "He" >= 30) And <user_defined_sfu_field_name> Is Null """, ""],
     6:  ['SBOG',    """ (("Sb" + "La") >= 70 And "Pw"=0 And "OSC" = 4) And <user_defined_sfu_field_name> Is Null """, ""],
     7:  ['SB1',     """ (("Sb" >= 80) And "Mh" + ("_By" + "Mr") + "Pr" = 0 And "Pw" + "Pj" <= 10) And <user_defined_sfu_field_name> Is Null """, ""],
-    8:  ['PJ1',     """ (("Pj" >= 70 And "Po" + "Bw" + ("_By" + "Mr") + "Mh" + ("Ab" + "Ew" + "Pb") <= 20) Or ("Pj" >= 50 And ("Pj" + "Sb" + "Bf" + "Sw" + "He" + "Pw" + "Pr" + "Ce" + "La" >= 70) And "AGE" >=120)) And <user_defined_sfu_field_name> Is Null """, ""],
+    8:  ['PJ1',     """ (("Pj" >= 70 And "Po" + "Bw" + ("_By" + "Mr") + "Mh" + ("Ab" + "Ew" + "Pb") <= 20) Or ("Pj" >= 50 And ("Pj" + "Sb" + "Bf" + "Sw" + "He" + "Pw" + "Pr" + "Ce" + "La" >= 70) And "Age" >=120)) And <user_defined_sfu_field_name> Is Null """, ""],
     9:  ['LC1',     """ (("Sb" + "Ce" + "La" >= 80) And "Mh" + ("_By" + "Mr") +"Pr" = 0 and "Pw" + "Pj" <= 10) And <user_defined_sfu_field_name> Is Null """, ""],
     10: ['PJ2',     """ (("Pj" + "Sb" + "Pr" >= 70 Or ("Pj" + "Pr" + "Pw" >= 50 And "Pj" + "Sb" + "Bf" + "Sw" + "He" + "Pw" + "Pr" + "Ce" + "La" >=70)) And "Pj" + "Pr" + "Pw" >= "Sb") And <user_defined_sfu_field_name> Is Null """, ""],
     11: ['SP1',     """ ("Sb" + "Sw" + "Bf" + "Ce" + "La" + "Pw" + "Pj" + "Pr" + "He" >=70 And ("Bf" + "Ce" + "Sw" + "He" <= 20 Or "Pj" + "Pr" >= 30)) And <user_defined_sfu_field_name> Is Null """, ""],
@@ -77,8 +83,42 @@ NER_Boreal_SFU_TN021 = {
 # }
 
 
-# Revised in Dec 2018 (older version is commented out down below) Sam Nsiah
+# Original version verified by Todd Little (2022-10-19 10:28)
 NER_Boreal_SFU = {
+# tbl_lut_FU_Boreal_NER_SQLs.xlsx!NER_Boreal_SFUs_TN0xx_170607
+#  This is the original Ken Lennon version of the NER Voreal revised SFUs. A version
+#  of the criteria promoted by Ken for the Hearst 2017 FMP, White River 2018 FMP,
+#  and the Romeo Malette 2019 FMPs, when the Provincial Ecological Land
+#  Classification (ELC) ecosites are applied.
+
+# fields required: POLYTYPE, Ecosite_GeoRangeAndNumber and either OSC or SC
+
+#   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated
+
+    1:  ['PR1',     """ ("Pr" >= 70) And <user_defined_sfu_field_name> Is Null """,            ""],
+    2:  ['PW1',     """ ("Pw" + "Pr" + ("Sw" + "Sx") + "He" >= 40 And "Pw" >= 30) And <user_defined_sfu_field_name> Is Null """,           ""],
+    3:  ['PRW',     """ ("Pw" + "Pr" >= 40) And <user_defined_sfu_field_name> Is Null """,         ""],
+    4:  ['LH1',     """ ((("Ab" + "Ew" + "Pb") >= 30 Or "Pb" >=40 )) And <user_defined_sfu_field_name> Is Null """,            """AND ("Ecosite_GeoRangeAndNumber" in ('B130', 'B131')) """],
+    5:  ['TH1',     """ (("Ab" + "Ew" + "Pb") + "Mh" + ("Pl" + "_By" + "Mr") + "He" >= 30) And <user_defined_sfu_field_name> Is Null """,          ""],
+    6:  ['SBOG',    """ (("Sb" + "La" + ("Ce" + "Cw") >= 70) And "OSC" = 4) And <user_defined_sfu_field_name> Is Null """,         """AND ("Ecosite_GeoRangeAndNumber" in ('B126', 'B136', 'B137'))"""],
+    7:  ['SB1',     """ (("Sb" >= 70)) And <user_defined_sfu_field_name> Is Null """,          """AND "Ecosite_GeoRangeAndNumber" in ('B126', 'B127', 'B128', 'B129', 'B222', 'B223', 'B224')"""],
+    8:  ['PJ1',     """ (("Pj" >= 70)) And <user_defined_sfu_field_name> Is Null """,          """AND "Ecosite_GeoRangeAndNumber" in ('B012', 'B034', 'B035', 'B049', 'B050')"""],
+    9:  ['LC1',     """ ((("Ce" + "Cw") + "La" + "Sb" >= 70)) And <user_defined_sfu_field_name> Is Null """,           """AND ("Ecosite_GeoRangeAndNumber" in ('B127', 'B128', 'B129', 'B222', 'B223', 'B224'))"""],
+    10: ['PJ2',     """ (("Pj" + "Sb" + "Pr" >= 70 Or ("Pj" >= 50 And "Pj" + "Sb" + "Bf" + ("Sw" + "Sx") + "He" + "Pw" + "Pr" + ("Ce" + "Cw") + "La" >=70)) And "Pj" >= "Sb") And <user_defined_sfu_field_name> Is Null """,           ""],
+    11: ['SP1',     """ ("Sb" + ("Sw" + "Sx") + "Bf" + ("Ce" + "Cw") + "La" + "Pw" + "Pj" + "Pr" + "He" >=70 And ("Bf" + ("Ce" + "Cw") + "Pw" + "La" + ("Sw" + "Sx") + "He" <= 20 Or "Pj" >= 30)) And <user_defined_sfu_field_name> Is Null """,           ""],
+    12: ['SF1',     """ ("Sb" + ("Sw" + "Sx") + "Bf" + ("Ce" + "Cw") + "La" + "Pw" + "Pj" + "Pr" + "He" >= 70) And <user_defined_sfu_field_name> Is Null """,          ""],
+    13: ['PO1',     """ (("Po" + "Pt") + "Bw" + "Mh" + ("Pl" + "_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 70 And ("Po" + "Pt") >= 50) And <user_defined_sfu_field_name> Is Null """,          ""],
+    14: ['BW1',     """ (("Po" + "Pt") + "Bw" + "Mh" + ("Pl" + "_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 70) And <user_defined_sfu_field_name> Is Null """,          ""],
+    15: ['MH1',     """ ((("Bf" <= 20 And ("Sw" + "Sx") <= 20 And ("Ce" + "Cw") <= 20) And ("Po" + "Pt") + "Bw" + "Mh" + ("Pl" + "_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 50)) And <user_defined_sfu_field_name> Is Null """,           """AND ("Ecosite_GeoRangeAndNumber" in ('B016', 'B019', 'B028', 'B040', 'B043', 'B055', 'B059', 'B070', 'B076'))"""],
+    16: ['MC1',     """ (("Bf" <= 20 And ("Sw" + "Sx") <= 20 And ("Ce" + "Cw") <= 20)) And <user_defined_sfu_field_name> Is Null """,           """AND ("Ecosite_GeoRangeAndNumber" in ('B012', 'B014', 'B035', 'B037', 'B050', 'B052', 'B053', 'B065', 'B067', 'B068'))"""],
+    17: ['MH2',     """ (("Po" + "Pt") + "Bw" + "Mh" + ("Pl" + "_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 50) And <user_defined_sfu_field_name> Is Null """,          ""],
+    18: ['MC2',     """ ("POLYTYPE" = 'FOR') And <user_defined_sfu_field_name> Is Null """,            ""]
+
+}
+
+
+# Revised in Dec 2018 (older version is commented out down below) Sam Nsiah
+NER_Boreal_SFU_Nsiah = {
 
 # fields required: POLYTYPE, Ecosite_GeoRangeAndNumber and either OSC or SC
 # Note that OSC field and OSTKG field can be replaced by user choice.
@@ -115,8 +155,43 @@ NER_Boreal_SFU = {
 }
 
 
-# Depricated
+# Original version verified by Todd Little (2022-10-19 10:28)
 NER_GLSL_SFU = {
+
+# fields required: POLYTYPE, Ecosite_GeoRangeAndNumber, (STKG or OSTKG) and (OSC or SC)
+
+#   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated
+
+    1:  ['PR',     """ ("Pr">=70 and "Pw"<30) And <user_defined_sfu_field_name> Is Null """, ""],
+    2:  ['PWUS4',  """ ("Pw"+"Pr">=50 and "Pw">"Pr" and (("Pw"+"Pr")*"OSTKG" >=0.30) and ("_Or"+"OB"+"Ow") < 20) And <user_defined_sfu_field_name> Is Null """, ""],
+    3:  ['PWOR',   """ (("Pw"+"Pr"+"_Or"+"OB"+"Ow">=50) and "Pw">=("_Or"+"OB"+"Ow") and ("Pw"+"Pr"+"_Or"+"OB"+"Ow")*"OSTKG" >=0.30 and ("_Or"+"OB"+"Ow")>=20) And <user_defined_sfu_field_name> Is Null """, ""],
+    4:  ['PWUSC',  """ (("Pw"+"Pr">=30 AND ("Pw"+"Pr")*"OSTKG" >=0.30 )  OR  ( ("Pw">="He" AND "Pw">="Sw") AND "Pw">("Ce" + "Cw") AND "Pw">="_Or" AND "Pw"+"Pr" >=30 AND ("Pw"+"Pr"+"Sw"+"He"+"_Or"+"Pj"+"Ce"+"Cw")*"OSTKG" >=0.30 AND ("Pw"+"Pr"+"Pj"+"Sw"+"Sb"+"Sr"+"Sx"+"He"+"Bf"+"Ce"+"Cw"+"La")>=80 )) And <user_defined_sfu_field_name> Is Null """, ""],
+    5:  ['PWUSH',  """ (("Pw">="Pr" AND "Pw"+"Pr">=30 AND ("Pw"+"Pr")*"OSTKG" >=0.30 )  OR  ( "Pw">="Pr" AND "Pw">="He" AND "Pw">="Sw" AND "Pw">("Ce" + "Cw") AND "Pw">="_Or" AND ("Pw"+"Pr") >=30 AND ("Pw"+"Pr"+"Sw"+"He"+"_Or"+"Pj"+"Ce"+"Cw")*"OSTKG" >=0.30 AND ("Pw"+"Pr"+"Pj"+"Sw"+"Sr"+"Sx"+"Sb"+"He"+"Bf"+"Ce"+"Cw"+"La")<80 )) And <user_defined_sfu_field_name> Is Null """, ""],
+    6:  ['PWST',   """ (("PW"+"PR">=30) AND ("PW"+"PR">="HE") AND ("PW"+"PR">="SW") AND ("PW"+"PR">="SB"+"SR"+"SX") AND ("PW"+"PR">=("CE"+"CW")) AND ("PW"+"PR">="_OR")) And <user_defined_sfu_field_name> Is Null """, ""],
+    7:  ['PJ1',    """ (("PJ">=70) AND ("MH"+"AB"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"PO"+"Pt"+"Pb"+"Pl"+"BW"+"MR"+"MS"+"AX"+"CB"+"EX"+"HI"+"BN"<=20)) And <user_defined_sfu_field_name> Is Null """, ""],
+    8:  ['PJ2',    """ (((("PJ"+"SB"+"SR"+"SX"+"PR">=70) OR (("PJ">=50) AND ("PJ"+"SB"+"SR"+"SX"+"BF"+"SW"+"HE"+"PW"+"PR"+"CE"+"CW"+"LA">=70) AND ("BF"+"SW"+"HE"+"PW"+"CE"+"CW"+"LA"<=20))) AND ("PJ">="SB"+"SR"+"SX"))) And <user_defined_sfu_field_name> Is Null """, ""],
+    9:  ['HE',     """ ("He">=40) And <user_defined_sfu_field_name> Is Null """, ""],
+    10: ['CE',     """ (("CE"+"CW">=40) AND (("CE"+"CW")>="SB"+"SR"+"SX"+"LA"+"BF") AND ("OW"+"Ob"+"EW"+"IW"+"CH"+"MH"+"AB"+"AW"+"BD"+"BE"+"_OR"+"_BY"+"PO"+"Pb"+"Pt"+"Pl"+"BW"+"MR"+"MS"+"EX"+"CB"+"AX"+"HI"+"BN"<30)) And <user_defined_sfu_field_name> Is Null """, """ AND "Ecosite_GeoRangeAndNumber" In ('G127', 'G128', 'G129', 'G222', 'G223', 'G224', 'G136', 'B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'B136') """],
+    11: ['SB',     """ (("SB"+"SR"+"SX">=80) AND ("MH"+"AW"+"BD"+"BE"+"CH"+"IW"+"_OR"+"OW"+"Ob"+"_BY"+"PR"+"BN"+"HI"+"CB"=0) AND ("PW"+"PJ"<=10)) And <user_defined_sfu_field_name> Is Null """, """ and "Ecosite_GeoRangeAndNumber" In ('G127', 'G128', 'G129', 'G222', 'G223', 'G224', 'G136', 'B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'B136') """],
+    12: ['LC',     """ (("SB"+"SX"+"SR"+"CE"+"CW"+"LA">=80) AND ("MH"+"AW"+"BD"+"BE"+"CH"+"IW"+"_OR"+"OW"+"Ob"+"_BY"+"PR"+"CB"+"HI"+"BN"=0) AND ("PW"+"PJ"<=10))  And <user_defined_sfu_field_name> Is Null """, """AND "Ecosite_GeoRangeAndNumber" In ('G127', 'G128', 'G129', 'G222', 'G223', 'G224', 'G136', 'B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'B136') """],
+    13: ['SP1',    """ (("SB"+"SW"+"SR"+"SX"+"BF"+"CE"+"CW"+"LA"+"PW"+"PJ"+"PR"+"HE">=70) AND (("BF"+"CE"+"CW"+"PW"+"LA"+"SW"+"HE"<=20) OR ("PJ">=30))) And <user_defined_sfu_field_name> Is Null """, ""],
+    14: ['SF',     """ (("SW"+"SR"+"SB"+"SX"+"PW"+"PR"+"PJ"+"BF"+"CE"+"CW"+"LA"+"HE">=70)) And <user_defined_sfu_field_name> Is Null """, ""],
+    15: ['BY',     """ ("_By">=40) And <user_defined_sfu_field_name> Is Null """, ""],
+    16: ['OAK',    """ (("_OR">="MH"+"BE") AND ("_OR">=30) AND ("_OR"+"MH"+"AW"+"AB"+"BE"+"BD"+"_BY"+"PW"+"PR"+"SW"+"HE"+"AX">=40)) And <user_defined_sfu_field_name> Is Null """, ""],
+    17: ['HDSL2',  """ ((("BD"+"AW"+"CH"+"_OR"+"OW"+"Ob"+"CB">=30) OR (("BE"+"_OR"+"OW"+"Ob">=30) OR ("BE">=20)))) And <user_defined_sfu_field_name> Is Null """, ""],
+    18: ['HDSL1',  """ (("MH"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"HE"+"EX"+"CB">=50) AND ("PO"+"Pt"+"Pb"+"Pl"+"BW"+"BF"<=30) AND ("OSC" <= 2)) And <user_defined_sfu_field_name> Is Null """, ""],
+    19: ['LWMW',   """ (("CE"+"CW"+"AB"+"LA"+"SB"+"AX"+"SR"+"SX">=30) AND (("AB"+"AX">=20) OR ("AB"+"AX"+"MR"+"MS"+"_BY">=30))) And <user_defined_sfu_field_name> Is Null """, """AND "Ecosite_GeoRangeAndNumber" In ('G071', 'G120', 'G130', 'G131', 'G132', 'G133', 'B071', 'B120', 'B130', 'B131', 'B132', 'B133') """],
+    20: ['HDUS',   """ (("MH"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"HE"+"CB"+"HI"+"EX"+"BN">=50)) And <user_defined_sfu_field_name> Is Null """, ""],
+    21: ['PO',     """ (("PO"+"Pt"+"Pb"+"Pl">=50) AND ("MH"+"AB"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"PO"+"Pb"+"Pt"+"Pl"+"BW"+"MR"+"MS"+"AX"+"BN"+"CB"+"EX"+"HI">=70)) And <user_defined_sfu_field_name> Is Null """, ""],
+    22: ['BW',     """ (("PO"+"Pt"+"Pb"+"Pl"+"BW">=50) AND ("MH"+"AB"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"PO"+"Pt"+"Pb"+"Pl"+"BW"+"MR"+"MS"+"AX"+"BN"+"CB"+"EX"+"HI">=70))  And <user_defined_sfu_field_name> Is Null """, ""],
+    23: ['MWUS',   """ ((("SW"+"PW"+"PR"+"CE"+"CW"+"MH"+"_BY"+"AW"+"CH"+"BD"+"_OR"+"OW"+"Ob"+"IW"+"BE"+"HE"+"CB"+"HI"+"BN")*"OSTKG">=0.30)) And <user_defined_sfu_field_name> Is Null """, ""],
+    24: ['MWD',    """ ("PJ"+"PW"+"PR">=20) And <user_defined_sfu_field_name> Is Null """, ""],
+    25: ['MWR',    """ ("POLYTYPE" = 'FOR') And <user_defined_sfu_field_name> Is Null """, ""]
+}
+
+
+# Depricated
+NER_GLSL_SFU_Nsiah = {
 
 # fields required: POLYTYPE, Ecosite_GeoRangeAndNumber, (STKG or OSTKG) and (OSC or SC)
 # edited from ("SB"+"SR"+"SX">=70) to ("SB"+"SR"+"SX">=80) 2018 03 23 Sam N.
@@ -150,9 +225,6 @@ NER_GLSL_SFU = {
     24: ['MWD',    """ ("PJ"+"PW"+"PR">=20) And <user_defined_sfu_field_name> Is Null """, ""],
     25: ['MWR',    """ ("POLYTYPE" = 'FOR') And <user_defined_sfu_field_name> Is Null """, ""]
 }
-
-
-
 
 
 # Jan 2018 verion:
@@ -285,7 +357,6 @@ NER_Boreal_SFU_Abitibi = {
 }
 
 
-
 IMF_3E_proof_of_concept_7_spp = {
 # IMF 3E Proof of concept 6 species groups (email Dave Morris 2018-05-24 10:46; attachements (3))
 #  This is interpretation of the the "6 species compositional groups" from the email attachments.
@@ -307,9 +378,144 @@ IMF_3E_proof_of_concept_7_spp = {
 
 
 
+# Original version verified by Todd Little (2022-10-19 10:28)
+# Ontario Growth and Yield Program, "NER SFU Revision project".
+NER_Boreal_Revised_SFU_2019_v9 = {
+
+# This is intended to be the second interpretation of the Ken Lennon's and Aklilu Yietagesu's NER SFU revision paper, with the changes discussed with Dave Etheridge and John Parton
+# This version also address the species codes encountered in the compiled northeastern region (NER) enhanced forest resource inventory (EFRI; aka LIO pforest).
+#  Sc to Sb
+#  Ps to Pj
+#  Bp to Bw
+#  Sn to Sw
+#  Be to upland hardwoods
+#  Bl to upland hardwoods
+#  Add the Great Lakes St. Lawrence ELC Ecosites geographic range letter code for ecosites: "G". Peter Uhlig confirmed that for me that the numbers represent the site the letter refers
+#  the plant community associations of the geographic range.
+#
+# Adjusted ecosite relative to and informed by 'NER_Boreal_Revised_SFU_2018_v2'
+# Adjusted LH1 to ensure that '"Pb" >=40' was not overridden by the pre 'Or' statement as in TN-021
+#
+# Include only species identified as relevent to NER Boreal Area: ..\NER pforest only dataset\analysis_spp_reference.xlsx
+#  Remove   + ("Sn")
+#           + "He"
+#           + "_Sc"
+#           + ("Be" + "Bl")
+#           + "Ps"
+#           + ("Bp")
+#  2018-08-08
+#
+#  Change LH1 "Pb" >=40 back to >=30 as in the original TN-021
+#  Remove the Pb from TH1, Pb is not a shade tolerant species.
+#  2018-08-16
+#
+#  Change the LH1 SQL back to the original from TN-021 (remove ecosite contraints), and less the extra Pb > 30 which is redundant
+#  2018-08-19
+#
+#  Changes based on the notes from the meetings with Stan Vasiliauskas and John Parton ca 2019-09
+#  2019-04-01
+#  See mon-p:NER SFU revision v6:review of output using new SFUs
+#  fields required: POLYTYPE, Ecosite_GeoRangeAndNumber, (STKG or OSTKG) and (OSC or SC)
+#
+#  Additional changes for the discussion with John Parton ca. 2019-08
+#      Refer to mon-p NER SFU Revision Project review of the v7 criteria
+#
+#      These changes require the manipulation for the ecosite variable, so that it is infact a required parameter now.
+#
+#      *** Use Ecosite or "useecosite == 'true'" in Poplulate_ForestUnit.py is now required due to the format of the following SQL statements ***
+#
+# Changes continued from notes from the meetings with Stan Vasiliauskas and John Parton ca 2019-09, and add notes from John Parton meeting 2019-10-07
+#      Refer to mon-p NER SFU Revision Project review of the v8 criteria
+#
+#      All relevent: Add largetooth aspen (Pl) to all criteria with Po and Pt: "Po" + "Pt" becomes "Po" + "Pt" + "Pl" (email John Parton 2019-10-11 0913)
+#
+#      PW1: Add alternative to the OSTKG >=0.60
+#
+#      LH1: Add Mr and _By to the criteria
+#
+#      TH1: Add He to the criteria
+
+
+# fields required: POLYTYPE, Ecosite_GeoRangeAndNumber and either OSC or SC
+
+#   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated               | SFU Descriptive Name
+
+    1:  ['PR1',     """ ("Pr" >= 70) And <user_defined_sfu_field_name> Is Null """,            "",            """ Red pine, plantations """],
+    2:  ['PW1',     """ (("Pw" + "Pr" + "He" + ("Sw" + "Sx") >= 40 And "Pw" >= 30) And ((("Pw" + "Pr" + "_Or" + "Ow" + "He" + "Sr" + "Sw" + ("Hi" + "Hl" + "Hm" + "Hp" + "Hs"))/100) * "STKG" * 44 >= 12.0)) And <user_defined_sfu_field_name> Is Null """,           "",            """White pine, shelterwood"""],
+    3:  ['PRW',     """ (("Pw" + "Pr" + "He" + ("Sw" + "Sx") >= 40) And ("Pw" + "Pr" >= 30)) And <user_defined_sfu_field_name> Is Null """,         "",            """Red and white pine"""],
+
+    #  Note that in LH1 the ecosite is no longer in its own element of the dictionary. It is withing the primary sql element. This hasn't been done before. It is not explicit that ecosite is required for this sql set elsewhere in the script (2019-08-28)
+    4:  ['LH1',     """ ((("Ab" + "Ew" + "Pb" + "Mr" + "_By") >= 30) And (("Ab" + "Ew" + "_By" >= 20) Or ("Ecosite_GeoRangeAndNumber" in ('B119', 'B120', 'B123', 'B129', 'B130', 'B131', 'B133', 'G119', 'G120', 'G123', 'G129', 'G130', 'G131', 'G133'))) Or ("Pb" >= 70)) And <user_defined_sfu_field_name> Is Null """,          "",            """Lowland Hardwood"""],
+
+
+    5:  ['TH1',     """ (("Ab" + "Ew") + "Mh" + ("_By" + "Mr") + "He" >= 30) And <user_defined_sfu_field_name> Is Null """,          "",             """Tolerant Hardwoods"""],
+
+    # Note that in SBOG the ecosite is no longer in its own element of the dictionary. It is within the primary sql element. This hasn't been done before. It is not explicit that ecosite is required for this sql set elsewhere in the script (2019-08-23)
+    6:  ['SBOG',    """ (("Sb" + "La" + ("Ce" + "Cw") >= 70) And ((("OSC" = 4) And ("Ecosite_GeoRangeAndNumber" in ('B126', 'B136','B137',  'G126', 'G136', 'G137'))))) And <user_defined_sfu_field_name> Is Null """,            "",             """Black spruce, bog"""],
+
+    # Note that SB1 Ab (black ash) is now less than 10%, and ecosite 126 is no longer an eligible ecosite.
+    # Added 129 and 224 ecosites to put emphasis on the species composition and site class, when site are >80%Sb and NOT SC=4. 
+    #  Preventing stands from becoming LC1. More confident the site is lowland and black spruce, but the ecosite classification was not correct. 
+    #  This decision reflects the importance-confidence of species in the forest unit classification.
+    7:  ['SB1',     """ ((("Sb" >= 80)) And ("Ab" <= 10)  AND "Ecosite_GeoRangeAndNumber" in ('B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'G127', 'G128', 'G129', 'G222', 'G223', 'G224')) And <user_defined_sfu_field_name> Is Null """,          "",             """Black spruce, lowland"""],
+
+    8:  ['PJ1',     """ (((("Pj" >= 70) And (("Po" + "Pt") + "Bw" + ("_By" + "Mr") + "Mh" + ("Ab" + "Ew" + "Pb") <= 20)) And "Ecosite_GeoRangeAndNumber" in ('B012', 'B033', 'B034', 'B035', 'B048', 'B049', 'B050', 'G012', 'G033', 'G034', 'G035',  'G048', 'G049', 'G050')) Or ("Pj" >= 90)) And <user_defined_sfu_field_name> Is Null """,          "",             """Jack pine, pure"""],
+    9:  ['LC1',     """ ((("Ce" + "Cw") + "La" + "Sb" + "Bf" + "Sw">= 70) AND ("Ecosite_GeoRangeAndNumber" in ('B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'B136', 'B137', 'G127', 'G128', 'G129', 'G222', 'G223', 'G224', 'G136', 'G137'))) And <user_defined_sfu_field_name> Is Null """,           "",            """Lowland conifer"""],
+    
+    # Changed Pj >= 50 to Pj >=30 (2019-12-05). See mon-p
+    10: ['PJ2',     """ ((("Pj" + "Sb" + "Pr" + "Pw" >= 70) Or ("Pj" >= 30 And "Pj" + "Sb" + "Bf" + ("Sw" + "Sx") + "Pw" + "Pr" + ("Ce" + "Cw") + "La" >=70)) And (("Pj" + "Pw" + "Pr") >= ("Sb" + ("Sw" + "Sx") + ("Ce" + "Cw")))) And <user_defined_sfu_field_name> Is Null """,           "",             """Jack pine black spruce"""],
+    11: ['SP1',     """ (("Sb" + ("Sw" + "Sx") + "Bf" + ("Ce" + "Cw") + "La" + "Pw" + "Pj" + "Pr" + "He">=70) And (("Bf" + ("Ce" + "Cw") + "Pw" + ("Sw" + "Sx") + "He" <= 20) Or ("Pj" + "Pr" + "La" >= 30)))  And <user_defined_sfu_field_name> Is Null """,           "",            """Spruce, upland"""],
+    12: ['SF1',     """ ("Sb" + ("Sw" + "Sx") + "Bf" + ("Ce" + "Cw") + "La" + "Pw" + "Pj" + "Pr" >= 70) And <user_defined_sfu_field_name> Is Null """,          ""],
+    13: ['PO1',     """ ((("Po" + "Pt" + "Pl") + "Bw" + "Mh" + ("_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 70) And (("Po" + "Pt" + "Pl" + "Pb") >= 50)) And <user_defined_sfu_field_name> Is Null """,          "",            """Poplar"""],
+    14: ['BW1',     """ (("Po" + "Pt" + "Pl") + "Bw" + "Mh" + ("_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 70) And <user_defined_sfu_field_name> Is Null """,          "",            """White birch"""],
+    15: ['MH1',     """ (((("Bf" <= 20 And ("Sw" + "Sx") <= 20 And ("Ce" + "Cw") <= 20) And ("Po" + "Pt" + "Pl") + "Bw" + "Mh" + ("_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 50) And ("Pj" + "Pr" <= 50 And "Pj" + "Pr" >= 20)) AND ("Ecosite_GeoRangeAndNumber" in ('B016', 'B019', 'B028', 'B040', 'B043', 'B055', 'B059', 'B070', 'B076',  'G016', 'G019', 'G028', 'G040', 'G043', 'G055', 'G059', 'G070', 'G076'))) And <user_defined_sfu_field_name> Is Null """,           "",            """Mixedwood hardwood fresh coarse"""],
+    16: ['MC1',     """ ((("Bf" <= 20 And ("Sw" + "Sx") <= 20 And ("Ce" + "Cw") <= 20 And ("Pj" + "Pr" + "La") >= 20) AND ("Ecosite_GeoRangeAndNumber" in ('B012', 'B014', 'B035', 'B037', 'B038', 'B050', 'B052', 'B053', 'B065', 'B067', 'B068',  'G012', 'G014', 'G035', 'G037', 'G037', 'G050', 'G052', 'G053', 'G065', 'G067', 'G068')))  Or ("Pj" + "Pr" >= 50)) And <user_defined_sfu_field_name> Is Null """,           "",             """Mixedwood conifer fresh coarse"""],
+    17: ['MH2',     """ (("Po" + "Pt" + "Pl") + "Bw" + "Mh" + ("_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 50) And <user_defined_sfu_field_name> Is Null """,          "",            """Mixedwood hardwood moist fine"""],
+    18: ['MC2',     """ ("Sb" + ("Sw" + "Sx") + "Bf" + ("Ce" + "Cw") + "La" + "Pw" + "Pj" + "Pr" > 50) And <user_defined_sfu_field_name> Is Null """,          "",            """Mixedwood conifer moist fine"""],
+    19: ['UDF',     """ ("POLYTYPE" = 'FOR') And <user_defined_sfu_field_name> Is Null """,            "",            """Undefined"""]
+
+}
+
+
+
+NWR_Boreal_SFU = {
+# Northwest Region Standard Forest Units (email Rob Bowen 2018-03-29 13:00; attachements (3))
+#  This is the latest information for the Northwest Region Standard forest units as of 2018-03-29 13:00.
+
+#  fields required: POLYTYPE, Ecosite_GeoRangeAndNumber, (STKG or OSTKG) and (OSC or SC)
+
+#   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated               | SFU Descriptive Name
+
+    1:  ['PwDom',  """ ("Pw" >= 40) And <user_defined_sfu_field_name> Is Null """,                                       "",     """White Pine Dominant"""],
+    2:  ['PrDom',  """ ("Pr" >= 70) And <user_defined_sfu_field_name> Is Null """,                                       "",     """Red Pine Dominant"""],
+    3:  ['PrwMx',  """ ("Pw" + "Pr" >= 40) And <user_defined_sfu_field_name> Is Null """,                                "",     """Red and White Pine Mix"""],
+    4:  ['UplCe',  """ (((("Cw" + "Ce") >= 20) AND ("Ecosite_GeoRangeAndNumber" in ('B013', 'B036', 'B051', 'B066', 'B084', 'B100', 'B115'))) Or ((("Cw" + "Ce") >= 40 And "Bf" <= 10) And (("Pr" + "Pw" + "Pj" + "Sw" + "Bf" + "Po") >= 20) And (("Pj" + "Pr" + "Pw" + "Sb" + "Sw" + "La" + "Cw" + "Bf" + "He") >= 70) AND NOT (("Ecosite_GeoRangeAndNumber" in ('B126', 'B127', 'B128', 'B129', 'B134', 'B135', 'B136', 'B137', 'B222', 'B223', 'B224')) Or ("Ecosite_GeoRangeAndNumber" in ('B130', 'B131', 'B132', 'B133'))))) And <user_defined_sfu_field_name> Is Null  """,       "",       """Upland Cedar"""],
+    5:  ['OCLow',  """ (((("Cw" + "Ce") + "La") >=50) Or ("OLEADSPC" in ('Cw', 'La'))) And <user_defined_sfu_field_name> Is Null """,                      """AND ("Ecosite_GeoRangeAndNumber" in ('B126', 'B127', 'B128', 'B129', 'B134', 'B135', 'B136', 'B137', 'B222', 'B223', 'B224')) """,       """Other Conifer Lowland"""],
+    6:  ['SbLow',  """ (("Ecosite_GeoRangeAndNumber" in ('B126', 'B127', 'B128', 'B129', 'B134', 'B135', 'B136', 'B137', 'B222', 'B223', 'B224')) Or (("Ecosite_GeoRangeAndNumber" in ('B130', 'B131', 'B132', 'B133')) And (("Pr" + "Pw" + "Pj" + "Sb" + "Sw" + "La" + ("Cw" + "Ce") + "Bf") > (("Po" + "Pt") + "Bw" + ("Mh" + "Mr" + "Ms" + "Mx" + "Ob" + "_Or" + "Ox") + ("Ab" + "Ew" + "Pb"))))) And <user_defined_sfu_field_name> Is Null """,     "",     """Black Spruce Lowland"""],
+    7:  ['SbSha',  """ (("Sb" >= 70) And (("Po" + "Pt") + "Bw" <=20)) And <user_defined_sfu_field_name> Is Null """,     """AND ("Ecosite_GeoRangeAndNumber" in ('B011', 'B012', 'B014', 'B015', 'B016', 'B017', 'B018', 'B019', 'B023', 'B024', 'B025', 'B026', 'B027', 'B028')) """,      """Black Spruce Shallow"""],
+    8:  ['SbDee',  """ (("Sb" >= 70) And (("Po" + "Pt") + "Bw" <=20)) And <user_defined_sfu_field_name> Is Null """,     "",         """Black Spruce Deep"""],
+    9:  ['PjSha',  """ ((("Pj" >= 70) And (("Po" + "Pt") + "Bw" <=20)) Or (("Pj" >= 50) And (("Po" + "Pt") + "Bw" <=20) And ("Age" >=120))) And <user_defined_sfu_field_name> Is Null """,   """AND ("Ecosite_GeoRangeAndNumber" in ('B011', 'B012', 'B014', 'B015', 'B016', 'B017', 'B018', 'B019', 'B023', 'B024', 'B025', 'B026', 'B027', 'B028')) """ ,     """Jack Pine Shallow"""],
+    10: ['PjDee',  """ ((("Pj" >= 70) And (("Po" + "Pt") + "Bw" <=20)) Or (("Pj" >= 50) And (("Po" + "Pt") + "Bw" <=20) And ("Age" >=120)) Or ("Pj" >=70 AND ("Ecosite_GeoRangeAndNumber" in ('B034', 'B035')))) And <user_defined_sfu_field_name> Is Null """,   "",     """Jack Pine Deep"""],
+    11: ['PoSha',  """ (("Po" + "Pt") >= 70) And <user_defined_sfu_field_name> Is Null """,      """AND ("Ecosite_GeoRangeAndNumber" in ('B011', 'B012', 'B014', 'B015', 'B016', 'B017', 'B018', 'B019', 'B023', 'B024', 'B025', 'B026', 'B027', 'B028')) """,     """Poplar Shallow"""],
+    12: ['PoDee',  """ (("Po" + "Pt") >= 70) And <user_defined_sfu_field_name> Is Null """,                              "",     """Poplar Deep"""],
+    13: ['BwSha',  """ (("Bw" >= 60) And (("Po" + "Pt") + "Bw" >=70)) And <user_defined_sfu_field_name> Is Null """,    """AND ("Ecosite_GeoRangeAndNumber" in ('B011', 'B012', 'B014', 'B015', 'B016', 'B017', 'B018', 'B019', 'B023', 'B024', 'B025', 'B026', 'B027', 'B028')) """,     """Birch Shallow"""],
+    14: ['BwDee',  """ (("Bw" >= 60) And (("Po" + "Pt") + "Bw" >=70)) And <user_defined_sfu_field_name> Is Null """,                    "",     """Birch Deep"""],
+    15: ['OthHd',  """ ((("Po" + "Pt") + "Bw" + ("Mh" + "Mr" + "Ms" + "Ob" + "_Or") + ("Ab" + "Ew" + "Pb")) >= 30) And <user_defined_sfu_field_name> Is Null """,        "",     """Other Hardwood"""],
+    16: ['SbMx1',  """ ((("Pr" + "Pw" + "Pj" + "Sb" + "Sw" + "La" + ("Cw" + "Ce") + "Bf") >= 70) And ("Bf" <= 10) And (("Po" + "Pt") + "Bw" <= 20) And (("Sb" + "Sw") > "Pj") And (("Sb" + "Sw" + "Pj") >=40)) And <user_defined_sfu_field_name> Is Null """,     "",     """Black Spruce Dominant Conifer Mix"""],
+    17: ['PjMx1',  """ ((("Pr" + "Pw" + "Pj" + "Sb" + "Sw" + "La" + ("Cw" + "Ce") + "Bf") >= 70) And ("Bf" <= 10) And (("Po" + "Pt") + "Bw" <= 20) And (("Sb" + "Sw") <= "Pj") And (("Sb" + "Sw" + "Pj") >=40)) And <user_defined_sfu_field_name> Is Null """,     "",     """Jack Pine Dominant Conifer Mix"""],
+	18: ['BfPur',  """ ("Bf" >= 70) And <user_defined_sfu_field_name> Is Null """,                    "",     """Balsam Fir Pure"""],
+	19: ['BfMx1',  """ ((("Pr" + "Pw" + "Pj" + "Sb" + "Sw" + "La" + ("Cw" + "Ce") + "Bf") >= 70) And ("Bf" > 10) And (("Bf" + "Sw") >=30)) And <user_defined_sfu_field_name> Is Null """,                    "",     """Balsam Fir Conifer Mix"""],
+	20: ['HdDom',  """ ((("Po" + "Pt") + "Bw" + ("Mh" + "Mr" + "Ms" + "Mx" + "Ob" + "_Or" + "Ox") + ("Ab" + "Ew" + "Pb")) >= 70) And <user_defined_sfu_field_name> Is Null """,                    "",     """Hardwood Dominant"""],
+	21: ['HdMix',  """ ((("Po" + "Pt") + "Bw" + ("Mh" + "Mr" + "Ms" + "Mx" + "Ob" + "_Or" + "Ox") + ("Ab" + "Ew" + "Pb")) >= 50) And <user_defined_sfu_field_name> Is Null """,                    "",     """Hardwood Mix"""],
+	22: ['ConMx',  """ (("Pr" + "Pw" + "Pj" + "Sb" + "Sw" + "La" + ("Cw" + "Ce") + "Bf") >= 50) And <user_defined_sfu_field_name> Is Null """,                    "",     """"""],
+
+
+#  : ['',       """ () And <user_defined_sfu_field_name> Is Null """,                    "",     """"""],
+#  : ['UDF',    """ ("POLYTYPE" = 'FOR') And <user_defined_sfu_field_name> Is Null """,  "",     """"""],
+
+}
+
 
 if __name__ == '__main__':
     for k,v in NER_GLSL_SFU.iteritems():
         print('%s: %s'%(v[0],v[1]+v[2]))
-
-
