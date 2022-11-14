@@ -31,6 +31,10 @@ AR_new = {
                                                             'REPLACE','REVIEW','ROADID','TRANS'],                   'point',    '4.3.10']
         }
 
+# for lyr, info in AR_new.items():
+#     print ('"%s","%s","%s"'%(lyr, info[0][2:], info[2]))
+
+
 # AR_old = {
 # # Lyr acronym            name                           mandatory fields                                            Data Type   Tech Spec       Tech Spec URL
 

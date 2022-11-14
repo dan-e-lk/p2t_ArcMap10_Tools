@@ -1,0 +1,29 @@
+Use this if you need to create a new field and fill that field with incremental integers starting at "1" or starting at any integer you specify.
+
+Steps:
+- Open the attribute table and create a new field - Long Integer.
+- Go to Field Calculator
+- In Field Calculator...
+	Parser = python
+	Check the Show Codeblock checkbox
+	Enter the following script under "Pre-logic Script Code"
+
+rec=0
+def autoIncrement(pStart=1):
+  global rec
+  pInterval = 1
+  if (rec == 0):
+    rec = pStart
+  else:
+    rec += pInterval
+  return rec
+
+	*Don't change the pStart value in the above script.
+	Enter the following script in the box below
+
+autoIncrement(pStart=1)
+
+	Note that you can set pStart to any integer of your choice.
+
+Done!
+

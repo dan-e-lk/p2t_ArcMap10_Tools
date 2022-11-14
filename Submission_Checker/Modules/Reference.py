@@ -412,8 +412,8 @@ if __name__ == '__main__':
     # print(summary)
     # print(error_list)
 
-    for k, v in static_db.items():
-        print('%s, %s'%(k,v[0]))
+    # for k, v in static_db.items():
+    #     print('%s, %s'%(k,v[0]))
 
 
     # findPDF('FIM_AWS_TechSpec_2017.pdf#page=50')
