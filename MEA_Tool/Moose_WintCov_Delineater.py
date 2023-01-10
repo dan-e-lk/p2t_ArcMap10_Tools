@@ -19,7 +19,7 @@ import os, re
 # from library import ForestUnit_SQL as libSQL
 
 
-def main(inputfc, outputfc, newfieldname, Value1, SQL1, Value2, SQL2, Value3, SQL3, Value4, SQL4, Value5, SQL5):
+def main(inputfc, outputfc, newfieldname, Value1, SQL1, Value2, SQL2, Value3, SQL3, Value4, SQL4, Value5, SQL5, exclude_SQL):
 
     ##### examining inputs...
 
@@ -46,6 +46,8 @@ def main(inputfc, outputfc, newfieldname, Value1, SQL1, Value2, SQL2, Value3, SQ
                     pass
 
     arcpy.AddMessage("\nUser SQL inputs as follows:\n%s"%sql_dict)
+    if len(exclude_SQL.strip()) > 1:
+        arcpy.AddMessage("\nWith the exception of the following area (exclusion from Winter Cover):\n%s"%exclude_SQL)
 
     ##### done with examining inputs.
 
@@ -98,6 +100,21 @@ def main(inputfc, outputfc, newfieldname, Value1, SQL1, Value2, SQL2, Value3, SQ
     arcpy.SelectLayerByAttribute_management("templyr", "CLEAR_SELECTION")
 
 
+    # New in 2023, we've included extra SQL parameter. Areas corresponding to this SQL will be excluded from being winter cover
+    if len(exclude_SQL.strip()) > 1:
+        arcpy.AddMessage("\nExcluding the area with the following SQL from the Winter Cover selection:\n%s"%exclude_SQL)
+        exclude_SQL += ' AND %s IS NOT NULL'%newfieldname
+        try:
+            arcpy.SelectLayerByAttribute_management("templyr", "NEW_SELECTION", exclude_SQL)
+        except:
+            arcpy.AddError("\nERROR while calculating %s.\nPlease double check the following SQL:\n%s"%(value, exclude_SQL))
+            raise Exception("\nCheck your SQLs and try again.")
+
+        arcpy.CalculateField_management("templyr", newfieldname, "'Excluded from Winter Cover'", "PYTHON_9.3")
+        # clear selection
+        arcpy.SelectLayerByAttribute_management("templyr", "CLEAR_SELECTION")
+
+
 
 
 
@@ -116,9 +133,10 @@ if __name__ == '__main__':
     Value4= str(arcpy.GetParameterAsText(9))  # 'LVLC'        
     SQL4 = str(arcpy.GetParameterAsText(10))  # ("CE"+"HE"+"BF"+"SW") < ("PW"+"PJ"+"PR"+"SB") AND ("PW"+"PJ"+"PR"+"SB"+"CE"+"HE"+"BF"+"SW")* "OCCLO"/100 >= 30 AND ("PW"+"PJ"+"PR"+"SB"+"CE"+"HE"+"BF"+"SW")* "OCCLO"/100 < 60 AND "HT" >= 10
     Value5= str(arcpy.GetParameterAsText(11))          
-    SQL5 = str(arcpy.GetParameterAsText(12)) 
+    SQL5 = str(arcpy.GetParameterAsText(12))
+    exclude_SQL = str(arcpy.GetParameterAsText(13)) # new in 2023 - by default CE + CW > 0 AND SC in (3,4) AND (PRI_ECO LIKE '%129%' OR PRI_ECO LIKE '%224%')
 
     # arcpy.AddMessage('%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n'%(inputfc, outputfc, newfieldname, Value1, SQL1, Value2, SQL2, Value3, SQL3, Value4, SQL4, Value5, SQL5))
 
-    main(inputfc, outputfc, newfieldname, Value1, SQL1, Value2, SQL2, Value3, SQL3, Value4, SQL4, Value5, SQL5)
+    main(inputfc, outputfc, newfieldname, Value1, SQL1, Value2, SQL2, Value3, SQL3, Value4, SQL4, Value5, SQL5, exclude_SQL)
 
