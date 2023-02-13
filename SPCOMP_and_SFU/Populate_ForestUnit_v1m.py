@@ -74,7 +74,7 @@ def main(inputfc, outputfc, forestunittype, OSCfield = "OSC", OSTKGfield = "OSTK
             raise Exception("DEVSTAGE field is required to populate NER Boreal SFU.")
 
     # Copy the feature class to the ouput location
-    arcpy.AddMessage("Copying the input the the output location...")
+    arcpy.AddMessage("Copying the input to the output location...")
     outpath = os.path.split(outputfc)[0]
     outname = os.path.split(outputfc)[1]
     arcpy.FeatureClassToFeatureClass_conversion(inputfc,outpath,outname)
