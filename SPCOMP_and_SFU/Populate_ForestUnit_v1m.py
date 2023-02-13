@@ -50,7 +50,8 @@ def main(inputfc, outputfc, forestunittype, OSCfield = "OSC", OSTKGfield = "OSTK
                   "NER Boreal SFU SubAU"    : "libSQL.NER_Boreal_SubAU",       
                   "NER Boreal SFU Abitibi"  : "libSQL.NER_Boreal_SFU_Abitibi", # Abitibi only
                   "Eco3E Seven Spc Groups"  : "libSQL.IMF_3E_proof_of_concept_7_spp", # This is being applied for eFRI compilation for all province.
-                  "NER Boreal Revised SFU 2019 v9" : "libSQL.NER_Boreal_Revised_SFU_2019_v9" # Growth and Yield Program, NER SFU revision project (Todd Little, John Parton)
+                  "NER Boreal Revised SFU 2019 v9" : "libSQL.NER_Boreal_Revised_SFU_2019_v9", # Growth and Yield Program, NER SFU revision project (Todd Little, John Parton)
+                  "NER Boreal Revised SFU 2019 v9 ROD2023" : "libSQL.NER_Boreal_Revised_SFU_2019_v9_ROD2023", # Sam's version
                   }
     fuType = eval(typeLookup[forestunittype])
 

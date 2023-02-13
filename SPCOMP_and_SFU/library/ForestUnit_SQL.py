@@ -478,6 +478,63 @@ NER_Boreal_Revised_SFU_2019_v9 = {
 
 
 
+NER_Boreal_Revised_SFU_2019_v9_ROD2023 = {
+
+# This SQL will use Ecosite whether you check the "Use Ecosite" checkbox or not on the ArcMap's user interface.
+# Another change is that we added MWD (Balsam Fir leading Mixedwood) and changed STKG to OSTKG (if we have OSTKG then it can be replaced with STKG through the user interface)
+# fields required: POLYTYPE, STKG or OSTKG) Ecosite_GeoRangeAndNumber and either OSC or SC
+
+#   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated               | SFU Descriptive Name
+
+    1:  ['PR1',     """ ("Pr" >= 70) And <user_defined_sfu_field_name> Is Null """,            "",            """ Red pine, plantations """],
+    2:  ['PW1',     """ (("Pw" + "Pr" + "He" + ("Sw" + "Sx") >= 40 And "Pw" >= 30) And ((("Pw" + "Pr" + "_Or" + "Ow" + "He" + "Sr" + "Sw" + ("Hi" + "Hl" + "Hm" + "Hp" + "Hs"))/100) * "OSTKG" * 44 >= 12.0)) And <user_defined_sfu_field_name> Is Null """,           "",            """White pine, shelterwood"""],
+    3:  ['PRW',     """ (("Pw" + "Pr" + "He" + ("Sw" + "Sx") >= 40) And ("Pw" + "Pr" >= 30)) And <user_defined_sfu_field_name> Is Null """,         "",            """Red and white pine"""],
+
+    #  Note that in LH1 the ecosite is no longer in its own element of the dictionary. It is withing the primary sql element. This hasn't been done before. It is not explicit that ecosite is required for this sql set elsewhere in the script (2019-08-28)
+    4:  ['LH1',     """ ((("Ab" + "Ew" + "Pb" + "Mr" + "_By") >= 30) And (("Ab" + "Ew" + "_By" >= 20) Or ("Ecosite_GeoRangeAndNumber" in ('B119', 'B120', 'B123', 'B129', 'B130', 'B131', 'B133', 'G119', 'G120', 'G123', 'G129', 'G130', 'G131', 'G133'))) Or ("Pb" >= 70)) And <user_defined_sfu_field_name> Is Null """,          "",            """Lowland Hardwood"""],
+
+
+    5:  ['TH1',     """ (("Ab" + "Ew") + "Mh" + ("_By" + "Mr") + "He" >= 30) And <user_defined_sfu_field_name> Is Null """,          "",             """Tolerant Hardwoods"""],
+
+    # Note that in SBOG the ecosite is no longer in its own element of the dictionary. It is within the primary sql element. This hasn't been done before. It is not explicit that ecosite is required for this sql set elsewhere in the script (2019-08-23)
+    6:  ['SBOG',    """ (("Sb" + "La" + ("Ce" + "Cw") >= 70) And ((("OSC" = 4) And ("Ecosite_GeoRangeAndNumber" in ('B126', 'B136','B137',  'G126', 'G136', 'G137'))))) And <user_defined_sfu_field_name> Is Null """,            "",             """Black spruce, bog"""],
+
+    # Note that SB1 Ab (black ash) is now less than 10%, and ecosite 126 is no longer an eligible ecosite.
+    # Added 129 and 224 ecosites to put emphasis on the species composition and site class, when site are >80%Sb and NOT SC=4. 
+    #  Preventing stands from becoming LC1. More confident the site is lowland and black spruce, but the ecosite classification was not correct. 
+    #  This decision reflects the importance-confidence of species in the forest unit classification.
+    7:  ['SB1',     """ ((("Sb" >= 80)) And ("Ab" <= 10)  AND "Ecosite_GeoRangeAndNumber" in ('B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'G127', 'G128', 'G129', 'G222', 'G223', 'G224')) And <user_defined_sfu_field_name> Is Null """,          "",             """Black spruce, lowland"""],
+
+    8:  ['PJ1',     """ (((("Pj" >= 70) And (("Po" + "Pt") + "Bw" + ("_By" + "Mr") + "Mh" + ("Ab" + "Ew" + "Pb") <= 20)) And "Ecosite_GeoRangeAndNumber" in ('B012', 'B033', 'B034', 'B035', 'B048', 'B049', 'B050', 'G012', 'G033', 'G034', 'G035',  'G048', 'G049', 'G050')) Or ("Pj" >= 90)) And <user_defined_sfu_field_name> Is Null """,          "",             """Jack pine, pure"""],
+    9:  ['LC1',     """ ((("Ce" + "Cw") + "La" + "Sb" + "Bf" + "Sw">= 70) AND ("Ecosite_GeoRangeAndNumber" in ('B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'B136', 'B137', 'G127', 'G128', 'G129', 'G222', 'G223', 'G224', 'G136', 'G137'))) And <user_defined_sfu_field_name> Is Null """,           "",            """Lowland conifer"""],
+    
+    # Changed Pj >= 50 to Pj >=30 (2019-12-05). See mon-p
+    10: ['PJ2',     """ ((("Pj" + "Sb" + "Pr" + "Pw" >= 70) Or ("Pj" >= 30 And "Pj" + "Sb" + "Bf" + ("Sw" + "Sx") + "Pw" + "Pr" + ("Ce" + "Cw") + "La" >=70)) And (("Pj" + "Pw" + "Pr") >= ("Sb" + ("Sw" + "Sx") + ("Ce" + "Cw")))) And <user_defined_sfu_field_name> Is Null """,           "",             """Jack pine black spruce"""],
+    11: ['SP1',     """ (("Sb" + ("Sw" + "Sx") + "Bf" + ("Ce" + "Cw") + "La" + "Pw" + "Pj" + "Pr" + "He">=70) And (("Bf" + ("Ce" + "Cw") + "Pw" + ("Sw" + "Sx") + "He" <= 20) Or ("Pj" + "Pr" + "La" >= 30)))  And <user_defined_sfu_field_name> Is Null """,           "",            """Spruce, upland"""],
+    12: ['SF1',     """ ("Sb" + ("Sw" + "Sx") + "Bf" + ("Ce" + "Cw") + "La" + "Pw" + "Pj" + "Pr" >= 70) And <user_defined_sfu_field_name> Is Null """,          ""],
+    13: ['PO1',     """ ((("Po" + "Pt" + "Pl") + "Bw" + "Mh" + ("_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 70) And (("Po" + "Pt" + "Pl" + "Pb") >= 50)) And <user_defined_sfu_field_name> Is Null """,          "",            """Poplar"""],
+    14: ['BW1',     """ (("Po" + "Pt" + "Pl") + "Bw" + "Mh" + ("_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 70) And <user_defined_sfu_field_name> Is Null """,          "",            """White birch"""],
+    15: ['MH1',     """ (((("Bf" <= 20 And ("Sw" + "Sx") <= 20 And ("Ce" + "Cw") <= 20) And ("Po" + "Pt" + "Pl") + "Bw" + "Mh" + ("_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 50) And ("Pj" + "Pr" <= 50 And "Pj" + "Pr" >= 20)) AND ("Ecosite_GeoRangeAndNumber" in ('B016', 'B019', 'B028', 'B040', 'B043', 'B055', 'B059', 'B070', 'B076',  'G016', 'G019', 'G028', 'G040', 'G043', 'G055', 'G059', 'G070', 'G076'))) And <user_defined_sfu_field_name> Is Null """,           "",            """Mixedwood hardwood fresh coarse"""],
+    16: ['MC1',     """ ((("Bf" <= 20 And ("Sw" + "Sx") <= 20 And ("Ce" + "Cw") <= 20 And ("Pj" + "Pr" + "La") >= 20) AND ("Ecosite_GeoRangeAndNumber" in ('B012', 'B014', 'B035', 'B037', 'B038', 'B050', 'B052', 'B053', 'B065', 'B067', 'B068',  'G012', 'G014', 'G035', 'G037', 'G037', 'G050', 'G052', 'G053', 'G065', 'G067', 'G068')))  Or ("Pj" + "Pr" >= 50)) And <user_defined_sfu_field_name> Is Null """,           "",             """Mixedwood conifer fresh coarse"""],
+    17: ['MH2',     """ (("Po" + "Pt" + "Pl") + "Bw" + "Mh" + ("_By" + "Mr") + ("Ab" + "Ew" + "Pb") >= 50) And <user_defined_sfu_field_name> Is Null """,          "",            """Mixedwood hardwood moist fine"""],
+    18: ['MC2',     """ ("Sb" + ("Sw" + "Sx") + "Bf" + ("Ce" + "Cw") + "La" + "Pw" + "Pj" + "Pr" > 50) And <user_defined_sfu_field_name> Is Null """,          "",            """Mixedwood conifer moist fine"""],
+    19: ['UDF',     """ ("POLYTYPE" = 'FOR') And <user_defined_sfu_field_name> Is Null """,            "",            """Undefined"""]
+
+    22: ['SB1',     """ ("POLYTYPE" = 'FOR' And <user_defined_sfu_field_name> Is Null) """,            """OR (<user_defined_sfu_field_name> = 'SP1' AND "Ecosite_GeoRangeAndNumber" IN ('B126', 'B127', 'B128', 'B129', 'B136', 'B222', 'B223', 'B224'))"""], # The reason why I included the seemingly unnecessary first part of the SQL is because the tool has an option to NOT use Ecosite. if the user decides not to use Ecosite, only the first part of the SQL will be used and it will basically select nothing.
+    23: ['LC1',     """ ("POLYTYPE" = 'FOR' And <user_defined_sfu_field_name> Is Null) """,            """OR (<user_defined_sfu_field_name> = 'SF1' AND "Ecosite_GeoRangeAndNumber" IN ('B126', 'B127', 'B128', 'B129', 'B136', 'B222', 'B223', 'B224'))"""],
+
+    26: ['SB3',     """ <user_defined_sfu_field_name> = 'SB1' AND "OSC" = 3 """, ""],
+    26: ['MWD',     """ <user_defined_sfu_field_name> in ('MH1','MH2','MC1','MC2') AND "Bf" > 20 """,   "",     "Balsam Fir leading Mixedwood"],
+
+    28: ['SP1',    """ (<user_defined_sfu_field_name> = 'SB1' AND "DEVSTAGE" in('NEWPLANT','ESTPLANT')) """,            ""],
+    29: ['SP1',    """ (<user_defined_sfu_field_name> = 'SF1' AND "DEVSTAGE" in('NEWPLANT','ESTPLANT') AND ("Bf" + "La" <=20)) """,            ""],
+
+
+}
+
+
+
+
 NWR_Boreal_SFU = {
 # Northwest Region Standard Forest Units (email Rob Bowen 2018-03-29 13:00; attachements (3))
 #  This is the latest information for the Northwest Region Standard forest units as of 2018-03-29 13:00.
