@@ -522,15 +522,12 @@ NER_Boreal_Revised_SFU_2019_v9_ROD2023 = {
 
     22: ['SB1',     """ ("POLYTYPE" = 'FOR' And <user_defined_sfu_field_name> Is Null) """,            """OR (<user_defined_sfu_field_name> = 'SP1' AND "Ecosite_GeoRangeAndNumber" IN ('B126', 'B127', 'B128', 'B129', 'B136', 'B222', 'B223', 'B224'))"""], # The reason why I included the seemingly unnecessary first part of the SQL is because the tool has an option to NOT use Ecosite. if the user decides not to use Ecosite, only the first part of the SQL will be used and it will basically select nothing.
     23: ['LC1',     """ ("POLYTYPE" = 'FOR' And <user_defined_sfu_field_name> Is Null) """,            """OR (<user_defined_sfu_field_name> = 'SF1' AND "Ecosite_GeoRangeAndNumber" IN ('B126', 'B127', 'B128', 'B129', 'B136', 'B222', 'B223', 'B224'))"""],
-
-    26: ['SB3',     """ <user_defined_sfu_field_name> = 'SB1' AND "OSC" = 3 """, ""],
-    26: ['MWD',     """ <user_defined_sfu_field_name> in ('MH1','MH2','MC1','MC2') AND "Bf" > 20 """,   "",     "Balsam Fir leading Mixedwood"],
+    24: ['LH1',     """ (<user_defined_sfu_field_name> in ('TH1','PO1','BW1','MH1','MH2'') AND "Ecosite_GeoRangeAndNumber" in ('B130','B131')) """,           ""],
 
     28: ['SP1',    """ (<user_defined_sfu_field_name> = 'SB1' AND "DEVSTAGE" in('NEWPLANT','ESTPLANT')) """,            ""],
     29: ['SP1',    """ (<user_defined_sfu_field_name> = 'SF1' AND "DEVSTAGE" in('NEWPLANT','ESTPLANT') AND ("Bf" + "La" <=20)) """,            ""],
 
 
-}
 
 
 

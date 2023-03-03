@@ -1,3 +1,5 @@
+# this script works best with Shapefiles
+
 fc = arcpy.GetParameterAsText(0)
 forestCompField = arcpy.GetParameterAsText(1)
 PolyTypeField = arcpy.GetParameterAsText(2)

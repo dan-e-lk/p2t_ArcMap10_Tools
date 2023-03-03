@@ -1,10 +1,12 @@
-# Only SR folks should touch this!
+# Only SR folks should touch this! So Hands off Todd!
 
-SR_GLSL_SFU = {
+SR_GLSL_LG_SFU = {
 
-# this SQL is owned by Glen Watt - talk to him if you have issues with it.
+# This SQL should match with OLT Land definition
+# this SQL is owned by Glen Watt and Rob Keron - talk to him if you have issues with it.
+# This code matches Kun's tool, OLT and MIST.
+# Highly recommended to use STKG instead of OSTKG - unless you know what you are doing.
 # fields required: POLYTYPE, Ecosite_GeoRangeAndNumber, (STKG or OSTKG) and (OSC or SC)
-
 
 #   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated
 
@@ -17,16 +19,16 @@ SR_GLSL_SFU = {
     7:  ['PJ1',    """ (("PJ">=70) AND ("MH"+"AB"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"PO"+"Pt"+"Pb"+"Pl"+"BW"+"MR"+"MS"+"AX"+"CB"+"EX"+"HI"+"BN"<=20)) And <user_defined_sfu_field_name> Is Null """, ""],
     8:  ['PJ2',    """ (((("PJ"+"SB"+"SR"+"SX"+"PR">=70) OR (("PJ">=50) AND ("PJ"+"SB"+"SR"+"SX"+"BF"+"SW"+"HE"+"PW"+"PR"+"CE"+"CW"+"LA">=70) AND ("BF"+"SW"+"HE"+"PW"+"CE"+"CW"+"LA"<=20))) AND ("PJ">="SB"+"SR"+"SX"))) And <user_defined_sfu_field_name> Is Null """, ""],
     9:  ['HE',     """ ("He">=40) And <user_defined_sfu_field_name> Is Null """, ""],
-    10: ['CE',     """ (("CE"+"CW">=40) AND (("CE"+"CW")>="SB"+"SR"+"SX"+"LA"+"BF") AND ("OW"+"Ob"+"EW"+"IW"+"CH"+"MH"+"AB"+"AW"+"BD"+"BE"+"_OR"+"_BY"+"PO"+"Pb"+"Pt"+"Pl"+"BW"+"MR"+"MS"+"EX"+"CB"+"AX"+"HI"+"BN"<30)) And <user_defined_sfu_field_name> Is Null """, """ AND "Ecosite_GeoRangeAndNumber" In ('G127', 'G128', 'G129', 'G222', 'G223', 'G224', 'G136', 'B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'B136') """],
-    11: ['SB',     """ (("SB"+"SR"+"SX">=80) AND ("MH"+"AW"+"BD"+"BE"+"CH"+"IW"+"_OR"+"OW"+"Ob"+"_BY"+"PR"+"BN"+"HI"+"CB"=0) AND ("PW"+"PJ"<=10)) And <user_defined_sfu_field_name> Is Null """, """ and "Ecosite_GeoRangeAndNumber" In ('G127', 'G128', 'G129', 'G222', 'G223', 'G224', 'G136', 'B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'B136') """],
-    12: ['LC',     """ (("SB"+"SX"+"SR"+"CE"+"CW"+"LA">=80) AND ("MH"+"AW"+"BD"+"BE"+"CH"+"IW"+"_OR"+"OW"+"Ob"+"_BY"+"PR"+"CB"+"HI"+"BN"=0) AND ("PW"+"PJ"<=10))  And <user_defined_sfu_field_name> Is Null """, """AND "Ecosite_GeoRangeAndNumber" In ('G127', 'G128', 'G129', 'G222', 'G223', 'G224', 'G136', 'B127', 'B128', 'B129', 'B222', 'B223', 'B224', 'B136') """],
+    10: ['CE',     """ (("CE"+"CW">=40) AND (("CE"+"CW")>="SB"+"SR"+"SX"+"LA"+"BF") AND ("OW"+"Ob"+"EW"+"IW"+"CH"+"MH"+"AB"+"AW"+"BD"+"BE"+"_OR"+"_BY"+"PO"+"Pb"+"Pt"+"Pl"+"BW"+"MR"+"MS"+"EX"+"CB"+"AX"+"HI"+"BN"<30)) And <user_defined_sfu_field_name> Is Null """, ""],
+    11: ['SB',     """ (("SB"+"SR"+"SX">=80) AND ("MH"+"AW"+"BD"+"BE"+"CH"+"IW"+"_OR"+"OW"+"Ob"+"_BY"+"PR"+"BN"+"HI"+"CB"=0) AND ("PW"+"PJ"<=10)) And <user_defined_sfu_field_name> Is Null """, ""],
+    12: ['LC',     """ (("SB"+"SX"+"SR"+"CE"+"CW"+"LA">=80) AND ("MH"+"AW"+"BD"+"BE"+"CH"+"IW"+"_OR"+"OW"+"Ob"+"_BY"+"PR"+"CB"+"HI"+"BN"=0) AND ("PW"+"PJ"<=10))  And <user_defined_sfu_field_name> Is Null """, ""],
     13: ['SP1',    """ (("SB"+"SW"+"SR"+"SX"+"BF"+"CE"+"CW"+"LA"+"PW"+"PJ"+"PR"+"HE">=70) AND (("BF"+"CE"+"CW"+"PW"+"LA"+"SW"+"HE"<=20) OR ("PJ">=30))) And <user_defined_sfu_field_name> Is Null """, ""],
     14: ['SF',     """ (("SW"+"SR"+"SB"+"SX"+"PW"+"PR"+"PJ"+"BF"+"CE"+"CW"+"LA"+"HE">=70)) And <user_defined_sfu_field_name> Is Null """, ""],
     15: ['BY',     """ ("_By">=40) And <user_defined_sfu_field_name> Is Null """, ""],
     16: ['OAK',    """ (("_OR">="MH"+"BE") AND ("_OR">=30) AND ("_OR"+"MH"+"AW"+"AB"+"BE"+"BD"+"_BY"+"PW"+"PR"+"SW"+"HE"+"AX">=40)) And <user_defined_sfu_field_name> Is Null """, ""],
     17: ['HDSL2',  """ ((("BD"+"AW"+"CH"+"_OR"+"OW"+"Ob"+"CB">=30) OR (("BE"+"_OR"+"OW"+"Ob">=30) OR ("BE">=20)))) And <user_defined_sfu_field_name> Is Null """, ""],
     18: ['HDSL1',  """ (("MH"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"HE"+"EX"+"CB">=50) AND ("PO"+"Pt"+"Pb"+"Pl"+"BW"+"BF"<=30) AND ("OSC" <= 2)) And <user_defined_sfu_field_name> Is Null """, ""],
-    19: ['LWMW',   """ (("CE"+"CW"+"AB"+"LA"+"SB"+"AX"+"SR"+"SX">=30) AND (("AB"+"AX">=20) OR ("AB"+"AX"+"MR"+"MS"+"_BY">=30))) And <user_defined_sfu_field_name> Is Null """, """AND "Ecosite_GeoRangeAndNumber" In ('G071', 'G120', 'G130', 'G131', 'G132', 'G133', 'B071', 'B120', 'B130', 'B131', 'B132', 'B133') """],
+    19: ['LWMW',   """ (("CE"+"CW"+"AB"+"LA"+"SB"+"AX"+"SR"+"SX">=30) AND (("AB"+"AX">=20) OR ("AB"+"AX"+"MR"+"MS"+"_BY">=30))) And <user_defined_sfu_field_name> Is Null """, ""],
     20: ['HDUS',   """ (("MH"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"HE"+"CB"+"HI"+"EX"+"BN">=50)) And <user_defined_sfu_field_name> Is Null """, ""],
     21: ['PO',     """ (("PO"+"Pt"+"Pb"+"Pl">=50) AND ("MH"+"AB"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"PO"+"Pb"+"Pt"+"Pl"+"BW"+"MR"+"MS"+"AX"+"BN"+"CB"+"EX"+"HI">=70)) And <user_defined_sfu_field_name> Is Null """, ""],
     22: ['BW',     """ (("PO"+"Pt"+"Pb"+"Pl"+"BW">=50) AND ("MH"+"AB"+"AW"+"BD"+"BE"+"CH"+"EW"+"IW"+"_OR"+"_BY"+"OW"+"Ob"+"PO"+"Pt"+"Pb"+"Pl"+"BW"+"MR"+"MS"+"AX"+"BN"+"CB"+"EX"+"HI">=70))  And <user_defined_sfu_field_name> Is Null """, ""],
