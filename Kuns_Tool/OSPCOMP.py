@@ -21,6 +21,12 @@ for specie in NewAddedSpecies:
     arcpy.CalculateField_management(fc, specie, 0) # uncommented this line
 expression = arcpy.AddFieldDelimiters(fc,PolyTypeField) + " = 'FOR'"
 cursor = arcpy.da.UpdateCursor(fc,FullSpecieslist,expression)
+
+# print out what those row[x] are
+for num, field in enumerate(FullSpecieslist):
+    msg = "row[%s] = %s"%(num, field)
+    arcpy.AddMessage(msg)
+
 for row in cursor:
     if row[41] is None:
         arcpy.AddWarning ("Poly ID {0} species comp field has Null value".format(row[38]))

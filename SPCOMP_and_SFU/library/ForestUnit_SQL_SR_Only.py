@@ -1,12 +1,14 @@
-# Only SR folks should touch this! So Hands off Todd!
+# Only SR folks should touch this!
 
 SR_GLSL_LG_SFU = {
 
 # This SQL should match with OLT Land definition
 # this SQL is owned by Glen Watt and Rob Keron - talk to him if you have issues with it.
 # This code matches Kun's tool, OLT and MIST.
-# Highly recommended to use STKG instead of OSTKG - unless you know what you are doing.
-# fields required: POLYTYPE, Ecosite_GeoRangeAndNumber, (STKG or OSTKG) and (OSC or SC)
+# This happens to be identical with NER_GLSL_SFU_Nsiah in ForestUnit_SQL.py as of Mar 2023.
+# Highly recommended to use STKG instead of OSTKG. Note that if the user inputs 'STKG' in the UI, STKG will replace OSTKG in the script below.
+# There is no Ecosite component here whether the user chooses "Use Ecosite" on the UI or not.
+# mandatory fields include POLYTYPE,  (STKG or OSTKG) and (OSC or SC).
 
 #   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated
 
@@ -37,3 +39,22 @@ SR_GLSL_LG_SFU = {
     25: ['MWR',    """ ("POLYTYPE" = 'FOR') And <user_defined_sfu_field_name> Is Null """, ""]
 }
 
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    pass
+    # for k,v in NER_GLSL_SFU_Nsiah.items():
+    #     ner_glsl = v[0] + ": %s"%v[1]
+    #     sr_glsl = SR_GLSL_LG_SFU[k][0] + ": %s"%SR_GLSL_LG_SFU[k][1]
+    #     print(ner_glsl)
+    #     print(sr_glsl)
+    #     if ner_glsl == sr_glsl:
+    #         print(f'{" MATCH ":#^20}')
+    #     else:
+    #         print(f'{"NO MATCH":!^20}')

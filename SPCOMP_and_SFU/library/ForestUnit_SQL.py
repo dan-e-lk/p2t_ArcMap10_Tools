@@ -482,7 +482,7 @@ NER_Boreal_Revised_SFU_2019_v9_ROD2023 = {
 
 # This SQL will use Ecosite whether you check the "Use Ecosite" checkbox or not on the ArcMap's user interface.
 # Another change is that we added MWD (Balsam Fir leading Mixedwood) and changed STKG to OSTKG (if we have OSTKG then it can be replaced with STKG through the user interface)
-# fields required: POLYTYPE, STKG or OSTKG) Ecosite_GeoRangeAndNumber and either OSC or SC
+# fields required: POLYTYPE, STKG (or OSTKG) Ecosite_GeoRangeAndNumber and either OSC or SC
 
 #   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated               | SFU Descriptive Name
 
@@ -526,7 +526,7 @@ NER_Boreal_Revised_SFU_2019_v9_ROD2023 = {
 
     28: ['SP1',    """ (<user_defined_sfu_field_name> = 'SB1' AND "DEVSTAGE" in('NEWPLANT','ESTPLANT')) """,            ""],
     29: ['SP1',    """ (<user_defined_sfu_field_name> = 'SF1' AND "DEVSTAGE" in('NEWPLANT','ESTPLANT') AND ("Bf" + "La" <=20)) """,            ""],
-
+}
 
 
 

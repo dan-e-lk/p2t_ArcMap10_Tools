@@ -32,6 +32,7 @@ version = '1m'
 import arcpy
 import os
 from library import ForestUnit_SQL as libSQL
+from library import ForestUnit_SQL_SR_Only as libSQL_SR
 
 
 def main(inputfc, outputfc, forestunittype, OSCfield = "OSC", OSTKGfield = "OSTKG", useecosite = 'false', AGEfield = "OAGE"):
@@ -45,13 +46,14 @@ def main(inputfc, outputfc, forestunittype, OSCfield = "OSC", OSTKGfield = "OSTK
                   "NER Boreal SFU"          : "libSQL.NER_Boreal_SFU",         # Original official version
                   "NER Boreal SFU Nsiah"    : "libSQL.NER_Boreal_SFU_Nsiah ",  # Dec 2018 version, by Sam Nsiah
                   "NER GLSL SFU"            : "libSQL.NER_GLSL_SFU",           # Original official version
-                  "NER_GLSL_SFU_Nsiah"      : "libSQL.NER_GLSL_SFU_Nsiah",         # Mar 2018 version, by Sam Nsiah. Matches "Kun's tool".
-                  "NER Boreal SFU old"      : "libSQL.NER_Boreal_SFU_old",     # Not sure what this is (delete?), but it is a Jan 2018 version
-                  "NER Boreal SFU SubAU"    : "libSQL.NER_Boreal_SubAU",       
-                  "NER Boreal SFU Abitibi"  : "libSQL.NER_Boreal_SFU_Abitibi", # Abitibi only
+                  # "NER_GLSL_SFU_Nsiah"      : "libSQL.NER_GLSL_SFU_Nsiah",         # Mar 2018 version, by Sam Nsiah. Matches "Kun's tool".
+                  # "NER Boreal SFU old"      : "libSQL.NER_Boreal_SFU_old",     # Not sure what this is (delete?), but it is a Jan 2018 version
+                  # "NER Boreal SFU SubAU"    : "libSQL.NER_Boreal_SubAU",       
+                  # "NER Boreal SFU Abitibi"  : "libSQL.NER_Boreal_SFU_Abitibi", # Abitibi only
                   "Eco3E Seven Spc Groups"  : "libSQL.IMF_3E_proof_of_concept_7_spp", # This is being applied for eFRI compilation for all province.
                   "NER Boreal Revised SFU 2019 v9" : "libSQL.NER_Boreal_Revised_SFU_2019_v9", # Growth and Yield Program, NER SFU revision project (Todd Little, John Parton)
                   "NER Boreal Revised SFU 2019 v9 ROD2023" : "libSQL.NER_Boreal_Revised_SFU_2019_v9_ROD2023", # Sam's version
+                  "SR GLSL LG SFU"          : "libSQL_SR.SR_GLSL_LG_SFU",    # added in 2023 by Glen Watt. Matches the SQL in Kun's tool
                   }
     fuType = eval(typeLookup[forestunittype])
 
@@ -200,11 +202,11 @@ if __name__ == '__main__':
     arcinputfc = arcpy.GetParameterAsText(0)                # toolbox input feature class
     arcoutputfc = arcpy.GetParameterAsText(1)               # toolbox output feature class
     arcforestunittype = str(arcpy.GetParameterAsText(2))    # selection of the forest unit SQL criteria suite (see "typeLookup" above)
-    arcOSCfield = str(arcpy.GetParameterAsText(3))          # selection of a custom site class field from the input feature class
-    arcOSTKGfield = str(arcpy.GetParameterAsText(4))        # optional: not mandatory if boreal SFU. selection of a custom stocking field from the input feature class
+    arcOSCfield = str(arcpy.GetParameterAsText(3)).upper()        # selection of a custom site class field from the input feature class
+    arcOSTKGfield = str(arcpy.GetParameterAsText(4)).upper()        # optional: not mandatory if boreal SFU. selection of a custom stocking field from the input feature class
     arcuseecosite = str(arcpy.GetParameterAsText(5))        # use the parameter type "boolean" in arc tool - it will give 'true' or 'false'
     try:
-        arcAGEfield = str(arcpy.GetParameterAsText(6))          # optional: selection of a custom age field from the input feature class
+        arcAGEfield = str(arcpy.GetParameterAsText(6)).upper()          # optional: selection of a custom age field from the input feature class
     except:
         raise Exception("You may not be using the most recent version of the tool. Try restarting your ArcMap to load the most recent version.")
 
