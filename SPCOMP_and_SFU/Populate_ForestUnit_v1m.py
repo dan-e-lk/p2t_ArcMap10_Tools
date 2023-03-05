@@ -42,18 +42,19 @@ def main(inputfc, outputfc, forestunittype, OSCfield = "OSC", OSTKGfield = "OSTK
     arcpy.AddMessage("Script source: " + os.path.abspath(__file__))
 
     # based on forest unit type, different SQL dictionary will be used
-    typeLookup = {"NER Boreal SFU TN021"    : "libSQL.NER_Boreal_SFU_TN021",   # Original official version
-                  "NER Boreal SFU"          : "libSQL.NER_Boreal_SFU",         # Original official version
-                  "NER Boreal SFU Nsiah"    : "libSQL.NER_Boreal_SFU_Nsiah ",  # Dec 2018 version, by Sam Nsiah
-                  "NER GLSL SFU"            : "libSQL.NER_GLSL_SFU",           # Original official version
-                  # "NER_GLSL_SFU_Nsiah"      : "libSQL.NER_GLSL_SFU_Nsiah",         # Mar 2018 version, by Sam Nsiah. Matches "Kun's tool".
-                  # "NER Boreal SFU old"      : "libSQL.NER_Boreal_SFU_old",     # Not sure what this is (delete?), but it is a Jan 2018 version
-                  # "NER Boreal SFU SubAU"    : "libSQL.NER_Boreal_SubAU",       
-                  # "NER Boreal SFU Abitibi"  : "libSQL.NER_Boreal_SFU_Abitibi", # Abitibi only
-                  "Eco3E Seven Spc Groups"  : "libSQL.IMF_3E_proof_of_concept_7_spp", # This is being applied for eFRI compilation for all province.
-                  "NER Boreal Revised SFU 2019 v9" : "libSQL.NER_Boreal_Revised_SFU_2019_v9", # Growth and Yield Program, NER SFU revision project (Todd Little, John Parton)
+    typeLookup = {"NER Boreal SFU TN021"                   : "libSQL.NER_Boreal_SFU_TN021",                   # Original official version
+                  "NER Boreal SFU"                         : "libSQL.NER_Boreal_SFU",                         # Original official version
+                  "NER Boreal SFU Nsiah"                   : "libSQL.NER_Boreal_SFU_Nsiah ",                  # Dec 2018 version, by Sam Nsiah
+                  # "NER GLSL SFU"                         : "libSQL.NER_GLSL_SFU",                           # Original official version, Depricated. Incorrect
+                  # "NER_GLSL_SFU_Nsiah"                   : "libSQL.NER_GLSL_SFU_Nsiah",                         # Mar 2018 version, by Sam Nsiah. Matches "Kun's tool".
+                  # "NER Boreal SFU old"                   : "libSQL.NER_Boreal_SFU_old",                     # Not sure what this is (delete?), but it is a Jan 2018 version
+                  # "NER Boreal SFU SubAU"                 : "libSQL.NER_Boreal_SubAU",                       # ?
+                  # "NER Boreal SFU Abitibi"               : "libSQL.NER_Boreal_SFU_Abitibi",                 # Abitibi only
+                  "Eco3E Seven Spc Groups"                 : "libSQL.IMF_3E_proof_of_concept_7_spp",          # This is being applied for eFRI compilation for all province.
+                  "NER Boreal Revised SFU 2019 v9"         : "libSQL.NER_Boreal_Revised_SFU_2019_v9",         # Growth and Yield Program, NER SFU revision project (Todd Little, John Parton)
                   "NER Boreal Revised SFU 2019 v9 ROD2023" : "libSQL.NER_Boreal_Revised_SFU_2019_v9_ROD2023", # Sam's version
-                  "SR GLSL LG SFU"          : "libSQL_SR.SR_GLSL_LG_SFU",    # added in 2023 by Glen Watt. Matches the SQL in Kun's tool
+                  "SR GLSL LG SFU"                         : "libSQL_SR.SR_GLSL_LG_SFU",                      # added in 2023 by Glen Watt. Matches the SQL in Kun's tool
+                  "GLSL SFU SQL v1"                        : "libSQL.GLSL_SFU_SQL_V1_03_01_23"                # This is the starting point for the ROD GY GLSL SFU revision project task team
                   }
     fuType = eval(typeLookup[forestunittype])
 
