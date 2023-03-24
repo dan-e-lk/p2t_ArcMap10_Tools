@@ -1,6 +1,7 @@
 version = '1m'
 
 # 2022 - this tool populates SFU for records with POLYTYPE other than 'FOR'. Fix THIS!
+# also, it would be nice to have the script validate all the SQLs before running the full script
 #
 #-------------------------------------------------------------------------------
 # Name:        module1
@@ -40,6 +41,7 @@ def main(inputfc, outputfc, forestunittype, OSCfield = "OSC", OSTKGfield = "OSTK
     # Documents the location of the __Main__ file.
     arcpy.AddMessage("Populate Forest Unit version %s"%version)
     arcpy.AddMessage("Script source: " + os.path.abspath(__file__))
+    arcpy.AddMessage("\n WARNING: Some FU SQLs works only if you check the 'Use Ecosite' box!"" %s")
 
     # based on forest unit type, different SQL dictionary will be used
     typeLookup = {"NER Boreal SFU TN021"                   : "libSQL.NER_Boreal_SFU_TN021",                   # Original official version
