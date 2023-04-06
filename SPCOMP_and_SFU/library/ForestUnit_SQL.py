@@ -465,7 +465,8 @@ NER_Boreal_Revised_SFU_2019_v9 = {
 }
 
 
-NER_Boreal_Revised_SFU_2019_v9_ROD2023 = {
+NER_Boreal_v9_ROD2023 = {
+# on Apr 2023, updates have been made to PW1 and LH1
 # This SQL will use Ecosite whether you check the "Use Ecosite" checkbox or not on the ArcMap's user interface.
 # Another change is that we added MWD (Balsam Fir leading Mixedwood) and changed STKG to OSTKG (if we have OSTKG then it can be replaced with STKG through the user interface)
 # fields required: POLYTYPE, STKG (or OSTKG) Ecosite_GeoRangeAndNumber and either OSC or SC
@@ -473,12 +474,11 @@ NER_Boreal_Revised_SFU_2019_v9_ROD2023 = {
 #   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated               | SFU Descriptive Name
 
     1:  ['PR1',     """ ("Pr" >= 70) And <user_defined_sfu_field_name> Is Null """,            "",            """ Red pine, plantations """],
-    2:  ['PW1',     """ (("Pw" + "Pr" + "He" + ("Sw" + "Sx") >= 40 And "Pw" >= 30) And ((("Pw" + "Pr" + "_Or" + "Ow" + "He" + "Sr" + "Sw" + ("Hi" + "Hl" + "Hm" + "Hp" + "Hs"))/100) * "OSTKG" * 44 >= 12.0)) And <user_defined_sfu_field_name> Is Null """,           "",            """White pine, shelterwood"""],
+    2:  ['PW1',     """ ("Pw" + "Pr" + "He" + ("Sw" + "Sx") >= 40 And "Pw" >= 30) And <user_defined_sfu_field_name> Is Null """,           "",            """White pine, shelterwood"""],
     3:  ['PRW',     """ (("Pw" + "Pr" + "He" + ("Sw" + "Sx") >= 40) And ("Pw" + "Pr" >= 30)) And <user_defined_sfu_field_name> Is Null """,         "",            """Red and white pine"""],
 
     #  Note that in LH1 the ecosite is no longer in its own element of the dictionary. It is withing the primary sql element. This hasn't been done before. It is not explicit that ecosite is required for this sql set elsewhere in the script (2019-08-28)
-    4:  ['LH1',     """ ((("Ab" + "Ew" + "Pb" + "Mr" + "_By") >= 30) And (("Ab" + "Ew" + "_By" >= 20) Or ("Ecosite_GeoRangeAndNumber" in ('B119', 'B120', 'B123', 'B129', 'B130', 'B131', 'B133', 'G119', 'G120', 'G123', 'G129', 'G130', 'G131', 'G133'))) Or ("Pb" >= 70)) And <user_defined_sfu_field_name> Is Null """,          "",            """Lowland Hardwood"""],
-
+    4:  ['LH1',     """ ("Ab" + "Ew" + "_By" >= 20 AND ("Ecosite_GeoRangeAndNumber" in ('B119', 'B120', 'B123', 'B129', 'B130', 'B131', 'B133', 'G119', 'G120', 'G123', 'G129', 'G130', 'G131', 'G133'))) Or ("Pb" >= 70) And <user_defined_sfu_field_name> Is Null """,          "",            """Lowland Hardwood"""],
 
     5:  ['TH1',     """ (("Ab" + "Ew") + "Mh" + ("_By" + "Mr") + "He" >= 30) And <user_defined_sfu_field_name> Is Null """,          "",             """Tolerant Hardwoods"""],
 
