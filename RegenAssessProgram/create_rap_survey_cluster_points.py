@@ -1,6 +1,7 @@
 import os, shutil, traceback, math, random
 debug = False
-version = 2022.05
+version = 2023.06
+# 2023.05: added randomness to the initial c_spacing
 
 def main(input_proj_fc, output_fc, max_tolerance):
 	# create temporary workspace
@@ -9,7 +10,7 @@ def main(input_proj_fc, output_fc, max_tolerance):
 
 	arcpy.AddMessage("version = %s"%version)
 	arcpy.AddMessage("Creating temporary workspace...")
-	temp_foldername = r"C:/Temp/temp" + rand_alphanum_gen(4)
+	temp_foldername = r"C:\Temp\temp" + rand_alphanum_gen(4)
 	temp_gdb = 'create_rap_pt.gdb'
 	temp_gdb_fullpath = os.path.join(temp_foldername, temp_gdb)
 	os.mkdir(temp_foldername)
@@ -93,6 +94,8 @@ def main(input_proj_fc, output_fc, max_tolerance):
 			# with minimum cluster spacing of 40m
 			input_area = float(record['AREA_HA'])
 			c_spacing = round(0.95*(math.sqrt(input_area*10000/input_NumCluster)),4)
+			# adding some random factors
+			c_spacing = c_spacing*(1 + random.uniform(-0.01, 0.01)) # plus minus 1%
 			if c_spacing < 40.0:
 				arcpy.AddWarning("ProjectID %s: Project area is too small for the desired number of clusters. Minimum spacing of 40m cannot be achieved."%proj_id)
 				# skip this record and move on to the next record
@@ -120,11 +123,11 @@ def main(input_proj_fc, output_fc, max_tolerance):
 					arcpy.Delete_management(out_point_lyr)
 
 				# run grid index feature with calculated cluster spacing
-				out_grid = '%s_%smGrid'%(get_rid_of_spc_char(proj_id),get_rid_of_spc_char(c_spacing))
+				out_grid = 't_%s_%smGrid'%(get_rid_of_spc_char(proj_id),get_rid_of_spc_char(c_spacing))
 				arcpy.GridIndexFeatures_cartography(out_feature_class= out_grid, in_features=temp_layer, polygon_width="%s Meters"%c_spacing, polygon_height="%s Meters"%c_spacing)
 
 				# run Feature to Point on the output of the grid index feature
-				out_point = '%s_%smGrid_Pt'%(get_rid_of_spc_char(proj_id),get_rid_of_spc_char(c_spacing))
+				out_point = 't_%s_%smGrid_Pt'%(get_rid_of_spc_char(proj_id),get_rid_of_spc_char(c_spacing))
 				arcpy.FeatureToPoint_management(in_features=out_grid, out_feature_class=out_point, point_location="INSIDE")
 
 				# select by location to select the cluster points within the project boundary only

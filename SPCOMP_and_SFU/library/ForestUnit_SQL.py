@@ -570,6 +570,8 @@ NER_Boreal_SRNV2023 = {
 NER_Boreal_SRNV_SPCOMP_ONLY = {
     # a version made specifically for Quebec inventory which has different standard for ecosite and site class
     # This only uses SPCOMP (and POLYTYPE) to determine all SFU
+    # SQL for SB1: changed 80 to 70
+    # for SBOG, added "Sb" < 70 
 #   |Order   |SFU        |SQL                   |SQL addition if Ecosite incorporated               | SFU Descriptive Name
 
     1:  ['PR1',     """ ("Pr" >= 70) And <user_defined_sfu_field_name> Is Null """,            "",            """ Red pine, plantations """],
@@ -577,8 +579,8 @@ NER_Boreal_SRNV_SPCOMP_ONLY = {
     3:  ['PRW',     """ (("Pw" + "Pr" + "He" + ("Sw" + "Sx") >= 40) And ("Pw" + "Pr" >= 30)) And <user_defined_sfu_field_name> Is Null """,         "",            """Red and white pine"""],
     4:  ['LH1',     """ "Ab" + "Ew" + "_By" >= 20 Or "Pb" >= 70 And <user_defined_sfu_field_name> Is Null """,          "",            """Lowland Hardwood"""],
     5:  ['TH1',     """ (("Ab" + "Ew") + "Mh" + ("_By" + "Mr") + "He" >= 30) And <user_defined_sfu_field_name> Is Null """,          "",             """Tolerant Hardwoods"""],
-    6:  ['SBOG',    """ "Sb" + "La" + "Ce" + "Cw" >= 70 And <user_defined_sfu_field_name> Is Null """,            "",             """Black spruce, bog"""],
-    7:  ['SB1',     """ "Sb" >= 80 And "Ab" <= 10  And <user_defined_sfu_field_name> Is Null """,          "",             """Black spruce, lowland"""],
+    6:  ['SBOG',    """ "Sb" + "La" + "Ce" + "Cw" >= 70 And "Sb" < 70 and <user_defined_sfu_field_name> Is Null """,            "",             """Black spruce, bog"""],
+    7:  ['SB1',     """ "Sb" >= 70 And "Ab" <= 10  And <user_defined_sfu_field_name> Is Null """,          "",             """Black spruce, lowland"""],
     8:  ['PJ1',     """ (("Pj" >= 70 And "Po" + "Pt" + "Bw" + "_By" + "Mr" + "Mh" + "Ab" + "Ew" + "Pb" <= 20) Or "Pj" >= 90) And <user_defined_sfu_field_name> Is Null """,          "",             """Jack pine, pure"""],
     9:  ['LC1',     """ "Ce" + "Cw" + "La" + "Sb" + "Bf" + "Sw">= 70 And <user_defined_sfu_field_name> Is Null """,           "",            """Lowland conifer"""],
     10: ['PJ2',     """ ((("Pj" + "Sb" + "Pr" + "Pw" >= 70) Or ("Pj" >= 30 And "Pj" + "Sb" + "Bf" + ("Sw" + "Sx") + "Pw" + "Pr" + ("Ce" + "Cw") + "La" >=70)) And (("Pj" + "Pw" + "Pr") >= ("Sb" + ("Sw" + "Sx") + ("Ce" + "Cw")))) And <user_defined_sfu_field_name> Is Null """,           "",             """Jack pine black spruce"""],
