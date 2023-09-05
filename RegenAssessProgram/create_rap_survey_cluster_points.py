@@ -1,6 +1,6 @@
 import os, shutil, traceback, math, random
 debug = False
-version = 2023.07
+version = 2023.08
 # 2023.05: added randomness to the initial c_spacing
 # 2023.07: minimum num of clusters went from 30 to 24
 
@@ -148,8 +148,8 @@ def main(input_proj_fc, output_fc, max_tolerance):
 						# if the output cluster needs to be increased by 1.25 then the spacing needs to be decreased by sqrt(1.25) = 1.12
 						difference_ratio = 1 + (input_NumCluster - output_NumCluster)/float(input_NumCluster)
 						c_spacing = round(float(c_spacing)/math.sqrt(difference_ratio),4)
-						# add a random component to make sure we are not looping back and forth
-						c_spacing = round(c_spacing - random.uniform(0.001, 0.008),4)
+						# add a +-1% random component to make sure we are not looping back and forth
+						c_spacing = round(c_spacing + c_spacing*random.uniform(-0.01, 0.01),4)
 						if c_spacing < 40:
 							c_spacing = 40
 

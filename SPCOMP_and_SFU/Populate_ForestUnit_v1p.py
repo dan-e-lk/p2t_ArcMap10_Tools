@@ -1,4 +1,4 @@
-version = '1m'
+version = '1p'
 
 # also, it would be nice to have the script validate all the SQLs before running the full script
 #
@@ -45,7 +45,7 @@ def main(inputfc, outputfc, forestunittype, OSCfield = "OSC", OSTKGfield = "OSTK
     # based on forest unit type, different SQL dictionary will be used
     typeLookup = {"NER Boreal SFU TN021"                   : "libSQL.NER_Boreal_SFU_TN021",                   # Original official version
                   "NER Boreal SFU"                         : "libSQL.NER_Boreal_SFU",                         # Original official version
-                  "NER Boreal SFU Nsiah"                   : "libSQL.NER_Boreal_SFU_Nsiah ",                  # Dec 2018 version, by Sam Nsiah
+                  # "NER Boreal SFU Nsiah"                   : "libSQL.NER_Boreal_SFU_Nsiah ",                  # Dec 2018 version, by Sam Nsiah
                   # "NER GLSL SFU"                         : "libSQL.NER_GLSL_SFU",                           # Original official version, Depricated. Incorrect
                   # "NER_GLSL_SFU_Nsiah"                   : "libSQL.NER_GLSL_SFU_Nsiah",                         # Mar 2018 version, by Sam Nsiah. Matches "Kun's tool".
                   # "NER Boreal SFU old"                   : "libSQL.NER_Boreal_SFU_old",                     # Not sure what this is (delete?), but it is a Jan 2018 version
