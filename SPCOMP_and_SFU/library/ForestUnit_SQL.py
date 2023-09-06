@@ -400,6 +400,7 @@ NWR_Boreal_SFU = {
 
 GLSL_SFU_SQL_V1_03_01_23 = {
 # Todd and Alison fixing GLSL NER SQL stocking (from 0.30 to 30) March 1, 2023
+# This is still work in progress as of Aug 2023
 # I still cannot figure out where that 0.30 came from ...
 # Also added an = to the PR SFU (PW <=30)
 # Compared this syntax with Sam N's version"SFCOMP_AND_SFU_library_SQL_NER_GLSL_SFU_Nsiah_statement_suite_230301_1116.txt" and the only differencce is the added name of the forest unit at this point

@@ -35,6 +35,8 @@ def print2(msg, msgtype = 'msg'):
         arcpy.AddMessage(msg)
     elif msgtype == 'warning':
         arcpy.AddWarning(msg)
+    elif msgtype == 'error':
+        arcpy.AddError(msg)        
 
     # Add newline to the message string AFTER the message is sent to arcpy; the
     # return includes a newline.
