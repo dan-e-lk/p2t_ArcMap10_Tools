@@ -196,7 +196,7 @@ def spParse(inputfc,outputfc,spfield,create_all_spcfields = True):
         folder_path = os.path.split(folder_path)[0]
 
     ## Create the output file name for the log
-    outfile = os.path.split(outputfc)[1] + '_log_' + datetime.now().strftime('%Y_%m_%d_%H%M') + '.txt'
+    outfile = os.path.split(outputfc)[1] + '_SPC-log_' + datetime.now().strftime('%Y_%m_%d_%H%M') + '.txt'
 
 
     # Create the log file.
