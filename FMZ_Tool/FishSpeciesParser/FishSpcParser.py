@@ -62,6 +62,7 @@ class FishSpcParser:
 
 		for fish_list in fish_spc_summary_all:
 			for fish in fish_list:
+				fish = fish.strip()
 				if fish in self.spc_dict.keys():
 					self.spc_dict[fish] += 1
 				else:
@@ -89,7 +90,11 @@ class FishSpcParser:
 
 	def export(self, outputfc):
 		arcpy.AddMessage('\nCreating a copy of the input...\n')
-		arcpy.FeatureClassToFeatureClass_conversion(in_features= self.inputfc, out_path=os.path.split(outputfc)[0], out_name=os.path.split(outputfc)[1])
+		try:
+			arcpy.FeatureClassToFeatureClass_conversion(in_features= self.inputfc, out_path=os.path.split(outputfc)[0], out_name=os.path.split(outputfc)[1])
+		except arcpy.ExecuteError:
+			# if ExcecuteError is caused by the output being a table instead of feature class, this might resolve the issue.
+			arcpy.TableToTable_conversion(in_rows=self.inputfc, out_path=os.path.split(outputfc)[0], out_name=os.path.split(outputfc)[1])
 
 	def create_new_fields(self, outputfc, max_num_spc, limit_fieldname_to_10char):
 		"""

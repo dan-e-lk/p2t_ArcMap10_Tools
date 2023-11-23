@@ -1,0 +1,18 @@
+This short and simple script can be used to find duplicate.
+It doesn't tell you the number of duplicates, but it can be used to select all the duplicates and easily delete them all.
+
+You should first create a new short integer field.
+You need to also have the id field with which you can determine whether a record is unique or not. (in this example, I am suing OGF_ID.
+Use calculate field on the newly created integer field and run the following script using code block option.
+Duplicates will be assigned with number 1. all else will be zero.
+
+id_list = []
+def find_dup(id):
+  global id_list
+  if id in id_list:
+    return 1
+  else:
+    id_list.append(id)
+    return 0
+
+find_dup(!OGF_ID!)
