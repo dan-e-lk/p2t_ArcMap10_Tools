@@ -87,14 +87,14 @@ def main(input_fc,output_fc,aggr_dist):
 	except Exception:
 		arcpy.AddError(traceback.format_exc())
 
-	finally:
-		arcpy.AddMessage("Deleting temporary workspace...")
-		try:
-			arcpy.Delete_management(temp_gdb_fullpath)
-			shutil.rmtree(temp_foldername)
-			arcpy.AddMessage("temporary workspace deleted")
-		except:
-			arcpy.AddWarning("temporary workspace was not deleted. Location of the temp workspace:\n%s"%temp_foldername)
+	# finally:
+	# 	arcpy.AddMessage("Deleting temporary workspace...")
+	# 	try:
+	# 		arcpy.Delete_management(temp_gdb_fullpath)
+	# 		shutil.rmtree(temp_foldername)
+	# 		arcpy.AddMessage("temporary workspace deleted")
+	# 	except:
+	# 		arcpy.AddWarning("temporary workspace was not deleted. Location of the temp workspace:\n%s"%temp_foldername)
 
 
 

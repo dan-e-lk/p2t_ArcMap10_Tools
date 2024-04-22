@@ -1,0 +1,54 @@
+[11:45 AM] Cui, Wenbin (MNRF)
+
+double	SCtoSI(char* chLeadSpc, double SC)	// Based On Glen Watt SI_Height_Cheker_Oct192022
+
+{
+
+	convert2UpperCase(chLeadSpc);
+
+	double si;
+
+	if (strcmp("PW", chLeadSpc) == 0)
+		si = (- 5.354 * SC + 24.536);
+	else if (strcmp("PR", chLeadSpc) == 0)
+		si = -3.31 * SC + 23.06;
+	else if ((strcmp("PJ", chLeadSpc) == 0) || (strcmp("PS", chLeadSpc) == 0))
+		si = -3.082 * SC + 22.548;
+	else if ((strcmp("PO", chLeadSpc) == 0) || (strcmp("PL", chLeadSpc) == 0) || (strcmp("PT", chLeadSpc) == 0) || (strcmp("PB", chLeadSpc) == 0))
+		si = -3.082 * SC + 22.548;
+	else if ((strcmp("SX", chLeadSpc) == 0) || (strcmp("SB", chLeadSpc) == 0) || (strcmp("SR", chLeadSpc) == 0) || (strcmp("SW", chLeadSpc) == 0)
+		|| (strcmp("BF", chLeadSpc) == 0) || (strcmp("CE", chLeadSpc) == 0) || (strcmp("CW", chLeadSpc) == 0) || (strcmp("LA", chLeadSpc) == 0))
+		si = -3.084 * SC + 15.256;
+	else if ((strcmp("BW", chLeadSpc) == 0) || (strcmp("BY", chLeadSpc) == 0))
+		si = -3.876 * SC + 28.094;
+
+	else if ((strcmp("AB", chLeadSpc) == 0) || (strcmp("AW", chLeadSpc) == 0) || (strcmp("AX", chLeadSpc) == 0) || (strcmp("BE", chLeadSpc) == 0)
+		|| (strcmp("BD", chLeadSpc) == 0) || (strcmp("CB", chLeadSpc) == 0) || (strcmp("CH", chLeadSpc) == 0)
+		|| (strcmp("HE", chLeadSpc) == 0) || (strcmp("IW", chLeadSpc) == 0) || (strcmp("MH", chLeadSpc) == 0) || (strcmp("MR", chLeadSpc) == 0)
+		|| (strcmp("MX", chLeadSpc) == 0) || (strcmp("OH", chLeadSpc) == 0) || (strcmp("OR", chLeadSpc) == 0))
+		si = -2.76 * SC + 22.14;
+	else
+		si = -2.76 * SC + 22.14;
+	return si;
+}
+
+
+
+in python,
+
+def SCtoSI(SC,leadspc):
+    if leadspc == 'PW':
+        si = -5.354*SC + 24.536
+    elif leadspc == 'PR':
+        si = -3.31*SC + 23.06
+    elif leadspc in ['PJ','PS','PO','PL','PT','PB']:
+        si = -3.082*SC + 22.548
+    elif leadspc in ['SX','SB','SR','SW','BF','CE','CW','LA']:
+        si = -3.084*SC + 15.256
+    elif leadspc in ['BW','BY']:
+        si = -3.876*SC + 28.094
+    else:
+        si = -2.76*SC + 22.14
+    return si
+
+Then I selected where SI IS NULL, then populated SI with the calculated SI

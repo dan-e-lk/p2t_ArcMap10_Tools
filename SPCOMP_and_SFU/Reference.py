@@ -80,7 +80,7 @@ def spcVal(data, fieldname, version = 2017): #sample data: 'Cw  70La  20Sb  10'
 
                     correctList = list(set(spcList)&set(SpcListInterp))
                     # To save processing time, check the spc code with the most common spc list (SpcListInterp) first, if not found, check the other possible spc code
-                    if len(correctList) <> len(spcList):
+                    if len(correctList) != len(spcList):
                         correctList = list(set(spcList)&set(SpcListInterp + SpcListOther))
 
                     if len(correctList) == len(spcList):
@@ -154,7 +154,7 @@ def FMUCodeConverter(x):
             fmu = next(key for key, value in static_db.items() if value[0] == x)
             return fmu
         except Exception:
-            print "ERROR: " + x + " is neither fmu name nor the code."
+            print ("ERROR: " + x + " is neither fmu name nor the code.")
             return None
 
 def pathFinder(basePaths,fmu,plan,year):
@@ -167,8 +167,8 @@ def pathFinder(basePaths,fmu,plan,year):
     try:
         return gdbfilename
     except:
-        print "ERROR: %s does not exist!" %path
-        print "Check if you have spelled the FMU correctly."
+        print ("ERROR: %s does not exist!" %path)
+        print ("Check if you have spelled the FMU correctly.")
         return "ERROR!! Could not find the geodatabase with the submission files!!!"
 
 
@@ -223,10 +223,10 @@ def checkWatchFile2(mainfolder):
     eLabel = 0 # label errors
 
     if not os.path.isfile(os.path.join(path,watchFile)):
-        print "Watch file does not exist in " + path
+        print ("Watch file does not exist in " + path)
         return None
     else:
-        print "found the watch file: " + watchFile
+        print ("found the watch file: " + watchFile)
         f = open(os.path.join(path,watchFile))
         for line in f:
             if line.startswith("DESCRIBE  "):
@@ -283,22 +283,22 @@ def checkWatchFile2(mainfolder):
             htmlstring += '<br><span style="color: green">All layers have precision set to DOUBLE: YES</span>'
         else:
             htmlstring += '<br><span style="color: red">All layers have precision set to DOUBLE: NO  &emsp;  Error Count: ' + str(ePre) + '</span>'
-            print "All layers have precision set to DOUBLE: NO    Error Count: " + str(ePre)
+            print ("All layers have precision set to DOUBLE: NO    Error Count: " + str(ePre))
         if ePro < 1:
             htmlstring += '<br><span style="color: green">All layers have projection and datum defined: YES</span>'
         else:
             htmlstring += '<br><span style="color: red">All layers have projection and datum defined: NO  &emsp;  Error Count: ' + str(ePro) + '</span>'
-            print "All layers have projection and datum defined: NO    Error Count: " + str(ePro)
+            print ("All layers have projection and datum defined: NO    Error Count: " + str(ePro))
         if eNode < 1:
             htmlstring += '<br><span style="color: green">All layers have zero dangling nodes: YES</span>'
         else:
             htmlstring += '<br><span style="color: red">All layers have zero dangling nodes: NO  &emsp;  Error Count: ' + str(eNode) + '</span>'
-            print "All layers have zero dangling nodes: NO    Error Count: " + str(eNode)
+            print ("All layers have zero dangling nodes: NO    Error Count: " + str(eNode))
         if eLabel < 1:
             htmlstring += '<br><span style="color: green">All layers have zero label error: YES</span>'
         else:
             htmlstring += '<br><span style="color: red">All layers have zero label error: NO  &emsp;  Error Count: ' + str(eLabel) + '</span>'
-            print "All layers have zero label error: NO    Error Count: " + str(eLabel)
+            print ("All layers have zero label error: NO    Error Count: " + str(eLabel))
 
     watSummary = path + '\\' + watchFile[:-4] + '_summary.html'
     f = open(watSummary,'w')
@@ -364,4 +364,9 @@ def sortError(errorListList, maxnum):
 
 if __name__ == '__main__':
     spcomp = "CW  70SB  20LA  10"
-    print spcVal(spcomp,"SPCOMP")
+    print (spcVal(spcomp,"SPCOMP"))
+
+
+    completeSpList = SpcListInterp + SpcListOther # this is our complete species list.
+    completeSpList.sort()
+    print(completeSpList)
