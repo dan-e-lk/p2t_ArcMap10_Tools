@@ -263,6 +263,7 @@ if __name__ == '__main__':
                   "NER Boreal Revised SFU 2019 v9"         : "libSQL.NER_Boreal_Revised_SFU_2019_v9",         # Growth and Yield Program, NER SFU revision project (Todd Little, John Parton)
                   "NER_Boreal_v9_ROD2023"                  : "libSQL.NER_Boreal_v9_ROD2023",                  # Sam's version 2023
                   "NER_Boreal_SRNV2023"                    : "libSQL.NER_Boreal_SRNV2023",                    # almost same as v9 but with addition of PRPW10
+                  "NER_Boreal_SRNV2024"                    : "libSQL.NER_Boreal_SRNV2024",                    
                   "NER_Boreal_SRNV2023_UPCE"               : "libSQL.NER_Boreal_SRNV2023_UPCE",               # addtion of upland cedar UPCE (2023-09)
                   "NER_Boreal_SRNV_SPCOMP_ONLY"            : "libSQL.NER_Boreal_SRNV_SPCOMP_ONLY",            # almost same as v9 but only uses SPCOMP (doesn't use ecosite)
                   "SR GLSL LG SFU"                         : "libSQL_SR.SR_GLSL_LG_SFU",                      # added in 2023 by Glen Watt. Matches the SQL in Kun's tool
