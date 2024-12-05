@@ -11,14 +11,23 @@ NewAddedSpecies = ["OH","PS","SN","CR","MX","OC","OX","PX"]
 import arcpy
 from itertools import groupby
 for specie in FullSpecieslist:
-    arcpy.AddField_management(fc, specie, "FLOAT")
-    #arcpy.CalculateField_management(fc, specie, 0)
-arcpy.AddField_management(fc, "SFU", "TEXT")
+    try:
+        arcpy.AddField_management(fc, specie, "FLOAT")
+        arcpy.CalculateField_management(fc, specie, 0)
+    except:
+        arcpy.AddMessage("%s field already exists!"%specie)
+try:
+    arcpy.AddField_management(fc, "SFU", "TEXT")
+except:
+    pass
 arcpy.AddMessage("Done with adding all the fields!")
 FullSpecieslist.extend(("SFU",SCfield,ObjectIDField,PolyTypeField,STKG,forestCompField,"OH","PS","SN","CR","MX","OC","OX","PX"))
 for specie in NewAddedSpecies:
-    arcpy.AddField_management(fc, specie, "FLOAT")
-    arcpy.CalculateField_management(fc, specie, 0) # uncommented this line
+    try:
+        arcpy.AddField_management(fc, specie, "FLOAT")
+        arcpy.CalculateField_management(fc, specie, 0) # uncommented this line
+    except:
+        arcpy.AddMessage("%s field already exists!"%specie)
 expression = arcpy.AddFieldDelimiters(fc,PolyTypeField) + " = 'FOR'"
 cursor = arcpy.da.UpdateCursor(fc,FullSpecieslist,expression)
 
