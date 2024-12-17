@@ -112,6 +112,12 @@ def spParse2(inputfc,spcompfield, msg):
                     sppErrorCount += 1
                     row_spcompy['SPC_Check'] = "%s: %s"%(str(ValResult[0]), str(ValResult[1]))
 
+            # sort (only works on python >3.7)
+            try:
+                row_spompy_sorted = dict(sorted(row_spcompy.items()))
+                row_spcompy = row_spompy_sorted
+            except:
+                pass
             # write it to SPCOMPY field
             row[f.index(spcompy_fname)] = str(row_spcompy)
             cursor.updateRow(row)
@@ -151,10 +157,10 @@ def spParse2(inputfc,spcompfield, msg):
         msg += print2("The following species code were not found in %s:"%tbl_spp, msgtype = 'warning')
         msg += print2(str(set(unknown_spc_lst)), msgtype = 'warning')
 
-    # Mark end time
-    endtime = datetime.now()
-    msg += print2('End of process: %(end)s.' %{'end':endtime.strftime('%Y-%m-%d %H:%M:%S')})
-    msg += print2('Duration of process: %(duration)s seconds.\n' %{'duration':(endtime - starttime).total_seconds()})
+    # # Mark end time
+    # endtime = datetime.now()
+    # msg += print2('End of process: %(end)s.' %{'end':endtime.strftime('%Y-%m-%d %H:%M:%S')})
+    # msg += print2('Duration of process: %(duration)s seconds.\n' %{'duration':(endtime - starttime).total_seconds()})
 
     return msg
 
@@ -174,8 +180,15 @@ def fec_ecosite(inputfc, msg):
     parent_folder = os.path.split(__file__)[0]
     msg += print2("Loading %s..."%coeff)
     l_coeff = list(csv.DictReader(open(os.path.join(parent_folder,coeff))))
+    coeff_dict = {i['Ecosite_Num']:i for i in l_coeff}
+
     msg += print2("Loading %s..."%fec_code)
     l_fec_code = list(csv.DictReader(open(os.path.join(parent_folder,fec_code))))
+    fec_code_dict = {i['HU']:i['HU_NAME'] for i in l_fec_code}
+
+    if debug:
+        msg += print2("coeff_dict:\n%s"%coeff_dict)
+        msg += print2("fec_code_dict:\n%s"%fec_code_dict)
 
     # create a new fields to store FEC_VAR, FEC_PROB_SUM, FEC_CODE, FEC_NAME
     new_fields = {
@@ -190,34 +203,126 @@ def fec_ecosite(inputfc, msg):
         flength = detail[1]
         arcpy.AddField_management(in_table = inputfc, field_name = fname, field_type = ftype, field_length=flength)
 
+
     # calculate FEC_VAR (K0 to K30)
+    msg += print2("\nCalculating K0 to K30 for each record...")
     fec_var_dict = {'K%s'%i:0 for i in range(31)} #eg. {'K0':0, 'K1':0, ... 'K30':0}
     fec_var_dict['K0']=1
-    # f = [spcompy_fname, 'FEC_VAR','FEC_PROB_SUM','FEC_CODE','FEC_NAME']
-    f = [spcompy_fname, 'FEC_VAR', 'SC']
+    oid_fieldname = arcpy.Describe(inputfc).OIDFieldName
+    f = [spcompy_fname, 'FEC_VAR', 'SC', oid_fieldname]
     with arcpy.da.UpdateCursor(inputfc, f, "POLYTYPE='FOR'") as cursor:
         for row in cursor:
-            spcompy = eval(row[0])
+            s = eval(row[0]) #spcompy dictionary
+            site_cls = row[2]
+            oid = row[-1]
             fvar = fec_var_dict.copy()
+            try:
+                # groupings
+                TolHrwd = s['MH']+s['YB']+s['BE']
+                OtherHrwd = s['QR']+s['OW']+s['OB']+s['MS']+s['BD']+s['CH']+s['AW']+s['AB']+s['IW']+s['EW']+s['OH']
+                IntHrwd = s['PO']+s['BW']
+                Conifer = s['PW']+s['PR']+s['PJ']+s['SW']+s['SB']+s['BF']+s['HE']+s['CE']+s['LA']+s['OC']
+                Oak = s['QR']+s['OW']+s['OB']
 
-            fvar['K1'] = round(spcompy['MH']**0.5, 4)
-            fvar['K2'] = round(spcompy['YB']**0.5, 4)
-            fvar['K3'] = round(spcompy['BE']**0.5, 4)
-            fvar['K4'] = round(spcompy['QR']**0.5, 4)
-            fvar['K5'] = round(spcompy['MS']**0.5, 4)
-            fvar['K6'] = round(spcompy['BD']**0.5, 4)
-            fvar['K7'] = round((spcompy['AW']+spcompy['CH'])**0.5, 4)
-            fvar['K8'] = round(spcompy['IW']**0.5, 4)
-            fvar['K9'] = round(spcompy['IW']**0.5, 4)
+                # calculating Kn values
+                fvar['K1'] = round(s['MH']**0.5, 4)
+                fvar['K2'] = round(s['YB']**0.5, 4)
+                fvar['K3'] = round(s['BE']**0.5, 4)
+                fvar['K4'] = round(Oak**0.5, 4)
+                fvar['K5'] = round(s['MS']**0.5, 4)
+                fvar['K6'] = round(s['BD']**0.5, 4)
+                fvar['K7'] = round((s['AW']+s['CH'])**0.5, 4)
+                fvar['K8'] = round(s['IW']**0.5, 4)
+                fvar['K9'] = round(s['PO']**0.5, 4)
+                fvar['K10'] = round(s['BW']**0.5, 4)
+                if s['PW']<30 and s['PR']<20 and s['PJ']<20 and Oak<20 and s['BE']<20 and s['IW']<20:
+                    fvar['K11'] = round((s['AB']+s['EW'])**0.5, 4)
+                fvar['K12'] = round(s['PW']**0.5, 4)
+                fvar['K13'] = round(s['PR']**0.5, 4)
+                fvar['K14'] = round(s['PJ']**0.5, 4)
+                fvar['K15'] = round(s['SW']**0.5, 4)
+                fvar['K16'] = round(s['BF']**0.5, 4)
+                fvar['K17'] = round(s['SB']**0.5, 4)
+                fvar['K18'] = round(s['HE']**0.5, 4)
+                fvar['K19'] = round(s['CE']**0.5, 4)
+                if s['PW']>10 or s['PR']>10 or s['PJ']>10 or Oak>10 or s['BE']>10 or s['IW']>10:
+                    fvar['K20'] = round(s['LA']**0.5, 4)
+                fvar['K21'] = round(TolHrwd**0.5, 4)
+                fvar['K22'] = round(OtherHrwd**0.5, 4)
+                fvar['K23'] = round(IntHrwd**0.5, 4)
+                fvar['K24'] = round(Conifer**0.5, 4)
+                if s['PR']>=50:
+                    fvar['K25'] = 1
+                # if PW+PR+PJ>=30 and PJ<75 and PR<50 and ((PW>0 and PJ>0) or (PR>0 and PJ>0)): # this can be simplified to...
+                # if PW+PR+PJ>=30 and PR<50 and 0<PJ<75 and (PW>0 or PR>0):
+                if s['PW']+s['PR']+s['PJ']>=30 and s['PR']<50 and 0<s['PJ']<75 and (s['PW']>0 or s['PR']>0):
+                    fvar['K26'] = 1
+                if s['PW']+s['PR']+s['PJ']>10 and s['PO']>0 and Oak>0 and TolHrwd+OtherHrwd-Oak<=10:
+                    fvar['K27'] = 1
+                if s['PO']+s['BW']+s['MS']>=50 and s['MH']<50 and Conifer<50:
+                    fvar['K28'] = 1
+                if Oak>0 and s['MH']>0 and s['PW']<20 and s['PR']==0 and s['PJ']==0 and s['BE']<=10 and s['BD']<10 and IntHrwd >= TolHrwd:
+                    fvar['K29'] = 1
+                if site_cls < 1:
+                    site_cls = 1
+                elif site_cls > 3:
+                    site_cls = 3
+                fvar['K30'] = site_cls
+
+                # sort (only works on python >3.7)
+                try:
+                    fvar_sorted = dict(sorted(fvar.items()))
+                    fvar = fvar_sorted
+                except:
+                    pass
+                # update and commit FEC_VAR field
+                row[1] = str(fvar)
+                cursor.updateRow(row)
+
+            except:
+                msg += print2("ERROR while working on %s %s. Check the SPCOMP and %s"%(OIDFieldName,oid,tbl_spp),'error')
+                raise
 
 
+    # calculate FEC_PROB_SUM (11 to 35) and everything else
+    msg += print2("\nCalculating FEC probability sum and the most probable FEC name..")
+    fec_prob_dict = {str(i):0 for i in range(11,36)} #eg. {11:0, 12:0, ... 35:0}
+    # f = [spcompy_fname, 'FEC_VAR','FEC_PROB_SUM','FEC_CODE','FEC_NAME']
+    f = ['FEC_VAR','FEC_PROB_SUM','FEC_CODE','FEC_NAME', oid_fieldname]
+    with arcpy.da.UpdateCursor(inputfc, f, "POLYTYPE='FOR'") as cursor:
+        for row in cursor:
+            fvar = eval(row[0])
+            fprob = fec_prob_dict.copy() # eg. {'11': 37.1975, '12': -361.5228, '13': 33.2090, ...}
 
-            # update and commit FEC_VAR field
-            row[1] = str(fvar)
+            # multiplying values of FECVAR {'K0': 1, 'K1': 5.4772,...} with the fec coefficients
+            for econum in fec_prob_dict.keys():
+                for Kn, v in fvar.items():
+                    fprob[econum] += v*float(coeff_dict[econum][Kn]) # eg. 1 * -199.05 for the K0 and econum 11
+
+            # round up to 3 decimal - why 3? no particular reason...
+            for econum, prob_sum in fprob.copy().items():
+                fprob[econum] = round(prob_sum,3)
+
+            # find max value of fprob
+            max_value = max(fprob.values())
+            fec_code_econum = [econum for econum, prob_sum in fprob.items() if prob_sum == max_value][0]
+            fec_name = fec_code_dict[fec_code_econum]
+
+            # update and commit
+            row[1] = str(fprob)
+            row[2] = fec_code_econum
+            row[3] = fec_name
             cursor.updateRow(row)
 
 
 
+
+
+
+    # Mark end time
+    endtime = datetime.now()
+    msg += print2('End of process: %(end)s.' %{'end':endtime.strftime('%Y-%m-%d %H:%M:%S')})
+    msg += print2('Duration of process: %(duration)s seconds.\n' %{'duration':(endtime - starttime).total_seconds()})
 
     return msg
 
