@@ -192,8 +192,10 @@ def fec_ecosite(inputfc, msg):
 
     # create a new fields to store FEC_VAR, FEC_PROB_SUM, FEC_CODE, FEC_NAME
     new_fields = {
-    'FEC_CODE':     ['TEXT', 10, True],
-    'FEC_NAME':     ['TEXT', 10, True]
+    'FEC_VAR':      ['TEXT',1000], # if debug, then it's True. True means create the field.
+    'FEC_PROB_SUM': ['TEXT',1000],
+    'FEC_CODE':     ['TEXT', 10],
+    'FEC_NAME':     ['TEXT', 10]
     }
     for fname, detail in new_fields.items():
         msg += print2("\nCreating a new field: %s"%fname)
@@ -206,13 +208,12 @@ def fec_ecosite(inputfc, msg):
     msg += print2("\nCalculating K0 to K30 for each record...")
     fec_var_dict = {'K%s'%i:0 for i in range(31)} #eg. {'K0':0, 'K1':0, ... 'K30':0}
     fec_var_dict['K0']=1
-    fec_var_tbl = {} # dictionary of dictionary where key is the oid and value is the fec_var_dict filled out
     oid_fieldname = arcpy.Describe(inputfc).OIDFieldName
-    f = [spcompy_fname, 'SC', oid_fieldname]
-    with arcpy.da.SearchCursor(inputfc, f, "POLYTYPE='FOR'") as cursor:
+    f = [spcompy_fname, 'FEC_VAR', 'SC', oid_fieldname]
+    with arcpy.da.UpdateCursor(inputfc, f, "POLYTYPE='FOR'") as cursor:
         for row in cursor:
             s = eval(row[0]) #spcompy dictionary
-            site_cls = row[1]
+            site_cls = row[2]
             oid = row[-1]
             fvar = fec_var_dict.copy()
             try:
@@ -268,8 +269,6 @@ def fec_ecosite(inputfc, msg):
                     site_cls = 3
                 fvar['K30'] = site_cls
 
-                fec_var_tbl[oid] = fvar
-
                 # sort (only works on python >3.7)
                 try:
                     fvar_sorted = dict(sorted(fvar.items()))
@@ -277,6 +276,8 @@ def fec_ecosite(inputfc, msg):
                 except:
                     pass
                 # update and commit FEC_VAR field
+                row[1] = str(fvar)
+                cursor.updateRow(row)
 
             except:
                 msg += print2("ERROR while working on %s %s. Check the SPCOMP and %s"%(OIDFieldName,oid,tbl_spp),'error')
@@ -286,11 +287,11 @@ def fec_ecosite(inputfc, msg):
     # calculate FEC_PROB_SUM (11 to 35) and everything else
     msg += print2("\nCalculating FEC probability sum and the most probable FEC name..")
     fec_prob_dict = {str(i):0 for i in range(11,36)} #eg. {11:0, 12:0, ... 35:0}
-    f = ['FEC_CODE','FEC_NAME', oid_fieldname]
+    # f = [spcompy_fname, 'FEC_VAR','FEC_PROB_SUM','FEC_CODE','FEC_NAME']
+    f = ['FEC_VAR','FEC_PROB_SUM','FEC_CODE','FEC_NAME', oid_fieldname]
     with arcpy.da.UpdateCursor(inputfc, f, "POLYTYPE='FOR'") as cursor:
         for row in cursor:
-            oid = row[-1]
-            fvar = fec_var_tbl[oid]
+            fvar = eval(row[0])
             fprob = fec_prob_dict.copy() # eg. {'11': 37.1975, '12': -361.5228, '13': 33.2090, ...}
 
             # multiplying values of FECVAR {'K0': 1, 'K1': 5.4772,...} with the fec coefficients
@@ -308,10 +309,14 @@ def fec_ecosite(inputfc, msg):
             fec_name = fec_code_dict[fec_code_econum]
 
             # update and commit
-            # row[1] = str(fprob)
-            row[0] = fec_code_econum
-            row[1] = fec_name
+            row[1] = str(fprob)
+            row[2] = fec_code_econum
+            row[3] = fec_name
             cursor.updateRow(row)
+
+
+
+
 
 
     # Mark end time

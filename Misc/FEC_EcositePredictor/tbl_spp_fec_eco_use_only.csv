@@ -40,14 +40,14 @@ Mh,MH,MH,"maple, hard (= sugar maple)",N
 Mm,MH,MH,"maple, Manitoba (or box elder)",N
 Mn,MH,MH,"maple, Norway",N
 Mx,MH,MH,"maple, any / mix",N
-Mr,MR,MR,"maple, red (also called soft maple)",N
+Mr,MS,MR,"maple, red (also called soft maple)",N
 Ms,MS,MR,"maple, silver soft",Y
 Ob,OB,OB,"oak, bur or black",N
 Obl,OB,OB,"oak, black",N
 OC,OC,OC,Other Conifers,N
 Pn,OC,OC,"pine, Austrian or black",N
 Pp,OC,OC,"pine, pitch",N
-Ps,OC,OC,"pine, scots",N
+Ps,PJ,OC,"pine, scots",N
 Sc,OC,OC,"spruce, Colorado (or blue)",N
 Sk,OC,OC,"spruce, koyama",N
 AL,OH,OH,"alder, any / mixed",N
@@ -103,7 +103,7 @@ PG,PO,PO,poplar,N
 Ph,PO,PO,"poplar, hybrid",N
 Po,PO,PO,"poplar, any / mix",N
 Pr,PR,PR,"pine, red",N
-Pt,PT,PT,"aspen, trembling",N
+Pt,PO,PT,"aspen, trembling",N
 Pw,PW,PW,"pine, white [eastern white]",N
 PX,PW,PW,"pine, any / mix",N
 O,QR,QR,oak (red),N
