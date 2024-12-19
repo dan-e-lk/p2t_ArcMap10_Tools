@@ -1,5 +1,5 @@
 
-SpcListInterp = ['AX', 'AB', 'AW', 'PL', 'PT', 'BD', 'BE', 'BG', 'BW', 'BY', 'BN', 'CE', 'CR', 'CW', 'CH', 'CB', 'CD', 'OC', 'PD', 'EX', 'EW', 'BF', 'OH', 'HE', 'HI', 'IW', 'LO', 'MX', 'MH', 'MR', 'MS', 'OX', 'OR', 'OW', 'PX', 'PJ', 'PR', 'PS', 'PW', 'PO', 'PB', 'SX', 'SB', 'SW', 'LA', 'WB', 'WI']
+SpcListInterp = ['AX', 'AB', 'AW', 'PL', 'PT', 'BD', 'BE', 'BG', 'BW', 'BY', 'BN', 'CE', 'CR', 'CW', 'CH', 'CB', 'CD', 'OC', 'PD', 'EX', 'EW', 'BF', 'OH', 'HE', 'HI', 'IW', 'LO', 'MX', 'MH', 'MR', 'MS', 'OX', 'OR', 'OW', 'PX', 'PJ', 'PR', 'PS', 'PW', 'PO', 'PB', 'SX', 'SB', 'SW', 'LA', 'WB', 'WI', 'QR','YB']
 
 SpcListOther = ['AL', 'AQ', 'AP', 'AG', 'BC', 'BP', 'GB', 'BB', 'CAT', 'CC', 'CM', 'CP', 'CS', 'CT', 'ER', 'EU', 'HK', 'HL', 'HB', 'HM', 'HP', 'HS', 'HC', 'KK', 'LE', 'LJ', 'BL', 'LL', 'LB', 'GT', 'MB', 'MF', 'MM', 'MT', 'MN', 'MP', 'AM', 'EMA', 'MO', 'OBL', 'OB', 'OCH', 'OP', 'OS', 'OSW', 'PA', 'PN', 'PP', 'PC', 'PH', 'PE', 'RED', 'SC', 'SS', 'SK', 'SN', 'SR', 'SY', 'TP', 'HAZ']
 

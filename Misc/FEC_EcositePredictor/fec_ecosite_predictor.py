@@ -1,5 +1,4 @@
 version = "1"
-debug = False
 
 import Reference as R # Reference.py should be located in the same folder as this file.
 import arcpy, os, csv
@@ -187,8 +186,8 @@ def fec_ecosite(inputfc, msg):
     fec_code_dict = {i['HU']:i['HU_NAME'] for i in l_fec_code}
 
     if debug:
-        msg += print2("coeff_dict:\n%s"%coeff_dict)
-        msg += print2("fec_code_dict:\n%s"%fec_code_dict)
+        msg += print2("\n\ncoeff_dict:\n%s"%coeff_dict)
+        msg += print2("fec_code_dict:\n%s\n\n"%fec_code_dict)
 
     # create a new fields to store FEC_VAR, FEC_PROB_SUM, FEC_CODE, FEC_NAME
     new_fields = {
@@ -205,7 +204,7 @@ def fec_ecosite(inputfc, msg):
     # calculate FEC_VAR (K0 to K30)
     msg += print2("\nCalculating K0 to K30 for each record...")
     fec_var_dict = {'K%s'%i:0 for i in range(31)} #eg. {'K0':0, 'K1':0, ... 'K30':0}
-    fec_var_dict['K0']=1
+    fec_var_dict['K0']=1 # because K0 is always 1.
     fec_var_tbl = {} # dictionary of dictionary where key is the oid and value is the fec_var_dict filled out
     oid_fieldname = arcpy.Describe(inputfc).OIDFieldName
     f = [spcompy_fname, 'SC', oid_fieldname]
@@ -254,7 +253,8 @@ def fec_ecosite(inputfc, msg):
                     fvar['K25'] = 1
                 # if PW+PR+PJ>=30 and PJ<75 and PR<50 and ((PW>0 and PJ>0) or (PR>0 and PJ>0)): # this can be simplified to...
                 # if PW+PR+PJ>=30 and PR<50 and 0<PJ<75 and (PW>0 or PR>0):
-                if s['PW']+s['PR']+s['PJ']>=30 and s['PR']<50 and 0<s['PJ']<75 and (s['PW']>0 or s['PR']>0):
+                # if s['PW']+s['PR']+s['PJ']>=30 and s['PR']<50 and 0<s['PJ']<75 and (s['PW']>0 or s['PR']>0): # simplified version
+                if s['PW']+s['PR']+s['PJ']>=30 and s['PJ']<75 and s['PR']<50 and ((s['PW']>0 and s['PJ']>0) or (s['PR']>0 and s['PJ']>0)): # original version
                     fvar['K26'] = 1
                 if s['PW']+s['PR']+s['PJ']>10 and s['PO']>0 and Oak>0 and TolHrwd+OtherHrwd-Oak<=10:
                     fvar['K27'] = 1
@@ -276,7 +276,6 @@ def fec_ecosite(inputfc, msg):
                     fvar = fvar_sorted
                 except:
                     pass
-                # update and commit FEC_VAR field
 
             except:
                 msg += print2("ERROR while working on %s %s. Check the SPCOMP and %s"%(OIDFieldName,oid,tbl_spp),'error')
@@ -286,6 +285,7 @@ def fec_ecosite(inputfc, msg):
     # calculate FEC_PROB_SUM (11 to 35) and everything else
     msg += print2("\nCalculating FEC probability sum and the most probable FEC name..")
     fec_prob_dict = {str(i):0 for i in range(11,36)} #eg. {11:0, 12:0, ... 35:0}
+    fec_prob_tbl = {} # debug use only - dictionary of dictionary where key is the oid and value is the fec_prob_dict filled out
     f = ['FEC_CODE','FEC_NAME', oid_fieldname]
     with arcpy.da.UpdateCursor(inputfc, f, "POLYTYPE='FOR'") as cursor:
         for row in cursor:
@@ -302,16 +302,43 @@ def fec_ecosite(inputfc, msg):
             for econum, prob_sum in fprob.copy().items():
                 fprob[econum] = round(prob_sum,3)
 
+            # debug only
+            fec_prob_tbl[oid] = fprob
+
             # find max value of fprob
             max_value = max(fprob.values())
             fec_code_econum = [econum for econum, prob_sum in fprob.items() if prob_sum == max_value][0]
             fec_name = fec_code_dict[fec_code_econum]
 
             # update and commit
-            # row[1] = str(fprob)
             row[0] = fec_code_econum
             row[1] = fec_name
             cursor.updateRow(row)
+
+
+    # in debug mode, we will write down the transitory k0-k30 values and the fec probability values to the data itself so we can check.
+    if debug:
+        msg += print2("\nDEBUG MODE: creating and populating FEC_VAR and FEC_PROB_SUM...")
+        new_fields = {
+        'FEC_VAR':     ['TEXT', 1000, True],
+        'FEC_PROB_SUM':['TEXT', 1000, True]
+        }
+        for fname, detail in new_fields.items():
+            ftype = detail[0]
+            flength = detail[1]
+            arcpy.AddField_management(in_table = inputfc, field_name = fname, field_type = ftype, field_length=flength)        
+
+        f = ['FEC_VAR','FEC_PROB_SUM', oid_fieldname]
+        with arcpy.da.UpdateCursor(inputfc, f, "POLYTYPE='FOR'") as cursor:
+            for row in cursor:
+                oid = row[-1]
+                row[0] = str(fec_var_tbl[oid])
+                row[1] = str(fec_prob_tbl[oid])
+                cursor.updateRow(row)
+
+
+
+
 
 
     # Mark end time
@@ -330,10 +357,15 @@ def fec_ecosite(inputfc, msg):
 if __name__ == '__main__':
     inputfc = arcpy.GetParameterAsText(0) # this should be bmi or pci - this tool adds fields to input fc
     spcompfield = arcpy.GetParameterAsText(1).upper() # almost always 'SPCOMP'
+    debug_mode = arcpy.GetParameterAsText(2) # true or false
 
     global starttime
     starttime = datetime.now()
     msg = print2('Start of process: %(start)s.' %{'start':starttime.strftime('%Y-%m-%d %H:%M:%S')})
+
+    global debug
+    debug = False
+    if debug_mode == 'true': debug = True
 
     ##### PART 1 - SPCOMP Parser
     # if you just run this function below, all you do is creating SPCOMPY field and populating with parsed spc info

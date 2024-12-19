@@ -18,14 +18,14 @@ Ch,CH,CH,"cherry, any / mix",N
 Chb,CH,CH,"cherry, black",N
 Cm,CH,CH,"cherry, mazzard",N
 E,EW,EX,"elm, white (or American)",N
-Er,EX,EX,"elm, red (or slippery)",N
-Eu,EX,EX,"elm, rock",N
+Er,EW,EX,"elm, red (or slippery)",N
+Eu,EW,EX,"elm, rock",N
 Ew,EW,EX,"elm, white (or American)",N
-Ex,EX,EX,"elm, any / mix.",N
+Ex,EW,EX,"elm, any / mix.",N
 He,HE,HE,"hemlock, eastern",N
-Hm,HI,HI,"hickory, mockernut",N
-Hp,HI,HI,"hickory, pignut (or red or sweet pignut)",N
-Hs,HI,HI,"hickory, shagbark",N
+Hm,OH,HI,"hickory, mockernut",N
+Hp,OH,HI,"hickory, pignut (or red or sweet pignut)",N
+Hs,OH,HI,"hickory, shagbark",N
 I,IW,IW,ironwood (also called Eastern hop-hornbeam),N
 ID,IW,IW,ironwood (also called Eastern hop-hornbeam),N
 Iw,IW,IW,ironwood (also called Eastern hop-hornbeam),N
@@ -93,9 +93,9 @@ Op,OW,OW,"oak, pin (or swamp)",N
 Os,OW,OW,"oak, shumard's (or swamp red)",N
 Osw,OW,OW,"oak, swamp white",N
 Ow,OW,OW,"oak, white",N
-Pb,PB,PB,"poplar, balsam",N
+Pb,PO,PB,"poplar, balsam",N
 Pj,PJ,PJ,"pine, jack",N
-Pl,PL,PL,"aspen, largetooth",N
+Pl,PO,PL,"aspen, largetooth",N
 Pc,PO,PO,"poplar, Carolina",N
 Pd,PO,PO,"cottonwood, Eastern",N
 Pe,PO,PO,"poplar, silver (or European white or white)",N
@@ -109,6 +109,7 @@ PX,PW,PW,"pine, any / mix",N
 O,QR,QR,oak (red),N
 Or,QR,QR,"oak, red (or northern red)",N
 OX,QR,QR,"oak, any / mix",N
+QR,QR,,new in 2024,
 Sb,SB,SB,"spruce, black",N
 Sp,SB,SB,Spruce (goto black),N
 Sx,SB,SB,"spruce, any / mix",N
@@ -117,3 +118,4 @@ Sn,SW,SW,"spruce, Norway",N
 Sr,SW,SW,"spruce, red",N
 Sw,SW,SW,"spruce, white",N
 By,YB,YB,"birch, yellow",N
+YB,YB,,new in 2024,
