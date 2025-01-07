@@ -205,7 +205,7 @@ def spParse(inputfc,outputfc,spfield,create_all_spcfields = True):
 if __name__ == '__main__':
     arcinputfc = arcpy.GetParameterAsText(0) # this should be bmi or pci
     arcoutputfc = arcpy.GetParameterAsText(1) # where to save your work
-    arcspfield = arcpy.GetParameterAsText(2) # 2009 or 2017
+    arcspfield = arcpy.GetParameterAsText(2) 
     arc_create_all_spcfields = arcpy.GetParameterAsText(3) # it will generate strings 'true' or 'false'
 
     arc_create_all_spcfields = True if arc_create_all_spcfields == 'true' else False

@@ -1,121 +1,122 @@
 spc,spc_simp,spc_simp_original,spc_desc,changed
 Ab,AB,AB,"ash, black",N
 Ag,AW,AW,"ash, red (or green)",N
+AL,OH,OH,"alder, any / mixed",N
+Am,OH,OH,"mountain-ash, any/mix",N
 Aw,AW,AW,"ash, white",N
 AX,AW,AW,"ash, any / mixed",N
-Bd,BD,BD,basswood,N
-Bl,BD,BD,"linden, big leaf",N
-Be,BE,BE,"beech, American",N
+AQ,OH,,added,
 B,BF,BF,balsam fir,N
+Bb,OH,OH,blue-beech (also called American hornbeam),N
+Bc,OH,OH,"birch, cherry",N
+Bd,BD,BD,basswood,N
+Be,BE,BE,"beech, American",N
 BF,BF,BF,balsam fir,N
 Bg,BW,BW,"birch, grey",N
+Bl,BD,BD,"linden, big leaf",N
+Bn,OH,OH,butternut,N
+Bp,OH,OH,"birch, European white (or weeping)",N
 Bw,BW,BW,"birch, white (or paper)",N
-Ce,CE,CE,"cedar, all",N
-Cr,CE,CE,"cedar, eastern red (redcedar)",N
-Cw,CE,CE,"cedar, eastern white-  (also called northern white-cedar)",N
+By,YB,YB,"birch, yellow",N
+Cat,OH,OH,"catalpa, northern  (also called bean-tree)",N
 Cb,CH,CH,"cherry, black",N
+Cc,OH,OH,"cherry, choke",N
+Cd,OH,OH,"chestnut, American",N
+Ce,CE,CE,"cedar, all",N
 Ch,CH,CH,"cherry, any / mix",N
 Chb,CH,CH,"cherry, black",N
 Cm,CH,CH,"cherry, mazzard",N
+Cp,OH,OH,"cherry, pin (or wild red or fire)",N
+Cr,CE,CE,"cedar, eastern red (redcedar)",N
+Cs,OH,OH,"cherry, sour (or pie or sour red)",N
+Ct,OH,OH,cucumber tree,N
+Cw,CE,CE,"cedar, eastern white-  (also called northern white-cedar)",N
 E,EW,EX,"elm, white (or American)",N
+Ema,EW,OH,"mountain-ash, European",N
 Er,EW,EX,"elm, red (or slippery)",N
 Eu,EW,EX,"elm, rock",N
 Ew,EW,EX,"elm, white (or American)",N
 Ex,EW,EX,"elm, any / mix.",N
-He,HE,HE,"hemlock, eastern",N
-Hm,OH,HI,"hickory, mockernut",N
-Hp,OH,HI,"hickory, pignut (or red or sweet pignut)",N
-Hs,OH,HI,"hickory, shagbark",N
-I,IW,IW,ironwood (also called Eastern hop-hornbeam),N
-ID,IW,IW,ironwood (also called Eastern hop-hornbeam),N
-Iw,IW,IW,ironwood (also called Eastern hop-hornbeam),N
-L,LA,LA,"larch, eastern (also called Tamarack or American Larch)",N
-La,LA,LA,"larch, eastern (also called Tamarack or American Larch)",N
-Le,LA,LA,"larch, European",N
-Lj,LA,LA,"larch, Japanese",N
-Ta,LA,LA,tamarack (larch),N
-Mb,MH,MH,"maple, black",N
-Mf,MH,MH,"maple, freeman",N
-Mh,MH,MH,"maple, hard (= sugar maple)",N
-Mm,MH,MH,"maple, Manitoba (or box elder)",N
-Mn,MH,MH,"maple, Norway",N
-Mx,MH,MH,"maple, any / mix",N
-Mr,MS,MR,"maple, red (also called soft maple)",N
-Ms,MS,MR,"maple, silver soft",Y
-Ob,OB,OB,"oak, bur or black",N
-Obl,OB,OB,"oak, black",N
-OC,OC,OC,Other Conifers,N
-Pn,OC,OC,"pine, Austrian or black",N
-Pp,OC,OC,"pine, pitch",N
-Ps,PJ,OC,"pine, scots",N
-Sc,OC,OC,"spruce, Colorado (or blue)",N
-Sk,OC,OC,"spruce, koyama",N
-AL,OH,OH,"alder, any / mixed",N
-Am,OH,OH,"mountain-ash, any/mix",N
-Bb,OH,OH,blue-beech (also called American hornbeam),N
-Bc,OH,OH,"birch, cherry",N
-Bn,OH,OH,butternut,N
-Bp,OH,OH,"birch, European white (or weeping)",N
-Cat,OH,OH,"catalpa, northern  (also called bean-tree)",N
-Cc,OH,OH,"cherry, choke",N
-Cd,OH,OH,"chestnut, American",N
-Cp,OH,OH,"cherry, pin (or wild red or fire)",N
-Cs,OH,OH,"cherry, sour (or pie or sour red)",N
-Ct,OH,OH,cucumber tree,N
-Ema,OH,OH,"mountain-ash, European",N
 Gb,OH,OH,black gum,N
 Gt,OH,OH,"locust, honey-",N
 H,OH,OH,hardwood,N
 Haz,OH,OH,"witch-hazel, American",N
 Hb,OH,OH,"hickory, bitternut (or swamp)",N
 Hc,OH,OH,horsechestnut,N
+He,HE,HE,"hemlock, eastern",N
 Hi,OH,OH,"hickory, all",N
 Hk,OH,OH,hackberry,N
 Hl,OH,OH,"hickory, big shellbark",N
+Hm,OH,HI,"hickory, mockernut",N
+Hp,OH,HI,"hickory, pignut (or red or sweet pignut)",N
+Hs,OH,HI,"hickory, shagbark",N
 Ht,OH,OH,hawthorn,N
+I,IW,IW,ironwood (also called Eastern hop-hornbeam),N
+ID,IW,IW,ironwood (also called Eastern hop-hornbeam),N
+Iw,IW,IW,ironwood (also called Eastern hop-hornbeam),N
 Kk,OH,OH,Kentucky coffee tree,N
+L,LA,LA,"larch, eastern (also called Tamarack or American Larch)",N
+La,LA,LA,"larch, eastern (also called Tamarack or American Larch)",N
 Lb,OH,OH,"locust, black",N
+Le,LA,LA,"larch, European",N
+Lj,LA,LA,"larch, Japanese",N
 Ll,OH,OH,"linden, little leaf",N
 Lo,OH,OH,locust (black and/or honey),N
+Mb,MH,MH,"maple, black",N
+Mf,MH,MH,"maple, freeman",N
+Mh,MH,MH,"maple, hard (= sugar maple)",N
+Mm,MH,MH,"maple, Manitoba (or box elder)",N
+Mn,MH,MH,"maple, Norway",N
 Mo,OH,OH,"mulberry, red",N
 Mp,OH,OH,"maple, striped",N
+Mr,MS,MR,"maple, red (also called soft maple)",N
+Ms,MS,MR,"maple, silver soft",Y
 Mt,OH,OH,"maple, mountain",N
+Mx,MH,MH,"maple, any / mix",N
+O,QR,QR,oak (red),N
+Ob,OB,OB,"oak, bur or black",N
+Obl,OB,OB,"oak, black",N
+OC,OC,OC,Other Conifers,N
+Och,QR,OW,"oak, Chinquapin (or yellow)",N
 OH,OH,OH,"hardwoods, other",N
-Pa,OH,OH,pawpaw,N
-Red,OH,OH,redbud,N
-Ss,OH,OH,sassafras,N
-Sy,OH,OH,sycamore,N
-Tp,OH,OH,tulip tree,N
-Wb,OH,OH,"walnut, black",N
-Wi,OH,OH,"willow, any / mix",N
-Och,OW,OW,"oak, Chinquapin (or yellow)",N
 Op,OW,OW,"oak, pin (or swamp)",N
+Or,QR,QR,"oak, red (or northern red)",N
 Os,OW,OW,"oak, shumard's (or swamp red)",N
 Osw,OW,OW,"oak, swamp white",N
 Ow,OW,OW,"oak, white",N
+OX,QR,QR,"oak, any / mix",N
+Pa,OH,OH,pawpaw,N
 Pb,PO,PB,"poplar, balsam",N
-Pj,PJ,PJ,"pine, jack",N
-Pl,PO,PL,"aspen, largetooth",N
 Pc,PO,PO,"poplar, Carolina",N
 Pd,PO,PO,"cottonwood, Eastern",N
 Pe,PO,PO,"poplar, silver (or European white or white)",N
 PG,PO,PO,poplar,N
 Ph,PO,PO,"poplar, hybrid",N
+Pj,PJ,PJ,"pine, jack",N
+Pl,PO,PL,"aspen, largetooth",N
+Pn,OC,OC,"pine, Austrian or black",N
 Po,PO,PO,"poplar, any / mix",N
+Pp,OC,OC,"pine, pitch",N
 Pr,PR,PR,"pine, red",N
+Ps,OC,OC,"pine, scots",N
 Pt,PO,PT,"aspen, trembling",N
 Pw,PW,PW,"pine, white [eastern white]",N
 PX,PW,PW,"pine, any / mix",N
-O,QR,QR,oak (red),N
-Or,QR,QR,"oak, red (or northern red)",N
-OX,QR,QR,"oak, any / mix",N
 QR,QR,,new in 2024,
-Sb,SB,SB,"spruce, black",N
-Sp,SB,SB,Spruce (goto black),N
-Sx,SB,SB,"spruce, any / mix",N
+Red,OH,OH,redbud,N
 S,SW,SW,white spruce,N
-Sn,SW,SW,"spruce, Norway",N
+Sb,SB,SB,"spruce, black",N
+Sc,OC,OC,"spruce, Colorado (or blue)",N
+Sk,OC,OC,"spruce, koyama",N
+Sn,OC,SW,"spruce, Norway",N
+Sp,SB,SB,Spruce (goto black),N
 Sr,SW,SW,"spruce, red",N
+Ss,OH,OH,sassafras,N
 Sw,SW,SW,"spruce, white",N
-By,YB,YB,"birch, yellow",N
+Sx,SB,SB,"spruce, any / mix",N
+Sy,OH,OH,sycamore,N
+Ta,LA,LA,tamarack (larch),N
+Tp,OH,OH,tulip tree,N
+Wb,OH,OH,"walnut, black",N
+Wi,OH,OH,"willow, any / mix",N
 YB,YB,,new in 2024,

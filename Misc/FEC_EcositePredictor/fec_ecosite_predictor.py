@@ -243,7 +243,7 @@ def fec_ecosite(inputfc, msg):
                 fvar['K17'] = round(s['SB']**0.5, 4)
                 fvar['K18'] = round(s['HE']**0.5, 4)
                 fvar['K19'] = round(s['CE']**0.5, 4)
-                if s['PW']>10 or s['PR']>10 or s['PJ']>10 or Oak>10 or s['BE']>10 or s['IW']>10:
+                if not (s['PW']>10 or s['PR']>10 or s['PJ']>10 or Oak>10 or s['BE']>10 or s['IW']>10):
                     fvar['K20'] = round(s['LA']**0.5, 4)
                 fvar['K21'] = round(TolHrwd**0.5, 4)
                 fvar['K22'] = round(OtherHrwd**0.5, 4)
