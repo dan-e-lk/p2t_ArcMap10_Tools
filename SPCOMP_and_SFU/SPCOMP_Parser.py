@@ -148,7 +148,7 @@ def spParse(inputfc,outputfc,spfield,create_all_spcfields = True):
 
                         SppOccurSet.add(k)         ## Once the species code and value 'passes' add that species to the species occurance list.
 
-                        if SppOccurDict.has_key(k) == True:
+                        if k in SppOccurDict: # modified to work in python 3
                             SppOccurDict[k] += 1    ## Once the species code and value 'passes; add that species to the speciec orrurance list and increment count by one.
                         else:
                             SppOccurDict[k] = 1

@@ -1,3 +1,12 @@
+# Developed by Daniel Kim and Glen Watt on Dec 2024.
+# Glen has run rigorous testing 
+# This tool is based on FEC_EcositePredictor.xlsx (included in reference folder) which is based on OWHAMTool which has its root in
+#   1997 Field Guide to Forest Ecosystems of Central Ontario (included in reference folder)
+# By using this tool we can ensure the FEC CODE values (ecosite values 11-35 from Central Ontario FEC Manual) that relates 
+#   to the Old Growth Definition Report (older policy) can be assigned with confidence to our inventory products to support the old growth project.
+# This will allow you to query forest stands for potential old growth eligibility based on predicted ecosite values in any inventory product/vintage (old or T1).
+
+
 version = "1"
 
 import Reference as R # Reference.py should be located in the same folder as this file.
