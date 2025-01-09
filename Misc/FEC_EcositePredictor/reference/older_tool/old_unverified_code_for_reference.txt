@@ -1,0 +1,147 @@
+Option Compare Database
+ 
+Type FecProb
+  Ecosite As Integer
+  Prob As Double
+End Type
+ 
+'--changes: Removed Eco_Prob field, added OC (other conifers) field
+'
+Public Function GetEcosite()
+ 
+'Dim StartTime, EndTime, ElapsedTime
+'StartTime = Timer  ' Get start time.
+ 
+Dim dbs As Database, _
+    Base_RecSet As Recordset, _
+    EcoConst_RecSet As Recordset
+ 
+'Return Database variable pointing to current database.
+Set dbs = CurrentDb
+Set Base_RecSet = dbs.OpenRecordset("qry_forest_stands_sql")
+Set EcoConst_RecSet = dbs.OpenRecordset("tbl_habitat_scrk")
+ 
+'variable declarations
+Dim aFecVar(30) As Single, _
+    TolHrwd As Integer, OtherHrwd As Integer, IntHrwd As Integer, Conifer As Integer, Oak As Integer, _
+    AB As Integer, AW As Integer, Bd As Integer, BE As Integer, BF As Integer, BW As Integer, CE As Integer, _
+    CH As Integer, EW As Integer, HE As Integer, IW As Integer, LA As Integer, MH As Integer, MS As Integer, _
+    OC As Integer, OH As Integer, QR As Integer, PJ As Integer, PO As Integer, PR As Integer, _
+    PW As Integer, SB As Integer, SW As Integer, YB As Integer, OW As Integer, OB As Integer, RECNO As Integer
+Dim CurrEcosite As Integer, CurrProb As Double
+ 
+Dim aFecProb(25) As FecProb, aFecProb_Indx As Integer, ProbTotal As Double
+ 
+Do Until Base_RecSet.EOF
+  'only calculates the ecosite for stand with a valid species composition
+  'If Len(Trim(Base_RecSet("Spp_Comp"))) > 0 And Len(Trim(Base_RecSet("SC"))) > 0 Then
+  If Len(Trim(Base_RecSet("SC"))) > 0 Then
+    AB = Base_RecSet("AB"): AW = Base_RecSet("AW"): Bd = Base_RecSet("BD")
+    BE = Base_RecSet("BE"): BF = Base_RecSet("BF"): BW = Base_RecSet("BW"):
+    CE = Base_RecSet("CE")
+    CH = Base_RecSet("CH"): EW = Base_RecSet("EW"): HE = Base_RecSet("HE")
+    IW = Base_RecSet("IW"): LA = Base_RecSet("LA"): MH = Base_RecSet("MH")
+    MS = Base_RecSet("MS")
+    OB = Base_RecSet("OB"): OC = Base_RecSet("OC"): OH = Base_RecSet("OH")
+    QR = Base_RecSet("QR"): OW = Base_RecSet("OW"): PJ = Base_RecSet("PJ")
+    PO = Base_RecSet("PO")
+    PR = Base_RecSet("PR"): PW = Base_RecSet("PW")
+    SB = Base_RecSet("SB"): SW = Base_RecSet("SW"): YB = Base_RecSet("YB")
+ 
+    '------------------------------------------------------------
+ 
+    TolHrwd = MH + YB + BE
+    OtherHrwd = QR + OW + OB + MS + Bd + CH + AW + AB + IW + EW + OH
+    IntHrwd = PO + BW
+    Conifer = PW + PR + PJ + SW + SB + BF + HE + CE + LA + OC
+    Oak = QR + OW + OB
+    aFecVar(1) = MH ^ 0.5:        aFecVar(2) = YB ^ 0.5:    aFecVar(3) = BE ^ 0.5
+    aFecVar(4) = Oak ^ 0.5:       aFecVar(5) = MS ^ 0.5:    aFecVar(6) = Bd ^ 0.5
+    aFecVar(7) = (AW + CH) ^ 0.5:
+    aFecVar(8) = IW ^ 0.5:        aFecVar(9) = PO ^ 0.5:    aFecVar(10) = BW ^ 0.5
+    aFecVar(11) = IIf(PW < 30 And PR < 20 And PJ < 20 And Oak < 20 And _
+                      BE < 20 And IW < 20, (AB + EW) ^ 0.5, 0)
+    aFecVar(12) = PW ^ 0.5:       aFecVar(13) = PR ^ 0.5:   aFecVar(14) = PJ ^ 0.5:
+    aFecVar(15) = SW ^ 0.5:       aFecVar(16) = BF ^ 0.5:   aFecVar(17) = SB ^ 0.5
+    aFecVar(18) = HE ^ 0.5:       aFecVar(19) = CE ^ 0.5
+    aFecVar(20) = IIf(PW > 10 Or PR > 10 Or PJ > 10 Or Oak > 10 Or _
+                      BE > 10 Or IW > 10, 0, LA ^ 0.5)
+    aFecVar(21) = TolHrwd ^ 0.5:   aFecVar(22) = OtherHrwd ^ 0.5
+    aFecVar(23) = IntHrwd ^ 0.5:   aFecVar(24) = Conifer ^ 0.5
+    aFecVar(25) = IIf(PR >= 50, 1, 0)
+    aFecVar(26) = IIf(PW + PR + PJ >= 30 And PJ < 75 And PR < 50 And _
+                      ((PW > 0 And PJ > 0) Or (PR > 0 And PJ > 0)), 1, 0)
+    aFecVar(27) = IIf(PW + PR + PJ > 10 And PO > 0 And Oak > 0 And _
+                      TolHrwd + OtherHrwd - Oak <= 10, 1, 0)
+    aFecVar(28) = IIf(PO + BW + MS >= 50 And MH < 50 And Conifer < 50, 1, 0)
+    aFecVar(29) = IIf(Oak > 0 And MH > 0 And PW < 20 And PR = 0 And PJ = 0 And _
+                      BE <= 10 And Bd < 10 And IntHrwd >= TolHrwd, 1, 0)
+    aFecVar(30) = IIf(Base_RecSet("SC") = 0, 1, Val(Base_RecSet("SC")))
+    If aFecVar(30) > 3 Then
+      aFecVar(30) = 3
+    ElseIf aFecVar(30) = 0 Then
+      aFecVar(30) = 1
+    End If
+    'this section calculates the ecosite using the constants in the Eco_equ table
+    aFecProb_Indx = 1
+    EcoConst_RecSet.MoveFirst
+    Do Until EcoConst_RecSet.EOF
+      aFecProb(aFecProb_Indx).Ecosite = EcoConst_RecSet("Ecosite_Num")
+      aFecProb(aFecProb_Indx).Prob = EcoConst_RecSet("K0") + _
+        EcoConst_RecSet("K1") * aFecVar(1) + EcoConst_RecSet("K2") * aFecVar(2) + EcoConst_RecSet("K3") * aFecVar(3) + EcoConst_RecSet("K4") * aFecVar(4) + EcoConst_RecSet("K5") * aFecVar(5) + EcoConst_RecSet("K6") * aFecVar(6) + _
+        EcoConst_RecSet("K7") * aFecVar(7) + EcoConst_RecSet("K8") * aFecVar(8) + EcoConst_RecSet("K9") * aFecVar(9) + EcoConst_RecSet("K10") * aFecVar(10) + EcoConst_RecSet("K11") * aFecVar(11) + EcoConst_RecSet("K12") * aFecVar(12) + _
+        EcoConst_RecSet("K13") * aFecVar(13) + EcoConst_RecSet("K14") * aFecVar(14) + EcoConst_RecSet("K15") * aFecVar(15) + EcoConst_RecSet("K16") * aFecVar(16) + EcoConst_RecSet("K17") * aFecVar(17) + EcoConst_RecSet("K18") * aFecVar(18) + _
+        EcoConst_RecSet("K19") * aFecVar(19) + EcoConst_RecSet("K20") * aFecVar(20) + EcoConst_RecSet("K21") * aFecVar(21) + EcoConst_RecSet("K22") * aFecVar(22) + EcoConst_RecSet("K23") * aFecVar(23) + EcoConst_RecSet("K24") * aFecVar(24) + _
+        EcoConst_RecSet("K25") * aFecVar(25) + EcoConst_RecSet("K26") * aFecVar(26) + EcoConst_RecSet("K27") * aFecVar(27) + EcoConst_RecSet("K28") * aFecVar(28) + EcoConst_RecSet("K29") * aFecVar(29) + EcoConst_RecSet("K30") * aFecVar(30)
+        'ProbTotal = ProbTotal + aFecProb(aFecProb_Indx).Prob
+      aFecProb_Indx = aFecProb_Indx + 1
+      EcoConst_RecSet.MoveNext
+    Loop
+ 
+    'zero the ecosite and probability
+    CurrProb = 0
+    CurrEcosite = 0
+ 
+    'finds the ecosite with the greatest probability
+    For aFecProb_Indx = 1 To UBound(aFecProb)
+      If aFecProb(aFecProb_Indx).Prob > CurrProb Then
+        CurrProb = aFecProb(aFecProb_Indx).Prob
+        CurrEcosite = (aFecProb(aFecProb_Indx).Ecosite)
+      End If
+    Next aFecProb_Indx
+    'larlofix code change
+    'Base_RecSet.Open
+    Base_RecSet.Edit
+    'update the ecosite field
+    Base_RecSet("HU") = "ES" & CurrEcosite
+    Base_RecSet.Update
+  'species comp > 0 and sc > 0
+  End If
+  Base_RecSet.MoveNext
+Loop
+ 
+'EndTime = Timer
+'ElapsedTime = Format(EndTime - StartTime, "Fixed")
+'MsgBox ("Elapse time was:   " + ElapsedTime)
+ 
+End Function
+ 
+Public Function SingleCalcChk()
+ 
+  Dim TolHrwd As Single, IntHrwd As Single, _
+      MH As Single, YB As Single, BE As Single, PO As Single, BW As Single
+ 
+    MH = 0.3
+    YB = 0
+    BE = 0
+    PO = 0.2
+    BW = 0.1
+    TolHrwd = MH + YB + BE
+    IntHrwd = PO + BW
+    If IntHrwd >= TolHrwd Then
+      MsgBox "Int >= Tol"
+    Else
+      MsgBox "Int < tol"
+    End If
+ 
+End Function
