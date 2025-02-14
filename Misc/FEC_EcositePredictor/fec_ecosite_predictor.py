@@ -7,7 +7,7 @@
 # This will allow you to query forest stands for potential old growth eligibility based on predicted ecosite values in any inventory product/vintage (old or T1).
 
 
-version = "1"
+version = "202502"
 
 import Reference as R # Reference.py should be located in the same folder as this file.
 import arcpy, os, csv
@@ -179,7 +179,7 @@ def spParse2(inputfc,spcompfield, msg):
 
 
 # calculating fec ecosite numbers and finding the max value
-def fec_ecosite(inputfc, msg):
+def fec_ecosite(inputfc, SCfield, msg):
     # this function requires SPCOMPy field populated with parsed simplified species code
 
     # need something here to check if SC field exists
@@ -216,8 +216,8 @@ def fec_ecosite(inputfc, msg):
     fec_var_dict['K0']=1 # because K0 is always 1.
     fec_var_tbl = {} # dictionary of dictionary where key is the oid and value is the fec_var_dict filled out
     oid_fieldname = arcpy.Describe(inputfc).OIDFieldName
-    f = [spcompy_fname, 'SC', oid_fieldname]
-    with arcpy.da.SearchCursor(inputfc, f, "POLYTYPE='FOR'") as cursor:
+    f = [spcompy_fname, SCfield, oid_fieldname]
+    with arcpy.da.SearchCursor(inputfc, f, "POLYTYPE='FOR' AND %s IS NOT NULL"%SCfield) as cursor:
         for row in cursor:
             s = eval(row[0]) #spcompy dictionary
             site_cls = row[1]
@@ -366,7 +366,8 @@ def fec_ecosite(inputfc, msg):
 if __name__ == '__main__':
     inputfc = arcpy.GetParameterAsText(0) # this should be bmi or pci - this tool adds fields to input fc
     spcompfield = arcpy.GetParameterAsText(1).upper() # almost always 'SPCOMP'
-    debug_mode = arcpy.GetParameterAsText(2) # true or false
+    SCfield = arcpy.GetParameterAsText(2).upper() # almost always 'SC'
+    debug_mode = arcpy.GetParameterAsText(3) # true or false
 
     global starttime
     starttime = datetime.now()
@@ -382,7 +383,7 @@ if __name__ == '__main__':
 
 
     ##### PART 2 - FEC ECOSITE
-    msg = fec_ecosite(inputfc, msg)
+    msg = fec_ecosite(inputfc, SCfield, msg)
 
 
     ##### PART 3 - Write 'msg' into the log txt file
