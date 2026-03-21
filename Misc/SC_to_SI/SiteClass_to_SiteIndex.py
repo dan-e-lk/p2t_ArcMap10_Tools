@@ -1,7 +1,7 @@
 # This script uses Plonski's (MargaretPenner's coefficients) equation to derive Site Index from Site Class and Leading Species.
 # originally it was a simple code block in calculated field, but I made it into a tool on ArcMap.
 """
-Original form of this script.
+Original form of this script:
 in python in ArcMap, (updated 2025-02-11)"""
 
 code_blk = """
