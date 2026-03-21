@@ -7,7 +7,7 @@ print('importing arcpy...')
 import arcpy
 
 # importing the corresponding library...
-from create_template import fields, fieldname_update
+from .create_template import fields, fieldname_update
 
 def print2(msg, msgtype = 'msg'):
 	print(msg)
@@ -25,7 +25,7 @@ def copy_and_clean(output_gdb, original_file_path,owner_select):
 		Also corrects the fields (for example changes WG to LEADSPC) and checkes the record (eg. if AGE field is filled out with integers)
 		to make sure the data is ready to get appended to the template feature class"""
 	temp_fc_name = 'temp'
-	owner_sql = owner_sql_converter(owner_select)
+	owner_sql = owner_select
 
 	print2('Copying the original inventory (where %s ) to the output location...'%owner_sql)
 	arcpy.FeatureClassToFeatureClass_conversion(in_features=original_file_path, out_path=output_gdb, out_name=temp_fc_name, where_clause= owner_sql)# by default, owner_select = "OWNER in('1','5','7')"
@@ -91,16 +91,17 @@ def rec_counter(fc):
 
 
 
-def owner_sql_converter(owner_select):
-	"""
-	if input = '1257', the function will return "OWNER in('1','2','5','7')"
-	"""
-	owner_sql = "OWNER in("	
-	for i in owner_select:
-		owner_sql += "'" + i + "',"
-	owner_sql = owner_sql[:-1] # to delete the last comma.
-	owner_sql += ")"
-	return owner_sql
+# def owner_sql_converter(owner_select):
+# 	"""
+# 	if input = '1257', the function will return "OWNER in('1','2','5','7')"
+# 	"""
+# 	owner_sql = "OWNER in("	
+# 	for i in owner_select:
+# 		owner_sql += "'" + i + "',"
+# 	owner_sql = owner_sql[:-1] # to delete the last comma.
+# 	owner_sql += ")"
+# 	return owner_sql
+
 
 
 

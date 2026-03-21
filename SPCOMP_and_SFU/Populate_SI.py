@@ -21,7 +21,7 @@ import os, re
 
 def main(inputfc, outputfc, newfieldname, Value1, SQL1, Value2, SQL2, Value3, SQL3, Value4, SQL4, Value5, SQL5, Value6, SQL6, Value7, SQL7, Value8, SQL8):
 
-    newfieldname = 'SI'
+    # newfieldname = 'SI'
 
     # Values and SQLs
     val_list = [Value1,Value2,Value3,Value4,Value5,Value6,Value7,Value8]

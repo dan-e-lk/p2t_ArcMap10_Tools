@@ -84,11 +84,7 @@ def print2(msg, msgtype = 'msg'):
 if __name__ == '__main__':
 	input_path = arcpy.GetParameterAsText(0)
 	output_folder = arcpy.GetParameterAsText(1)
-	owner_select = arcpy.GetParameterAsText(2) # 'only export owner = 1, 5, 7' or 'only export owner = 1, 2, 5, 7'
-	if owner_select == 'only export owner = 1, 2, 5, 7':
-		owner_select = '1257'
-	else:
-		owner_select = '157'
+	owner_select = arcpy.GetParameterAsText(2) # this should have a working SQL such as "OWNER in ('CROWN','PARKS')"
 
 
 	main(input_path,output_folder, owner_select)

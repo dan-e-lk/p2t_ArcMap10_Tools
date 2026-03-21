@@ -17,7 +17,7 @@ def print2(msg, msgtype = 'msg'):
 fields = {
 				1:		['POLYID',		25,			'TEXT'],
 				2:		['POLYTYPE',	3,			'TEXT'],
-				3:		['OWNER',		1,			'TEXT'],
+				3:		['OWNER',		10,			'TEXT'],
 				7: 		['DEVSTAGE',	8,			'TEXT'],
 				8:		['YRDEP',		4,			'SHORT'],
 				10:		['OYRORG',		4,			'SHORT'],				
