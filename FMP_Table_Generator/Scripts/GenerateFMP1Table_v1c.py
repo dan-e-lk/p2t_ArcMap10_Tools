@@ -199,7 +199,7 @@ sql = {
 # Creating the search cursor
 
 f = manFields
-for k, v in sql.iteritems():
+for k, v in sql.items():
     area=0
     cursor = arcpy.da.SearchCursor(inputpci,f,v[0])
     for row in cursor:
@@ -225,7 +225,7 @@ extraInfo = {
     '*reportlocation':  reportfile,
     '*dateandtime':     str(datetime.datetime.now())
     }
-for k, v in extraInfo.iteritems():
+for k, v in extraInfo.items():
     htmlstring = htmlstring.replace(k,v)
 
 rep.write(htmlstring)

@@ -12,6 +12,7 @@ import arcpy
 from itertools import groupby
 for specie in FullSpecieslist:
     try:
+        arcpy.AddMessage("Adding a new field: %s"%specie)
         arcpy.AddField_management(fc, specie, "FLOAT")
         arcpy.CalculateField_management(fc, specie, 0)
     except:
@@ -37,6 +38,7 @@ for num, field in enumerate(FullSpecieslist):
     arcpy.AddMessage(msg)
 
 for row in cursor:
+    # checking SPCOMP e.g.'PJ  80SB  20'
     if row[41] is None:
         arcpy.AddWarning ("Poly ID {0} species comp field has Null value".format(row[38]))
     elif row[41].isspace == True:
@@ -45,7 +47,7 @@ for row in cursor:
         if len(row[41])%6 != 0:
             arcpy.AddWarning ("Poly ID {0} is not formatted properly".format(row[38]))
         n = 3
-        aList=[]
+        aList=[] # e.g. ['PJ', '80', 'SB', '20']
         for k,g in groupby(str(row[41]),str.isalpha):
             aList.append((''.join(list(g))).replace(" ",""))
         for element in aList:

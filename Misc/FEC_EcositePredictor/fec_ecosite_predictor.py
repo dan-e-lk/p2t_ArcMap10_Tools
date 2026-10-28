@@ -105,11 +105,13 @@ def spParse2(inputfc,spcompfield, msg):
                         SppOccurSet_simp.add(spc_simp)
 
                         # just for reporting
-                        if SppOccurDict.has_key(k) == True:
+                        # if SppOccurDict.has_key(k) == True: # python 2
+                        if k in SppOccurDict: # python 3
                             SppOccurDict[k] += 1    ## Once the species code and value 'passes; add that species to the speciec orrurance list and increment count by one.
                         else:
                             SppOccurDict[k] = 1
-                        if SppOccurDict_simp.has_key(spc_simp) == True:
+                        # if SppOccurDict_simp.has_key(spc_simp) == True: # python 2
+                        if spc_simp in SppOccurDict_simp: # python 3
                             SppOccurDict_simp[spc_simp] += 1    ## Once the species code and value 'passes; add that species to the speciec orrurance list and increment count by one.
                         else:
                             SppOccurDict_simp[spc_simp] = 1
@@ -143,7 +145,8 @@ def spParse2(inputfc,spcompfield, msg):
     # table of spc and its occurrences
     if len(SppOccurDict) > 0:
         SppOccrCsv = '%s Species,Occurences'%spcompfield
-        for spc, occ in sorted(SppOccurDict.items(), key=lambda (k,v): (v,k), reverse=True): # sort by the order of most commonly occurred to least.
+        # for spc, occ in sorted(SppOccurDict.items(), key=lambda (k,v): (v,k), reverse=True): # sort by the order of most commonly occurred to least.
+        for spc, occ in sorted(SppOccurDict.items(), key=lambda kv: (kv[1], kv[0]), reverse=True): # sort by the order of most commonly occurred to least.
             SppOccrCsv += '\n' + spc + ',' + str(occ)
         SppOccrCsv += '\n'
         msg += print2("\nThe list of species with occurrences in the inventory:\n%s" %SppOccrCsv)   ## Print the table of species and occurrences in the inventory.
@@ -151,7 +154,8 @@ def spParse2(inputfc,spcompfield, msg):
     # table of spc and its occurrences
     if len(SppOccurDict_simp) > 0:
         SppOccrCsv = 'Simplified Species,Occurences'
-        for spc, occ in sorted(SppOccurDict_simp.items(), key=lambda (k,v): (v,k), reverse=True): # sort by the order of most commonly occurred to least.
+        # for spc, occ in sorted(SppOccurDict_simp.items(), key=lambda (k,v): (v,k), reverse=True): # sort by the order of most commonly occurred to least.
+        for spc, occ in sorted(SppOccurDict_simp.items(), key=lambda kv: (kv[1], kv[0]), reverse=True): # sort by the order of most commonly occurred to least.
             SppOccrCsv += '\n' + spc + ',' + str(occ)
         SppOccrCsv += '\n'
         msg += print2("\nThe list of simplified species with occurrences in the inventory:\n%s" %SppOccrCsv)   ## Print the table of species and occurrences in the inventory.

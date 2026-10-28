@@ -7,7 +7,8 @@ def spcVal(data, fieldname, version = 2017): #sample data: 'Cw  70La  20Sb  10'
     #assuming the data is not None or empty string
     try:
         if len(data)%6 == 0:
-            n = len(data)/6
+            # n = len(data)/6 # python2
+            n = len(data)//6 # python3
             spcList = [data[6*i:6*i+3].strip().upper() for i in range(n)]
             percentList = [int(data[6*i+3:6*i+6].strip()) for i in range(n)]
             # build species to percent dictionary
